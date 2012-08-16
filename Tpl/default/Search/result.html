@@ -1,0 +1,131 @@
+{:W('Header',array('title'=>L('搜索')))}
+<form id="search-form" action="{:U('Search/result')}" method="get">
+	<h1 id="search-title">{:L('搜索')}</h1>
+	<input type="text" name="q" value="{$q}"/>
+	<input type="hidden" name="preserve" value="1"/>
+	<button id="search-button" type="submit" value="{:L('搜索')}">{:L('搜索')}</button>
+</form>
+<span id="result-count">{$count}</span>
+<div id="left-filters">
+	<ul id="primary-types">
+		<li <?php if(!isset($type) || empty($type)): ?> class="selected" <?php endif; ?>>
+			<a href="{:U('Search/result')}/preserve/1/type/0">{:L('全部')}</a>
+		</li>
+		<li <?php if(isset($type) && $type == 'ngo'): ?> class="selected" <?php endif; ?>>
+			<a href="{:U('Search/result')}/preserve/1/type/ngo">{:L('公益组织')}</a>
+		</li>
+		<li <?php if(isset($type) && $type == 'csr'): ?> class="selected" <?php endif; ?>>
+			<a href="{:U('Search/result')}/preserve/1/type/csr">{:L('企业社会责任')}</a>
+		</li>
+	</ul>
+	<ul>
+		<li <?php if(!isset($model) || empty($model)): ?> class="selected" <?php endif; ?>>
+			<a href="{:U('Search/result')}/preserve/1/model/0">{:L('全部类型')}</a>
+		</li>
+		<li <?php if(isset($model) && $model == 'users'): ?> class="selected" <?php endif; ?>>
+			<a href="{:U('Search/result')}/preserve/1/model/users">{:L('组织')}</a>
+		</li>
+		<li <?php if(isset($model) && $model == 'events'): ?> class="selected" <?php endif; ?>>
+			<a href="{:U('Search/result')}/preserve/1/model/events">{:L('项目')}</a>
+		</li>
+	</ul>
+	<ul>
+		<li <?php if(!isset($work_field) || empty($work_field)): ?> class="selected" <?php endif; ?>>
+			<a href="{:U('Search/result')}/preserve/1/work_field/0">{:L('全部领域')}</a>
+		</li>
+		<?php foreach(C('ORG_FIELDS') as $field){ ?>
+        <li <?php if(isset($work_field) && $work_field == $field): ?> class="selected" <?php endif; ?>>
+			<a href="{:U('Search/result')}/preserve/1/work_field/{$field}">{:L($field)}</a>
+		</li>
+        <?php } ?>
+	</ul>
+	<ul>
+		<li <?php if(!isset($progress) || empty($progress)): ?> class="selected" <?php endif; ?>>
+			<a href="{:U('Search/result')}/preserve/1/progress/0">{:L('全部项目进度')}</a>
+		</li>
+		<li <?php if(isset($progress) && $progress == 'planning'): ?> class="selected" <?php endif; ?>>
+			<a href="{:U('Search/result')}/preserve/1/progress/planning">{:L('筹划中')}</a>
+		</li>
+		<li <?php if(isset($progress) && $progress == 'running'): ?> class="selected" <?php endif; ?>>
+			<a href="{:U('Search/result')}/preserve/1/progress/running">{:L('进行中')}</a>
+		</li>
+		<li <?php if(isset($progress) && $progress == 'finished'): ?> class="selected" <?php endif; ?>>
+			<a href="{:U('Search/result')}/preserve/1/progress/finished">{:L('已完成')}</a>
+		</li>
+	</ul>
+	<ul>
+		<li <?php if(!isset($req) || empty($req)): ?> class="selected" <?php endif; ?>>
+			<a href="{:U('Search/result')}/preserve/1/req/0">{:L('全部项目需求')}</a>
+		</li>
+		<?php
+        	$config_event_type = C('EVENT_TYPE');
+        	foreach($config_event_type['requirement'] as $field){ ?>
+    	<li <?php if(isset($req) && $req == $field): ?> class="selected" <?php endif; ?>>
+			<a href="{:U('Search/result')}/preserve/1/req/{$field}">{:L($field)}</a>
+		</li>
+        <?php } ?>
+	</ul>
+	<ul>
+		<li <?php if(!isset($res) || empty($res)): ?> class="selected" <?php endif; ?>>
+			<a href="{:U('Search/result')}/preserve/1/res/0">{:L('全部项目资源')}</a>
+		</li>
+		<?php
+        	$config_event_type = C('EVENT_TYPE');
+        	foreach($config_event_type['resource'] as $field){ ?>
+    	<li <?php if(isset($res) && $res == $field): ?> class="selected" <?php endif; ?>>
+			<a href="{:U('Search/result')}/preserve/1/res/{$field}">{:L($field)}</a>
+		</li>
+        <?php } ?>
+	</ul>
+</div>
+<div id="search-result">
+	<ul>
+		<?php foreach($results as $result): ?>
+		<li>
+			<?php if($result['event_id'] == 0): //it is a user ?>
+			<h3>
+				<a href="{:U('User/home')}/id/{$result.user_id}">
+				{$result.user_name}
+				</a>
+			</h3>
+			<p class="content">
+				<span class="item-field">{$result.field}</span>
+				{$result.content|mb_substr=0,200}
+				<?php if(mb_strlen($result['content']) > 200): ?> ... <?php endif; ?>
+			</p>
+			
+			<?php else: ?>
+			<h3>
+				<a href="{:U('Event/view')}/id/{$result.event_id}">
+					{$result.event_name}
+				</a>
+			</h3>
+			<p class="more-info">
+				<a href="{:U('User/home')}/id/{$result.user_id}">{$result.user_name}</a> - 
+				{$result.create_time} - {$result.res_tags}
+			</p>
+			<p class="content">
+				<span class="item-field">{$result.field}</span>
+				{$result.content|mb_substr=0,200}
+				<?php if(mb_strlen($result['content']) > 200): ?> ... <?php endif; ?>
+			</p>
+			
+			<?php endif; ?>
+			
+		</li>
+		<?php endforeach; ?>
+	</ul>
+	{$pager_content}
+</div>
+<div class="clearfix"></div>
+<link rel="stylesheet" type="text/css" href="__APP__/Public/Css/SearchResult.css" />
+<script type="text/javascript">
+	$(function(){
+		$('#search-button').button({
+			icons: {
+				primary: "ui-icon-search"
+			}
+		});
+	});
+</script>
+{:W('Footer')}

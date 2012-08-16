@@ -1,0 +1,83 @@
+<css href="__APP__/Public/Css/AdminEvents.css"/>
+<js href="__APP__/Public/Js/admin.js"/>
+<css href="__APP__/Public/Css/jquery.fastconfirm.css"/>
+<js href="__APP__/Public/Js/jquery.fastconfirm.js"/>
+
+<div id="operate">
+    <ul>
+        <li class="button">
+            <input class="add imgButton" type="button" onclick="add()" value="{:L('新增')}">
+        </li>
+        <in name="type" value="all,pending">
+        <li class="button">
+            <input class="check imgButton" type="button" onclick="batch(this,'check','{$type}');" value="{:L('审核')}">
+        </li>
+        </in>
+        <in name="type" value="all,already">
+        <li class="button">
+            <input class="lock imgButton" type="button" onclick="batch(this,'lock','{$type}');" value="{:L('屏蔽')}">
+        </li>
+        </in>
+        <neq name="type" value="deleted">
+        <li class="button">
+            <input class="del imgButton" type="button" onclick="batch(this,'del','{$type}');" value="{:L('删除')}">
+        </li>
+        </neq>
+        <eq name="type" value="deleted">
+        <li class="button">
+            <input class="check imgButton" type="button" onclick="batch(this,'recovery','{$type}');" value="{:L('恢复')}">
+        </li>
+        </eq>
+    </ul>
+</div>
+
+<table class="syllabus-table">
+    <tr>
+        <th><input id="check" type="checkbox" onclick="CheckAll('syllabus-table')"></th>
+        <th width="40%">{:L('事件名称')}</th>
+        <th>{:L('主办者')}</th>
+        <th>{:L('发布时间')}</th>
+        <th>{:L('状态')}</th>
+        <th>{:L('操作')}</th>
+    </tr>
+    <volist name="event_result" id="vo">
+        <tr <?php if($key%2!=0)echo 'class="odd"'; ?> onmouseover="over(this);" onmouseout="out(this);">
+            <td><input type="checkbox" value="{$vo.id}" name="key"></td>
+            <td><a target="_blank" href="{:U('Event/view/id')}/{$vo.id}">{$vo.name}</a></td>
+            <td>
+                <volist name="vo['host_name']" id="host_name"><a target="_blank" href="{:U('Search/resolve/name')}/{$host_name}" class="host-name">{$host_name}</a></volist>
+            </td>
+            <td>
+                <php> echo date('Y-m-d', strtotime($vo['create_time'])); </php>
+            </td>
+            <td>
+                <eq name="vo['enabled']" value="0">
+                    <img alt="{:L('已删除')}" src="__APP__/Public/IMG/del.gif">
+                <else/>
+                    <eq name="vo['is_checked']" value="1">
+                        <img alt="{:L('正常')}" src="__APP__/Public/IMG/ok.gif">
+                    <else/>
+                        <img alt="{:L('未审核或屏蔽')}" src="__APP__/Public/IMG/locked.gif">
+                    </eq>
+                </eq></td>
+            <td>
+                
+                <eq name="vo['enabled']" value="0">
+                    <a href="{:U('Admin/batch')}/ids/{$vo.id}/action/recovery/type/{$type}" class="fast-confirm" ques="{:L('确实要恢复该事件吗？')}">{:L('恢复')}</a>
+                <else/>
+                    <a target="_blank" href="{:U('Event/edit/id')}/{$vo.id}">{:L('编辑')}</a>
+                    <eq name="vo['is_checked']" value="1">
+                        <a href="{:U('Admin/batch')}/ids/{$vo.id}/action/lock/type/{$type}" class="fast-confirm" ques="{:L('确实要屏蔽该事件吗？')}">{:L("屏蔽")}</a>
+                    <else/>
+                        <a href="{:U('Admin/batch')}/ids/{$vo.id}/action/check/type/{$type}" class="fast-confirm" ques="{:L('确实要审核通过该事件吗？')}">{:L("审核")}</a>
+                    </eq>
+                    <a href="{:U('Admin/batch')}/ids/{$vo.id}/action/del/type/{$type}" class="fast-confirm" ques="{:L('确实要删除该事件吗？')}">{:L("删除")}</a>
+                </eq>
+            </td>
+        </tr>
+    </volist>
+</table>
+<br/>
+<div id="page-show">
+    {$page}
+</div>

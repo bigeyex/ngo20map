@@ -1,0 +1,133 @@
+
+{:W('Header',array('title'=>L('事件管理')))}
+
+<css href="__APP__/Public/Css/AdminEvents.css"/>
+<css href="__APP__/Public/Css/jquery.fastconfirm.css"/>
+<js href="__APP__/Public/Js/jquery.fastconfirm.js"/>
+<js href="__APP__/Public/Js/admin.js"/>
+
+<script language="javascript">
+
+$(document).ready(function(){
+    var url='__SELF__';
+    window.check_word = "{:L('请选择需操作的事件！')}";
+    window.lock_word = "{:L('确实要对所选事件执行此操作吗？')}"
+
+});
+
+
+</script>
+{:W('AdminMenu')}
+<div id="right-content">
+	<div id="admin-filters">
+		<ul>
+			<li class="caption">{:L('项目类型')}</li>
+			<li><a href="{:U('Admin/users')}/type/all" <?php if($type == 'all'): ?> class="selected" <?php endif; ?>>
+				{:L('全部')}</a></li>
+			<li><a href="{:U('Admin/users')}/type/ngo" <?php if($type == 'ngo'): ?> class="selected" <?php endif; ?>>
+				{:L('公益组织')}</a></li>
+			<li><a href="{:U('Admin/users')}/type/csr" <?php if($type == 'csr'): ?> class="selected" <?php endif; ?>>
+				{:L('企业社会责任')}</a></li>
+			<li><a href="{:U('Admin/users')}/type/ind" <?php if($type == 'ind'): ?> class="selected" <?php endif; ?>>
+				{:L('公益人')}</a></li>
+		</ul>
+		<ul>
+			<li class="caption">{:L('审核状态')}</li>
+			<li><a href="{:U('Admin/users')}/check/all" <?php if($check == 'all'): ?> class="selected" <?php endif; ?>>
+				{:L('全部')}</a></li>
+			<li><a href="{:U('Admin/users')}/check/pending" <?php if($check == 'pending'): ?> class="selected" <?php endif; ?>>
+				{:L('待审核')}</a></li>
+			<li><a href="{:U('Admin/users')}/check/checked" <?php if($check == 'checked'): ?> class="selected" <?php endif; ?>>
+				{:L('已审核')}</a></li>
+			<li><a href="{:U('Admin/users')}/check/deleted" <?php if($check == 'deleted'): ?> class="selected" <?php endif; ?>>
+				{:L('已删除')}</a></li>
+		</ul>
+		<ul>
+			<li class="caption">{:L('关键词搜索')}</li>
+			<li>
+				<form action="{:U('Admin/users')}" method="get">
+					<input class="text" type="text" name="q" value="{$q}"/>
+					<input class="button" type="submit" value="{:L('筛选')}"/>
+					<a href="{:U('Admin/users')}/q/all">{:L('清除条件')}</a>
+				</form>
+			</li>
+		</ul>
+		<div class="clearfix"></div>
+	</div>
+	<div id="admin-actions">
+	     <ul>
+	        <in name="check" value="all,pending">
+	        <li class="button">
+	            <input class="check imgButton" type="button" onclick="batch(this,'check','users');" value="{:L('审核')}">
+	        </li>
+	        </in>
+	        <in name="check" value="all,already">
+	        <li class="button">
+	            <input class="lock imgButton" type="button" onclick="batch(this,'lock','users');" value="{:L('屏蔽')}">
+	        </li>
+	        </in>
+	        <neq name="check" value="deleted">
+	        <li class="button">
+	            <input class="del imgButton" type="button" onclick="batch(this,'del','users');" value="{:L('删除')}">
+	        </li>
+	        </neq>
+	        <eq name="check" value="deleted">
+	        <li class="button">
+	            <input class="check imgButton" type="button" onclick="batch(this,'recovery','users');" value="{:L('恢复')}">
+	        </li>
+	        </eq>
+	    </ul>
+	</div> <!-- admin-actions -->
+	<div class="clearfix"></div>
+	<div class="page-show">
+    	{$page}
+	</div>
+
+	<div class="clearfix"></div>
+	<table class="syllabus-table" width="100%" cellspacing="20">
+            <tr>
+                <th><input id="check" type="checkbox" value="0" onclick="CheckAll('syllabus-table')"></th>
+                <th width="35%">{:L('电子邮箱')}</th>
+                <th width="10%">{:L('显示名')}</th>
+                <th width="10%">{:L('注册时间')}</th>
+                <th width="10%">{:L('用户类型')}</th>
+                <th width="10%">{:L('管理员')}</th>
+                <th width="10%">{:L('已审核')}</th>
+                <th width="15%">{:L('操作')}</th>
+            </tr>
+            <volist name="user_result" id="vo">
+                <tr <?php if($key%2!=0)echo 'class="odd"'; ?>>
+                    <td><input type="checkbox" value="{$vo.id}" name="key"></td>
+                    <td>{$vo.email}</td>
+                    <td>
+                        <a href="{:U('User/home/id')}/{$vo.id}">{$vo.name}</a>
+                    </td>
+                    <td>{$vo.create_time}</td>
+                    <td>{$vo.type}</td>
+                    <td><?php if($vo['is_admin'])echo L('是');else echo L('否'); ?></td>
+                    <td><?php if($vo['is_checked'])echo L('是');else echo L('否'); ?></td>
+                    <td>
+                        <a href="{:U('User/edit/id')}/{$vo.id}">{:L('编辑')}</a>&nbsp;
+                        <?php if($vo['is_checked']): ?>
+                        <a href="{:U('Admin/uncheck/id')}/{$vo.id}" class="fast-confirm" ques="{:L('确实要将该用户审核通过吗？')}">{:L('屏蔽')}</a>
+                        <?php else: ?>
+                        <a href="{:U('Admin/check/id')}/{$vo.id}" class="fast-confirm" ques="{:L('确实要将该用户审核通过吗？')}">{:L('审核')}</a>&nbsp;
+                        <?php endif; ?>
+                        <?php if($vo['is_vip']): ?>
+                        <a href="{:U('Admin/setvip/status/0/id')}/{$vo.id}">{:L('取消加V')}</a>
+                        <?php else: ?>
+                        <a href="{:U('Admin/setvip/status/1/id')}/{$vo.id}">{:L('加V')}</a>&nbsp;
+                        <?php endif; ?>
+                        <a href="{:U('Admin/deleteUser/id')}/{$vo.id}" class="fast-confirm" ques="{:L('确实要永久删除该用户吗？')}">{:L('删除')}</a>
+                    </td>
+                </tr>
+            </volist>
+        </table>
+	<div class="page-show">
+    	{$page}
+	</div>
+	
+</div>
+
+{:W('Footer')}
+

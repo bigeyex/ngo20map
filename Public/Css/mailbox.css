@@ -1,0 +1,153 @@
+#global-nav-mail{
+  position: relative;
+}
+#global-nav-mail a{
+  /*background: url(../Img/icons/mail-icon.png) no-repeat;*/
+}
+#new-mail-num {
+    color: #FFFFFF;
+    font-size: 12px;
+    left: 18px;
+    position: absolute;
+    top: 0;
+}
+#mail-box{
+	position: absolute;
+	border: 1px solid #A0BEDC;
+  box-shadow: -1px 2px 2px rgba(0, 0, 0, 0.3);
+  background-color: #fff;
+  width: 300px;
+  height: 320px;
+  top: 20px;
+  right: 0;
+  z-index: 2004;
+}
+#mail-box a{
+  color: #6E8EC6;
+}
+#mail-box-content{
+  height: 290px;
+}
+#mail-box-footer a{
+  float: right;
+}
+#mail-box-border-patch{
+  z-index: 2005;
+  width: 95px;
+  background: #fff;
+  height: 2px;
+  position: absolute;
+  top: -1px;
+}
+#mail-box a{
+  padding-left: 0;
+  background: none;
+}
+#global-nav-mail a.expanded{
+	/* border: 1px solid #A0BEDC; */
+}
+.section-header{
+  padding: 5px;
+  background-color: #eef5f9;
+}
+
+.section-header #new-message-link{
+  line-height: 20px;
+  font-size: 14px;
+}
+
+#mailbox-search-form{
+  float: right;
+}
+#mailbox-search-form input{
+  height: 20px;
+}
+
+#talk-list{
+  margin-top: 5px;
+  height: 255px;
+  overflow: auto;
+}
+#mail-box .close-link{
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+
+/* talk part */
+.talk-avatar{
+  float: left;
+}
+.talk-item{
+  clear: both;
+  padding: 7px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
+.talk-item:hover{
+  background-color: #f3f3f3;
+}
+#mail-box div.talk-item-content{
+  font-size: 14px;
+  padding-left: 45px;
+}
+#mail-box p.date{
+  font-size: 10px;
+  color: #999;
+}
+#message-wrapper{
+  height: 190px;
+  width: 100%;
+  overflow: auto;
+}
+#message-target-form{
+  float: right;
+}
+span.unread-count{
+  color: red;
+}
+
+/* message-form */
+#message-writer{
+  font-size: 14px;
+}
+
+.section-header #back-to-talk-link,#message-target-form {
+    font-size: 14px;
+    line-height: 20px;
+}
+#message-target{
+  height: 20px;
+  padding: 0px;
+}
+#send-message-form{
+  padding: 5px;
+}
+#send-message-button{
+  padding: 7px;
+  vertical-align: top;
+}
+
+/* message-item */
+div.message-item{
+  clear: both;
+  margin-top: 10px;
+}
+div.message-avatar{
+  width: 40px;
+  height: 40px;
+  border: 1px solid #f3f3f3;
+  float: left;
+}
+div.myself div.message-avatar{
+  float: right;
+}
+div.message-item-content{
+  margin-left: 45px;
+  width: 185px;
+  border: 1px solid #f2f2f2;
+  padding: 3px;
+}
+#send-message-form{
+  background-color: #eef5f9;
+}

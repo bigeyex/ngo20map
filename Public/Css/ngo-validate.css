@@ -1,0 +1,23 @@
+/* ngo validate */
+.validate-required{
+    color: #666676;
+    font-size: 16px;
+    padding-left: 10px;
+    vertical-align: top;
+}
+.validate-error{
+    color: #666676;
+    font-size: 16px;
+    margin-left: 10px;
+    padding: 0px 25px 6px;
+    vertical-align: top;
+    background: url(../Img/icons/validate-error.png) no-repeat;
+}
+.validate-ok{
+    color: #666676;
+    font-size: 16px;
+    margin-left: 10px;
+    padding: 0px 25px 6px;
+    vertical-align: top;
+    background: url(../Img/icons/validate-ok.png) no-repeat;
+}

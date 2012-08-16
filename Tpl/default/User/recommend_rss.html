@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+   <channel>
+   <title>您可能感兴趣的公益组织</title>
+   <link>http://{$_SERVER.HTTP_HOST}__APP__/</link>
+   <language>zh-cn</language>
+   <generator><![CDATA[]]></generator>
+   <description>{$province}省的{$work_field}领域的公益组织
+   </description>
+   <language>zh-cn</language>
+   <image>
+     <title>中国公益2.0</title>
+     <url>http://{$_SERVER.HTTP_HOST}__APP__/Public/Img/main-logo50.png</url>
+     <link>http://{$_SERVER.HTTP_HOST}__APP__/</link>
+   </image>
+   <?php foreach($related_events as $event): ?>
+   <item>
+     <title><![CDATA[ {$event.name} ]]></title>
+     <link>http://{$_SERVER.HTTP_HOST}__APP__/Event/View/id/{$event.id}</link>
+     <description><![CDATA[ {$event.description} ]]></description>
+     <pubDate>{$event.create_time}</pubDate>
+   </item>
+   <?php endforeach; ?>
+ </channel>
+</rss>

@@ -1,0 +1,184 @@
+#home-base{
+    display: block;
+}
+#user-namecard{
+    background: #E2E7E4;
+    padding: 10px 0 10px 15px;
+    margin-bottom: 10px;
+    position: relative;
+}
+.avatar{
+    float: left;
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+}
+#namecard-detail{
+    padding:  8px;
+    display: block;
+    color: #333;
+    font-size: 14px;
+}
+p.namecard-content{
+	min-height: 17px;
+    margin-left: 75px;
+    margin-bottom: 8px;
+}
+#namecard-detail div{
+    margin-bottom: 10px;
+}
+#namecard-detail label{
+    float: left;
+    width: 65px;
+    color: #006600;
+}
+.mini-label{
+	margin-left: 10px;
+	margin-right: 5px;
+}
+#namecard-name{
+    float: left;
+    margin-left: 20px;
+  color: #8B8D8C;
+  font-size: 14px;
+}
+#namecard-detail h1{
+  font-size: 17px;
+  margin: 0px 0 10px;
+  color: #006600;
+}
+#namecard-detail span.user-role{
+   color: #333;
+   font-size: 14px;
+   margin-left: 10px;
+}
+#action-links{
+   float: left;
+   margin: -30px 50px 5px;
+   width: 100%;
+}
+#action-links a{
+   background-color: #9DD6C5;
+    padding: 7px 16px;
+   margin-left: 10px;
+    font-size: 14px;
+    float: left;
+   right: 0px;
+   color: #fff;
+}
+#action-links a:hover{
+  background-color: #80aea1;
+}
+.home-action-box{
+    float: left;
+    width: 296px;
+    margin-left: 10px; 
+}
+.home-action-box img{
+    float: left;
+}
+.home-action-box h2{
+   line-height: 30px;
+}
+.home-action-box label{
+    
+    font-size: 14px;
+    padding: 4px 10px;
+    float: right;
+    background-color:#D1D9D5 ;
+}
+.home-action-box label:hover{
+    background-color: #b6bdb9;
+    cursor: pointer;
+}
+.home-action-box label a{
+	line-height: 21px;
+    padding-left: 20px;
+    color: #666676;
+}
+.home-action-detail{
+    padding: 5px 15px;
+}
+#follow_result{
+    clear: both;
+    display: block;
+}
+#follow_result span{
+    float: right;
+}
+.org-description{
+   padding: 8px;
+}
+.org-description h2{
+    color: #006600;
+    margin: 0px 3px 10px;
+    font-size: 14px;
+}
+/* left-align user map filter */
+#map-filters #select-filter{
+	float: left;
+}
+
+/* icons */
+.home-action-box label a{
+    background: url(../Img/manage.png) no-repeat;
+}
+#home-msg-header h2{
+    background: url(../Img/envelope.png) no-repeat 0 6px;
+}
+#home-follow-header h2{
+    background: url(../Img/follow.png) no-repeat;
+}
+#action-links #namecard-expand-link.unexpanded{
+   padding-left: 30px;
+   background-image: url(../Img/icons/button-arrow-right.png);
+   background-repeat: no-repeat;
+   background-position: 15px 9px;
+}
+
+#action-links #namecard-expand-link.expanded{
+   background-image: url(../Img/icons/button-arrow-down.png);
+   background-repeat: no-repeat;
+   background-position: 15px 10px;
+}
+#action-links #myfollow-expand-link.unexpanded{
+   padding-left: 30px;
+   background-image: url(../Img/icons/button-arrow-right.png);
+   background-repeat: no-repeat;
+   background-position: 15px 9px;
+}
+
+#action-links #myfollow-expand-link.expanded{
+   background-image: url(../Img/icons/button-arrow-down.png);
+   background-repeat: no-repeat;
+   background-position: 15px 10px;
+}
+
+#map-link{
+   float: left;
+   margin: auto;
+}
+#map-link a{
+    padding: 7px 0px;
+    font-size: 14px;
+    float: left;
+   right: 0px;
+   color: #386C9C;
+   text-align: center;
+   width: 958px;
+   border: 1px solid #C9C9C9;
+   border-bottom-style: none;
+}
+#map-link a:hover{
+  background-color: #F9F9F9;
+}
+
+#myfollow-list{
+    width: 100%;
+    padding: 8px;
+}
+#user-namecard h1{
+    font-size: 14px;
+    margin-left: 60px;
+    color: #006600;
+}

@@ -1,0 +1,10 @@
+    <volist name="talk_data" id="vo">
+        <div class="talk-detail" id="talk-detail-{$vo.talk_id}" onclick="talk_switch('{$vo.talk_id}')">
+            <h3>
+                <span class="new-mark" <?php if ($vo['is_read'] != 0): ?>style="display:none"<?php endif; ?>>{:L('新')}</span>
+                <span class="talk-title">{$vo.title}</span>
+                
+                
+            </h3><p>{$vo.users}</p>
+        </div>
+    </volist>

@@ -1,0 +1,152 @@
+.left-column{
+  width: 710px;
+  float: left;
+}
+.right-column{
+  width: 230px;
+  float: right;
+}
+.event-map{
+	clear: both;
+}
+.ckepop{
+	margin-bottom: 10px;
+}
+#eventintro{
+  background-color: #E2E7E4;
+  padding: 15px;
+}
+
+#event-intro-text{
+  width: 500px;
+  float: right;
+  padding: 0 0 0 12px;
+}
+
+#event-name{
+  font-size: 17px;
+  font-family: 华文细黑, 黑体, sans-serif;
+  color: #666676;
+}
+
+#event-owner{
+  font-size: 14px;
+  margin: 5px 0 10px 5px;
+}
+
+#event-owner a.category{
+  padding-left: 10px;
+  color: #8B8D8C;
+}
+
+#info-detail dt{
+  line-height: 17px;
+  float:left;
+  clear: both;
+  margin: 0 0 8px 5px;
+  color: #8B8D8C;
+  font-family: 华文细黑, 黑体, sans-serif;
+  width: 75px;
+}
+#info-detail dd{
+  line-height: 17px;
+  min-height: 17px;
+  margin: 0 0 8px 8px;
+  color: #006600;
+  font-family: 宋体, serif;
+}
+#quick-links{
+  clear: both;
+}
+#quick-links li a{
+  margin: 5px;
+  padding: 8px 10px 8px 33px;
+  background-color: #9DD6C5;
+  font-size: 14px;
+  float:left;
+  color: #fff;
+}
+#quick-links li a:hover{
+  background-color: #83b3a5;
+}
+.detail-box, .media-box{
+  padding: 15px 10px 10px;
+}
+#description-text{
+  padding: 10px;
+  font-size: 14px;
+  line-height: 18px;
+}
+/* 次级标题下面的新增链接 */
+h2.section-title a{
+  font-size: 16px;
+  padding: 3px 30px;
+}
+h2.section-title a:hover{
+  background-color: #eee;
+}
+
+/* pop-up box */
+.form-field{
+  margin:10px;
+  font-size: 14px;
+}
+.form-field label{
+  margin-right: 10px;
+}
+
+/* media style */
+#event-link-list div{
+  margin-left: 20px;
+  padding: 5px 20px;
+  background: url(../Img/icons/link_16.png) 0 3px no-repeat;
+}
+.delete-link{
+  margin-left: 30px;
+}
+#event-image-list{
+  margin-top: 10px;
+}
+.image-box{
+  float: left;
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+.image-actions{
+  padding: 5px 15px 0;
+}
+/* icon sprites */
+#event-edit{
+  background: url(../Img/icons/event-edit.jpg) 8px 6px no-repeat;
+}
+#event-del{
+  background: url(../Img/icons/event-delete.jpg) 8px 6px no-repeat;
+}
+#event-send-message{
+  background: url(../Img/icons/event-mail.jpg) 5px 7px no-repeat;
+}
+#event-go-to-user{
+  background: url(../Img/icons/event-home.jpg) 5px 4px no-repeat;
+}
+#event-description h2.section-title{
+  background: url(../Img/icons/event-description.jpg) 9px 0 no-repeat;
+  padding: 
+}
+#images h2.section-title{
+  background: url(../Img/icons/event-photos.jpg) 9px 0 no-repeat;
+}
+#links h2.section-title{
+  background: url(../Img/icons/link.png) 9px 0 no-repeat;
+}
+#video h2.section-title{
+  background: url(../Img/icons/event-video.jpg) 9px 0 no-repeat;
+}
+a.add-link{
+  background: url(../Img/icons/plus_24.png) 9px 3px no-repeat;
+}
+a.upload-photo{
+  background: url(../Img/icons/photo-upload.png) 9px 3px no-repeat;
+}
+#comment-container h2{
+	background: url(../Img/comment-icon.png) no-repeat;
+}

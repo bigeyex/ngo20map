@@ -1,0 +1,13 @@
+<volist name="new_message_data" id="vo">
+    <if condition="$vo.user_id == $_SESSION['login_user']['id']">
+        <div class="message-detail">
+            <span class="message-info self">{$vo.username}</span> <span class="datestyle">{$vo.create_time}</span>
+            <p>{$vo.content}</p>
+        </div>
+        <else/>
+        <div class="message-detail">
+            <span class="message-info">{$vo.username}</span><span class="datestyle">{$vo.create_time}</span>
+            <p>{$vo.content}</p>
+        </div>
+    </if>
+</volist>

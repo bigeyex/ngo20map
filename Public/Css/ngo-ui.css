@@ -1,0 +1,78 @@
+.button-set li{
+	float: left;
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+.button-set a{
+	display: block;
+	text-decoration: none;
+	color: #353535;
+	background: url(../Img/ngo-ui/button-set.jpg) no-repeat -200px -60px;
+}
+.button-set span{
+	display: block;
+	margin-left: 5px;
+	padding: 7px 8px 9px 3px;
+	font-size: 12px;
+	line-height: 13px;
+	background: url(../Img/ngo-ui/button-set.jpg) no-repeat -101px -60px;
+}
+.button-set a.first{
+	background: url(../Img/ngo-ui/button-set.jpg) left -60px;
+}
+.button-set a.last span{
+	background: url(../Img/ngo-ui/button-set.jpg) right -60px;
+}
+.button-set li a:hover{
+	background: url(../Img/ngo-ui/button-set.jpg) no-repeat -200px 0px;
+}
+.button-set li a:hover span{
+	background: url(../Img/ngo-ui/button-set.jpg) no-repeat -101px 0px;
+}
+.button-set li a.first:hover{
+	background: url(../Img/ngo-ui/button-set.jpg) left top;
+}
+.button-set li a.last:hover span{
+	background: url(../Img/ngo-ui/button-set.jpg) right 0px;
+}
+.button-set li.current a{
+	background: url(../Img/ngo-ui/button-set.jpg) no-repeat -200px -30px;
+}
+.button-set li.current a span{
+	background: url(../Img/ngo-ui/button-set.jpg) no-repeat right -90px;
+}
+.button-set li.current a.first{
+	background: url(../Img/ngo-ui/button-set.jpg) left -30px;
+}
+.button-set li.current a.last span{
+	background: url(../Img/ngo-ui/button-set.jpg) right -30px;
+}
+
+/* ngo-button */
+a.ngo-button{
+	display: inline-block;
+	text-decoration: none;
+	color: #353535;
+	background: url(../Img/ngo-ui/button.jpg) no-repeat left top;
+}
+a.ngo-button span{
+	display: block;
+	margin-left: 5px;
+	padding: 7px 8px 9px 3px;
+	font-size: 12px;
+	line-height: 13px;
+	background: url(../Img/ngo-ui/button.jpg) no-repeat right top;
+}
+a.ngo-button:hover{
+	background-position: 0 -30px;
+}
+a.ngo-button:hover span{
+	background-position: right -30px;
+}
+a.ngo-button:active{
+	background-position: 0 -60px;
+}
+a.ngo-button:active span{
+	background-position: right -60px;
+}

@@ -1,0 +1,41 @@
+/* 
+    Document   : User
+    Created on : 2011-2-25, 9:40:39
+    Author     : 王全斌
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root { 
+    display: block;
+}
+
+.password{
+    background-color: #FFFFFF;
+}
+
+.hole{
+    background-color: #FFFFFF;
+}
+
+.left-column{
+    float: left;
+    width: 500px;
+    background-color: #FFFFFF;
+}
+
+.right-column{
+    float: right;
+    padding-left: 20px;
+    width: 400px;
+    background-color:white;
+}
+
+.table{
+    margin: 10px auto;
+}

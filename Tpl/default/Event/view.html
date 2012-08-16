@@ -1,0 +1,343 @@
+{:W('Header',array('title'=>$event_data['name']))}
+<css href="__APP__/Public/Css/EventView.css"/>
+<script type="text/javascript" src="{:C('MAP_APICONNECTSTR')}">
+</script>
+
+<div class="left-column event-info">
+    <input type="hidden" id="eid" value="{$event_data['user_id']}"/>
+    <input type="hidden" id="uid" value="{$_SESSION['login_user']['id']}"/>
+    <input type="hidden" id="uadmin" value="{$_SESSION['login_user']['is_admin']}"/>
+    <div id="eventintro">
+    	<div id="event-intro-text">
+	        <p id="event-name">{$event_data['name']}</p>
+	        <p id="event-owner"><a href="{:U('User/home')}/id/{$puser['id']}" id="user-link-1">{$puser['name']}</a></p>
+	        <div id="info-detail">
+	            <dl>
+		            <dt>{:L('位置')}:</dt><dd>{$event_data['place']}</dd>
+		            <dt>{:L('相关机构')}:</dt><dd>{$event_data['host']}</dd>
+		            <dt>{:L('项目领域')}:</dt><dd>{$event_data['item_field']}</dd>
+		            <?php if($event_data['type'] == 'ind'): ?>
+		            <dt>{:L('信息来源')}:</dt>
+		            <?php else: ?>
+		            <dt>{:L('相关网址')}:</dt>
+		            <?php endif; ?>
+		            <dd><a href="{$event_data['url']}">{$event_data['url']}</a></dd>
+		            <?php if($event_data['type'] != 'ind'): ?>
+		            <dt>{:L('开始时间')}:</dt><dd><php> if(strtotime($event_data['begin_time'])>0)echo date('Y-m-d', strtotime($event_data['begin_time'])); </php></dd>
+		            <dt>{:L('结束时间')}:</dt><dd><php> if(strtotime($event_data['end_time'])>0)echo date('Y-m-d', strtotime($event_data['end_time'])); </php></dd>
+		            <dt>{:L('联系信息')}:</dt>
+		            <dd>
+			            {$event_data.contact_name} 
+	                	<span class="mini-label">({:L('电话')})</span>{$event_data.contact_phone} 
+	                	<span class="mini-label">({:L('QQ号码')})</span>{$event_data.contact_qq} 
+	                	<br/><a href="mailto:{$user_data.public_email}">{$event_data.contact_email} </a>
+                	</dd>
+		            <?php endif; ?>
+	            </dl>
+	        </div>
+	        <div id="quick-links">
+	            <ul>
+	                <?php if ($is_editable): ?>
+	                <li><a id="event-edit" href="{:U('Event/edit')}/id/{$event_data['id']}">{:L('编辑')}</a></li>
+	                <li><a id="event-del" href="{:U('Event/deleteEvent')}/id/{$event_data['id']}">{:L('删除')}</a></li>
+	                <?php endif; ?>
+	                <?php if (isset($_SESSION['login_user']) && $_SESSION['login_user']['id'] != $event_data['user_id']): ?>
+	                <li><a id="event-send-message" href="javascript:void(0);" onclick="expand_mailbox(event,{$event_data.user_id})">{:L('发信息')}</a></li>
+	                <?php if($follow_status): ?>
+		            <li><a id="namecard-follow-link" href="javascript:void(0);" class="followed" onclick="follow({$event_data.id})">{:L('取消收藏')}</a></li>
+		                <?php else: ?>
+		            <li><a id="namecard-follow-link" href="javascript:void(0);" onclick="follow({$event_data.id})">{:L('收藏')}</a></li>
+		                <?php endif; //follow status ?>
+	                <?php endif; //if logged in ?>
+	            </ul>
+	        </div><!-- end of quick-links -->
+        </div><!-- end of event-intro-text -->
+        <div id="event-cover-image"><img src="__APP__/Public/{$cover_image_url}" width="159"/></div>
+        <div class="clearfix"></div>
+    </div><!-- end of eventintro -->
+    <div id="event-description" class="detail-box">
+    	<?php if($event_data['type'] == 'ind'): ?>
+	    <h2 class="section-title">{:L('事件简介')}:</h2>
+	    <?php else: ?>
+	    <h2 class="section-title">{:L('项目简介')}:</h2>
+	    <?php endif; ?>
+	    <p id="description-text"><?php echo nl2br($event_data['description']); ?></p>
+	    <?php if($event_data['type'] != 'ind' && $event_data['type'] != 'case'): ?>
+	    <div class="org-description">
+			<h2>{:L('项目成果')}</h2>
+			<p class="description-content">
+				{$event_data.outcome|nl2br}
+			</p>
+		</div>
+		<div class="org-description">
+			<h2>{:L('项目需求')}</h2>
+			<p class="description-content">
+				{$event_data.res_tags}
+			</p>
+		</div>
+		<div class="org-description">
+			<h2>{:L('需求描述')}</h2>
+			<p class="description-content">
+				{$event_data.req_description|nl2br}
+			</p>
+		</div>
+		<?php endif; ?>
+		<div class="org-description">
+			<h2>{:L('标签')}</h2>
+			<p class="description-content">
+				<?php foreach($tags as $tag): ?>
+				<span><a href="{:U('Search/result')}/q/tag:{$tag.name}">{$tag.name}</a></span>
+				<?php endforeach; ?>
+			</p>
+		</div>
+	</div>
+	<!-- JiaThis Button BEGIN -->
+	<div id="ckepop">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_qzone">QQ空间</a>
+		<a class="jiathis_button_tsina">新浪微博</a>
+		<a class="jiathis_button_tqq">腾讯微博</a>
+		<a class="jiathis_button_renren">人人网</a>
+		<a class="jiathis_button_kaixin001">开心网</a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+		<div class="clearfix"></div>
+	</div>
+    <div class="event-map">
+        <div style="width:710px;height:250px;border:1px solid gray" id="view-map-container">
+        </div>
+    </div>
+    <div id="links" class="media-box">
+	    <h2 class="section-title">{:L('相关链接')}
+	    	<?php if($is_editable): ?>
+	    	<a class="add-link thickbox" href="#TB_inline?height=155&width=300&inlineId=new-link-form-div" title="{:L('添加事件相关链接')}">{:L('添加')}</a>
+	    	<?php endif; ?>
+	    </h2>
+	    <div class="media-show" id="event-link-list">
+	        <?php foreach($related_link as $link): ?>
+				<div>
+					<a href="{$link.url}">{$link.label}</a>
+					<?php if($is_editable): ?>
+					<a href="javascript:void(0);" onclick="delete_link(this,{$link.id}, 'link')" class="delete-link" target="_blank">
+						{:L('删除')}
+					</a>
+					<?php endif; ?>
+				</div>
+			<?php endforeach; ?>
+	    </div>
+	</div>
+    <div id="images" class="media-box">
+	    <h2 class="section-title">{:L('相关图片')}
+	    	<?php if($is_editable): ?>
+	    	<a class="upload-photo thickbox" href="#TB_inline?height=155&width=300&inlineId=new-image-form-div" title="{:L('添加事件相关图片')}">{:L('上传')}</a>
+	    	<?php endif; ?>
+	    </h2>
+	    <div class="media-show" id="event-image-list">
+	        <?php foreach($related_image as $image): ?>
+			<div class="image-box">
+				<p class="image-title">
+				
+				</p>
+				<a class="thickbox" title="{$image.title}" rel="event-images" href="__APP__/Public/Uploaded/{$image.url}">
+					<img src="__APP__/Public/Uploadedthumb/thumbm_{$image.url}"/>
+				</a>
+				<?php if($is_editable): ?>
+				<p class="image-actions">
+					<?php if(empty($image['url2'])): ?>
+					<a href="{:U('Event/set_cover')}/event_id/{$event_data.id}/image_id/{$image.id}">设为封面</a>
+					<?php else: ?>
+					{:L('封面图片')}
+					<?php endif; ?>
+					<a href="{:U('Event/delete_media')}/id/{$image.id}" class="delete-link">删除</a>
+				</p>
+				<?php endif; ?>
+			</div>
+			<?php endforeach; ?>
+			<div class="clearfix"></div>
+	    </div>
+	</div>
+	<div id="video" class="media-box">
+	    <h2 class="section-title">{:L('相关视频')}
+	    	<?php if($is_editable): ?>
+	    	<a class="add-link thickbox" href="#TB_inline?height=500&width=500&inlineId=new-video-form-div" title="{:L('添加事件相关链接')}">{:L('添加')}</a>
+	    	<?php endif; ?>
+	    </h2>
+	    <div class="media-show" id="event-video-list">
+	        <?php foreach($related_video as $video): ?>
+			<div>
+				<p>
+					<a href="{$video.url}">{$video.title}</a>
+					<?php if($is_editable): ?>
+					<a href="javascript:void(0);" onclick="delete_link(this,{$video.id}, 'video')" class="delete-link">
+						{:L('删除')}
+					</a>
+					<?php endif; ?>
+				</p>
+				<p>{$video.url2}</p>
+			</div>
+			<?php endforeach; ?>
+	    </div>
+	</div> <!-- end of video media box -->
+	<div class="media-box">
+		<h2 class="section-title">{:L('评论')}</h2>
+		<?php if($event_data['is_commentable']): ?>
+		{:W('ReviewView', array('event_id'=>$event_data['id']))}
+		<?php else: ?>
+		{:L('此公益事件不允许发表感想')}
+		<?php endif; ?>
+	</div>
+</div>	<!-- end of left column -->
+<div class="right-column">
+<h2 class="section-title">{:L('微博墙')}</h2>
+<iframe width="100%" height="500"  frameborder="0" scrolling="no" src="http://widget.weibo.com/livestream/listlive.php?language=zh_cn&width=0&height=500&uid=1998038407&skin=6&refer=1&pic=1&titlebar=1&border=1&publish=1&atalk=1&recomm=0&at=0&colordiy=0&atopic={$event_data.name}&ptopic={$event_data.name}&dpc=1"></iframe>
+</div>
+
+<?php if($is_editable): ?>
+<!-- begin of hidden content -->
+<div id="new-link-form-div" style="display:none;">
+	<form method="post" action="{:U('Event/add_link')}" id="new-link-form">
+		<div class="form-field">
+			<label>{:L('链接标题')}</label>
+			<input type="text" name="label" id="link-form-label"/>
+		</div>
+		<div class="form-field">
+			<label>{:L('链接地址')}</label>
+			<input type="text" name="url" id="link-form-url"/>
+		</div>	
+		<input type="hidden" name="event_id" value="{$event_data['id']}"/>
+		<input type="hidden" name="type" value="link"/>
+		<input class="button" type="submit" value="{:L('添加链接')}"/>
+	</form>
+</div>
+
+<div id="new-image-form-div" style="display:none;">
+	<form method="post" action="{:U('Event/upload_image')}" id="new-image-form" enctype="multipart/form-data">
+		<div class="form-field">
+			<label>{:L('图片标题')}</label>
+			<input type="text" name="title" id="image-form-title"/>
+		</div>
+		<div class="form-field">
+			<label>{:L('上传图片')}</label>
+			<input type="file" name="url" accept="image/*"/>
+		</div>	
+		<input type="hidden" name="event_id" value="{$event_data['id']}"/>
+		<input class="button" type="submit" value="{:L('上传图片')}"/>
+	</form>
+</div>
+
+<div id="new-video-form-div" style="display:none;">
+	<form method="post" action="{:U('Event/add_video')}" id="new-video-form">
+		<div class="form-field">
+			<label>{:L('视频标题')}</label>
+			<input type="text" name="title" id="video-title"/>
+		</div>
+		<div class="form-field">
+			<label>{:L('视频地址')}</label>
+			<input type="text" name="url" id="video-url"/>
+			<input type="button" class="button" value="预览" onclick="video_preview()"/>
+			<p>目前仅支持优酷视频地址</p>
+		</div>
+		<div id="video-preview"></div>
+		<input type="hidden" name="event_id" value="{$event_data['id']}"/>
+		<input type="hidden" name="type" value="video"/>
+		<input type="hidden" name="url2" id="video-url2" value=""/>
+		<input id="video-submit-button" class="button" type="submit" disabled="true" value="{:L('添加视频')}"/>
+	</form>
+</div>
+<!-- end of hidden content -->
+<?php endif; ?>
+<css href="__APP__/Public/Css/user_home.css"/>
+<css href="__APP__/Public/Css/thickbox.css"/>
+<js href="__APP__/Public/Js/thickbox.js"/>
+<js href="__APP__/Public/Js/jquery.form.js"/>
+<script type="text/javascript" src="http://v2.jiathis.com/code/jia.js" charset="utf-8"></script>
+<script type="text/javascript">
+	//定义thickbox所需参数
+	var tb_prevWord = "{:L('上一张')}";
+	var tb_nextWord = "{:L('下一张')}";
+	var tb_closeWord = "{:L('关闭')}";
+	var tb_orEscWords = "{:L('或者用ESC键关闭')}";
+	var delete_link_word = "{:L('删除')}";
+	var link_failed_word = "{:L('添加链接失败')}";
+	var delete_failed_word = "{:L('删除失败')}";
+	var video_link_error_word = "{:L('无效的视频地址')}";
+	var delete_media_link = "{:U('Event/delete_media')}";
+
+    var map = new BMap.Map("view-map-container");         // 创建地图实例
+    var point = new BMap.Point("{$event_data['longitude']}","{$event_data['latitude']}");  // 创建点坐标
+    map.centerAndZoom(point, 5); // 初始化地图，设置中心点坐标和地图级别
+    map.addControl(new BMap.NavigationControl());
+    map.addControl(new BMap.NavigationControl());
+    map.addControl(new BMap.ScaleControl());
+    map.addControl(new BMap.OverviewMapControl());
+    var marker = new BMap.Marker(point);
+    map.addOverlay(marker);
+    
+    function video_preview(){
+    	var url = $('#video-url').val();
+    	var reg = /id_(.+)\.html/;
+    	var match_url = url.match(reg);
+    	
+    	if(match_url){
+    		var video_id = match_url[1];
+    		var embed_html = '<embed src="http://player.youku.com/player.php/sid/'+video_id+'/v.swf" allowFullScreen="true" quality="high" width="480" height="400" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"></embed>';
+	    	$('#video-preview').html(embed_html);
+	    	$('#video-url2').val(embed_html);
+	    	$('#video-submit-button').attr('disabled',false);
+    	}
+    	else{
+    		$('#video-preview').html(video_link_error_word);
+    		$('#video-submit-button').attr('disabled',true);
+    	}
+    }
+    
+    function delete_link(dom_item, data_id, media_type){
+    	$.get(delete_media_link,{id:data_id,type:media_type},function(result){
+    		if(result == 'ok'){
+    			$(dom_item).parent().remove();
+    		}
+    		else{
+    			alert(delete_failed_word);
+    		}
+    	});
+    	
+    }
+    
+    $(function(){
+    	$('#new-link-form').ajaxForm(function(result){
+    		if(result){
+    			$('#event-link-list').append('<div><a href="'+$('#link-form-url').val()+'">'+$('#link-form-label').val()+'</a><a href="javascript:void(0);" onclick="delete_link(this,'+result+')" class="delete-link">'+delete_link_word+'</a></div>');
+    			$('#TB_closeWindowButton').click();
+    			$('#link-form-label').val('');
+    			$('#link-form-url').val('');
+    		}
+    		else{
+    			alert(link_failed_word);
+    		}
+    	});//new-link-form ajaxform
+    	
+    	
+    	$('#new-video-form').ajaxForm(function(result){
+    		if(result){
+    			$('#event-video-list').append('<div><p><a href="'+$('#video-url').val()+'">'+$('#video-title').val()+'</a><a href="javascript:void(0);" onclick="delete_link(this,'+result+')" class="delete-link">'+delete_link_word+'</a></p><p>'+$('#video-url2').val()+'</p></div>');
+    			$('#TB_closeWindowButton').click();
+    		}
+    		else{
+    			alert(link_failed_word);
+    		}
+    	});//new-video-form ajaxform
+    });
+
+	function follow(id){
+		$.post('__APP__/Event/follow', {'id': id}, function(result){
+			var follow_link = $('#namecard-follow-link');
+			if(result == 0){
+				follow_link.removeClass('followed');
+				follow_link.text("{:L('收藏')}");
+			}else{
+				follow_link.addClass('followed');
+				follow_link.text("{:L('取消收藏')}");
+			}
+		});
+	}
+</script>
+{:W('Footer')}

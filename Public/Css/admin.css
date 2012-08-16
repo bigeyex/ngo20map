@@ -1,0 +1,93 @@
+table{
+  margin-top: 5px;
+}
+h2 a, h3 a, legend a{
+  font-size: 12px;
+  margin-left: 10px;
+  color: #DDD;
+}
+
+#left-filters{
+	width: 120px;
+	padding: 10px;
+	background: #f4f0ec;
+	float: left;
+}
+#left-filters ul{
+  margin-bottom: 20px;
+}
+#left-filters li{
+  font-size: 14px;
+  padding: 6px 0 6px 20px;
+  font-family: sans-serif;
+}
+#left-filters li:hover{
+  background-color: #efefef;
+}
+#left-filters a{
+  color: #444;
+}
+#left-filters li.selected a{
+  color: #a06011;
+}
+#right-content{
+  padding-top: 10px;
+  margin-left: 10px;
+  width: 750px;
+  float: left;
+}
+#admin-filters{
+  padding: 10px 0px;
+  background-color: #f4f0ec;
+  border: 1px solid;
+  border-color: #e1d6cc #b3977b #b3977b #e1d6cc;
+}
+#admin-filters ul{
+  clear: both;
+}
+#admin-filters ul li{
+  float: left;
+  padding: 5px 0 ;
+}
+#admin-filters li.caption{
+  padding: 5px 10px;
+  margin-bottom: 5px;
+}
+#admin-filters a{
+  padding: 5px 15px;
+}
+#admin-filters li a.selected{
+  background-color: #9e8f70;
+  color: #fff;
+}
+#admin-filters li a:hover{
+  text-decoration: underline;
+}
+#admin-filters input.text{
+  background: none;
+  border-width: 0 0 1px 0;
+  height: 16px;
+}
+#admin-filters input.button{
+  color: #000;
+}
+#admin-actions{
+  padding: 10px;
+}
+#admin-actions li{
+  float: left;
+}
+.page-show{
+  float: none;
+  margin: 10px;
+}
+
+form.well{
+  padding: 14px;
+}
+form ul.nav-pills{
+  margin: 0;
+}
+input.input-medium{
+  height: 18px;
+}

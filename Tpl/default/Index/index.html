@@ -1,0 +1,107 @@
+{:W('Header',array('title'=>'NGOMAP'))}
+<js href="__APP__/Public/Js/jquery.form.js"/>
+
+<js href="__APP__/Public/Js/jquery.bubblepopup.v2.3.1.min.js"/>
+<css href="__APP__/Public/Css/jquery.bubblepopup.v2.3.1.css"/>
+<css href="__APP__/Public/Css/homepage.css"/>
+<css href="__APP__/Public/Css/960_12_col.css"/>
+<css href="__APP__/Public/Css/recommend.css"/>
+<css href="__APP__/Public/Css/ngo-ui.css"/>
+
+<?php $curr_lang = cookie('think_language'); ?>
+<?php if($curr_lang == 'en-us'): ?>
+<div id="link-banner">
+	NGOmap is a subproject of 
+		<img src="__APP__/Public/Img/title_logo.png" height="12"/>
+		<a href="http://www.ngo20.org/?lang=en" target="_blank">NGO2.0</a>,
+	    There are <span style="color:green">{$record_count}</span> entries on the map now.
+		<a href="{:U('Index/subscribe')}">Subscribe</a>
+</div>
+<?php else: ?>
+<div id="link-banner">
+	本项目为
+		<img src="__APP__/Public/Img/title_logo.png" height="12"/>
+		<a href="http://www.ngo20.org" target="_blank">中国公益2.0</a>
+	的子项目。现有公益信息<span style="color:green">{$record_count}</span>条。
+		<a href="{:U('Index/subscribe')}">订阅本站</a>
+</div>
+<?php endif; ?>
+
+
+{:R('Index','_map')}
+
+<div class="container_12" id="recommend_list">
+	<div class="grid_9">
+		<h2 class="section-title">{:L('公益组织展示')}<a class="more" href="{:U('Search/result')}/preserve/0/model/users/type/ngo">更多</a></h2>
+		<table class="user-suggestion">
+			<tr>
+				<?php foreach($random_users as $user): ?>
+				<td>
+					<p class="photo">
+						<?php if($user['image']): ?>
+			            <img width="80" src="__APP__/Public/Uploadedthumb/thumbm_{$user.image}"/>
+			            <?php else: ?>
+			            <img width="80" src="__APP__/Public/Img/default_photo.png" />
+			            <?php endif; ?>
+			        </p>
+		            <h2 class="name"><a href="{:U('User/home')}/id/{$user.id}">{$user.name}</a></h2>
+					<p class="content">{$user.aim|mb_substr=0,60|nl2br}</p>
+				</td>
+				<?php endforeach; ?>
+			</tr>
+		</table>
+		<h2 class="section-title">{:L('最新公益项目')}<a class="more" href="{:U('Search/result')}/preserve/0/model/events">更多</a></h2>
+		<?php foreach($recent_events as $event): ?>
+		<div class="content-block">
+			<h2 class="name"><a href="{:U('Event/view')}/id/{$event.id}">{$event.name}</a></h2>
+			<p class="content">{$event.description|mb_substr=0,130|nl2br}</p>
+		</div>
+		<?php endforeach; ?>
+		<div class="clear"></div>
+	</div> <!-- grid-9 -->
+	<div class="grid_3">
+		<h2 class="sidebar-title first">{:L('公益关键词')}</h2>
+		<ul class="keyword-list">
+			<?php foreach(C('HOMEPAGE_TAG') as $tag): ?>
+			<li><a href="{:U('Search/result')}/q/{$tag}">{$tag}</a></li>
+			<?php endforeach; ?>
+		</ul>
+		<div class="clearfix"></div>
+		<h2 class="sidebar-title">{:L('热门标签')}</h2>
+		<ul class="keyword-list">
+			<?php foreach($hot_tags as $tag): ?>
+			<li><a href="{:U('Search/result')}/q/tag:{$tag.name}">{$tag.name}</a></li>
+			<?php endforeach; ?>
+		</ul>
+		<div class="clearfix"></div>
+		<h2 class="sidebar-title weibo">{:L('公益微博文摘')}</h2>
+		<iframe width="100%" height="500"  frameborder="0" scrolling="no" src="http://widget.weibo.com/livestream/listlive.php?language=zh_cn&width=0&height=500&uid=1998038407&skin=6&refer=1&pic=1&titlebar=1&border=1&publish=0&atalk=1&recomm=0&at=0&atopic=NGO20%E5%BE%AE%E5%8D%9A%E6%96%87%E6%91%98&ptopic=NGO20%E5%BE%AE%E5%8D%9A%E6%96%87%E6%91%98&colordiy=0&dpc=1"></iframe>
+		<div class="clearfix"></div>
+	</div>
+	<div class="clearfix"></div>
+	<h2 class="section-title">{:L('友情链接')}</h2>
+		<div class="content-block partener">
+			<h4>合作伙伴:</h4>
+			<span class="link-tag"><a href="http://stpc.ustc.edu.cn">中国科学技术大学知识管理研究所</a></span>
+			<span class="link-tag"><a href="http://web.mit.edu/newmediaactionlab/www/">麻省理工学院新媒体行动实验室</a></span>
+			<span class="link-tag"><a href="http://scd.sysu.edu.cn/Item/443.aspx">中山大学公益传播研究所</a></span>
+			<span class="link-tag"><a href="http://fmedialab.com/">清华大学未来媒体研究中心</a></span>
+			<span class="link-tag"><a href="http://www.ngocn.net/">NGOCN</a></span>
+			<span class="link-tag"><a href="http://www.fon.org.cn/">自然之友</a></span>
+			<span class="link-tag"><a href="http://www.ogilvy.com.cn/#/cn/ogilvy">中国奥美公关</a></span>
+			<div class="clearfix"></div>
+			<h4>友情链接:</h4>
+			<span class="link-tag"><a href="http://ics.sysu.edu.cn/">中山大学公民与社会发展研究中心</a></span>
+			<span class="link-tag"><a href="http://www.ecauses.org/">E惠社</a></span>
+			<span class="link-tag"><a href="http://www.chinadevelopmentbrief.org.cn/">中国发展简报</a></span>
+			<span class="link-tag"><a href="http://www.foundationcenter.org.cn/">基金会中心网</a></span>
+			<span class="link-tag"><a href="http://www.projectpengyou.com">朋友项目</a></span>
+			<span class="link-tag"><a href="http://www.npodevelopment.org/">上海映绿公益事业发展中心</a></span>
+			<span class="link-tag"><a href="http://www.greenhj.org/">绿色汉江</a></span>
+			<span class="link-tag"><a href="http://www.gdschina.org/">陕西妇源汇性别发展培训中心</a></span>
+			<span class="link-tag"><a href="http://www.gsean.org/">济溪环境交流网络</a></span>
+			<span class="link-tag"><a href="http://www.leli365.com">乐力帮公益网</a></span>	
+		</div>
+</div>
+
+{:W('Footer')}

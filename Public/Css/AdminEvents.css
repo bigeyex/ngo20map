@@ -1,0 +1,168 @@
+/* 
+
+    Description:
+        Css for AdminEvents
+*/
+
+/*
+设置表格颜色
+*/
+table{
+    border-spacing : 0px;
+    border-collapse: collapse;
+}
+table,th, td{
+    border: 1px solid #999;
+    text-align: left;
+    vertical-align: top;
+}
+table th{
+    background-color: #727266;
+    color: #fff;
+
+}
+table th, table td{
+    padding: 8px;
+}
+tr.odd{
+    background-color: #E2E1D9;
+}
+/*设置表格文字排版*/
+table h3{
+    margin: 0px;
+    font-weight: normal;
+    
+}
+table h4{
+    margin: 5px;
+    font-size: 12px;
+    font-weight: normal;
+    color: #999
+}
+table p{
+    margin-left: 10px;
+}
+#tabs{
+    -moz-border-radius:8px 8px 8px 8px;
+    background-color: #FFFFFF;
+    word-wrap:break-word;
+    width: 96%;
+    margin: 5px 0px ;
+}
+
+#result-container{
+    margin: 0px auto;
+    padding: 20px 20px;
+}
+
+.syllabus-time{
+    color: #999;
+}
+
+#syllabus table{
+    margin: 10px auto;
+}
+
+input.imgButton {
+background-color:transparent;
+background-position:5px 40%;
+background-repeat:no-repeat;
+border:0 none;
+cursor:pointer;
+font-weight:bold;
+height:23px;
+letter-spacing:4px;
+margin:0;
+padding-left:25px !important;
+padding-top:3px !important;
+text-align:right;
+
+}
+
+input.add{
+    background-image: url("../Img/plus.gif");
+}
+
+input.lock{
+    background-image: url("../Img/locked.gif");
+}
+
+input.check{
+    background-image: url("../Img/ok.gif");
+}
+
+input.del{
+    background-image: url("../Img/del.gif");
+}
+
+.button{
+    background:url(../Img/idx_btnbg.gif) top repeat-x;
+    border-style:solid;
+    border:1px solid gray;
+    border-right:1px solid #316835;
+    border-bottom:1px solid #316835;
+    margin:0 3px;
+}
+
+input, textarea, select {
+background:none repeat scroll 0 0 #F5F5F5;
+border:1px solid #CCCCCC;
+color:#444444;
+font:100%/1em Tahoma,Arial,Helvetica,sans-serif;
+margin:0;
+padding:3px;
+}
+
+#operate li{
+    display:inline-block;
+}
+
+.token-input-list input:focus,tr.over{
+    background-color: #E9FFE3;
+}
+
+a.host-name{
+    color: #444444;
+    margin: 0 10px 0 0;
+    text-decoration: underline;
+}
+
+/* about tabs */
+.tabs-holder {
+border-bottom:1px solid #A0BEDC;
+margin:0px 0 10px 0;
+padding:7px 0;
+}
+
+.tabs-holder .tabpanel li {
+display:inline-block;
+margin-right:5px;
+}
+
+.tabs-holder .tabpanel a:visited {
+color:#005EAC;
+}
+
+.tabs-holder .tabpanel a {
+padding:6px 19px 6px 20px;
+background:none repeat scroll 0 0 #E3EEF8;
+color:#005EAC;
+font-weight:bold;
+outline:0 none;
+}
+
+.tabs-holder .tabpanel .current a{
+padding:5px 19px 6px 20px;
+background:none repeat scroll 0 0 #FFFFFF;
+border-color:#A0BEDC #A0BEDC #FFFFFF;
+border-style:solid;
+color:#333333;
+border-width:1px;
+}
+
+
+#page-show{
+    float: right;
+}
+
+

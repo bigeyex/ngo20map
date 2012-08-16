@@ -1,0 +1,120 @@
+
+{:W('Header',array('title'=>L('您可能感兴趣的')))}
+
+<css href="__APP__/Public/Css/960_12_col.css"/>
+<css href="__APP__/Public/Css/recommend.css"/>
+<script type="text/javascript">
+var event_points = [
+	<?php foreach($ngo_users as $point): ?>
+	[{$point.longitude}, {$point.latitude}, "{$point.name}", "{:U('User/home')}/id/{$point.id}"],
+	<?php endforeach; ?>
+	<?php foreach($ngo_events as $point): ?>
+	[{$point.longitude}, {$point.latitude}, "{$point.name}", "{:U('Event/view')}/id/{$point.id}"],
+	<?php endforeach; ?>
+	<?php foreach($csr_users as $point): ?>
+	[{$point.longitude}, {$point.latitude}, "{$point.name}", "{:U('User/home')}/id/{$point.id}"],
+	<?php endforeach; ?>
+	<?php foreach($csr_events as $point): ?>
+	[{$point.longitude}, {$point.latitude}, "{$point.name}", "{:U('Event/view')}/id/{$point.id}"],
+	<?php endforeach; ?>
+];
+</script>
+<div class="container_12" id="recommend_list">
+	<div class="grid_9">
+	{:W('MapDisplay', array('width'=>'700px'))}
+	<?php if($_SESSION['login_user']['type'] == 'ind'): ?>
+	<h2 class="section-title">{:L('需要志愿者的公益项目')}</h2>
+	<?php foreach($vol_events as $event): ?>
+	<div class="content-block">
+		<h2 class="name"><a href="{:U('Event/view')}/id/{$event.id}">{$event.name}</a></h2>
+		<p class="content">{$event.description|mb_substr=0,130|nl2br}</p>
+	</div>
+	<?php endforeach; ?>
+	<?php endif; ?>
+	<h2 class="section-title">{:L('您可能感兴趣的公益组织和公益项目')}</h2>
+	<table class="user-suggestion">
+		<tr>
+			<?php foreach($ngo_users as $user): ?>
+			<td>
+				<p class="photo">
+					<?php if($user['image']): ?>
+		            <img width="80" src="__APP__/Public/Uploadedthumb/thumbm_{$user.image}"/>
+		            <?php else: ?>
+		            <img width="80" src="__APP__/Public/Img/default_photo.png" />
+		            <?php endif; ?>
+		        </p>
+	            <h2 class="name"><a href="{:U('User/home')}/id/{$user.id}">{$user.name}</a></h2>
+				<p class="content">{$user.aim|mb_substr=0,140|nl2br}</p>
+			</td>
+			<?php endforeach; ?>
+		</tr>
+	</table>
+	<?php foreach($ngo_events as $event): ?>
+	<div class="content-block">
+		<h2 class="name"><a href="{:U('Event/view')}/id/{$event.id}">{$event.name}</a></h2>
+		<p class="content">{$event.description|mb_substr=0,130|nl2br}</p>
+	</div>
+	<?php endforeach; ?>
+	<div class="clear"></div>
+	<h2 class="section-title">{:L('您可能感兴趣的企业社会责任及其项目')}</h2>
+	<table class="user-suggestion">
+		<tr>
+			<?php foreach($csr_users as $user): ?>
+			<td>
+				<p class="photo">
+					<?php if($user['image']): ?>
+		            <img width="80" src="__APP__/Public/Uploadedthumb/thumbm_{$user.image}"/>
+		            <?php else: ?>
+		            <img width="80" src="__APP__/Public/Img/default_photo.png" />
+		            <?php endif; ?>
+		         </p>
+	            <h2 class="name"><a href="{:U('User/home')}/id/{$user.id}">{$user.name}</a></h2>
+				<p class="content">{$user.aim|mb_substr=0,140|nl2br}</p>
+			</td>
+			<?php endforeach; ?>
+		</tr>
+	</table>
+	<?php foreach($csr_events as $event): ?>
+	<div class="content-block">
+		<h2 class="name"><a href="{:U('Event/view')}/id/{$event.id}">{$event.name}</a></h2>
+		<p class="content">{$event.description|mb_substr=0,130|nl2br}</p>
+	</div>
+	<?php endforeach; ?>
+	</div> <!-- grid-9 -->
+	<div class="grid_3 right-sidebar">
+		<h2 class="sidebar-title">{:L('关注动态')}</h2>
+		<?php if(count($follow_stream)==0): ?>
+		<span class="no-data">{:L('暂无关注动态')}</span>
+		<?php endif; ?>
+		<ul	class="side-list">
+			<?php foreach($follow_stream as $event): ?>
+			<h2 class="name"><a href="{:U('Event/view')}/id/{$event.id}">{$event.name}</a></h2>
+			<p class="content">{$event.description|mb_substr=0,50}</p>
+			<?php endforeach; ?>
+		</ul>
+		<h2 class="sidebar-title">{:L('收藏的项目')}</h2>
+		<?php if(count($follow_events)==0): ?>
+		<span class="no-data">{:L('还没有收藏项目')}</span>
+		<?php endif; ?>
+		<ul	class="side-list">
+			<?php foreach($follow_events as $event): ?>
+			<h2 class="name"><a href="{:U('Event/view')}/id/{$event.id}">{$event.name}</a></h2>
+			<p class="content">{$event.description|mb_substr=0,50}</p>
+			<?php endforeach; ?>
+		</ul>
+		<h2 class="sidebar-title">{:L('关注的组织')}</h2>
+		<?php if(count($follow_users)==0): ?>
+		<span class="no-data">{:L('还没有关注组织')}</span>
+		<?php endif; ?>
+		<ul	class="side-list">
+			<?php foreach($follow_users as $user): ?>
+			<h2 class="name"><a href="{:U('User/home')}/id/{$user.id}">{$user.name}</a></h2>
+			<p class="content">{$user.introduction|mb_substr=0,50}</p>
+			<?php endforeach; ?>
+		</ul>
+	</div>
+</div>
+
+<css href="__APP__/Public/Css/homepage.css"/>
+<css href="__APP__/Public/Css/user_home.css"/>
+{:W('Footer')}

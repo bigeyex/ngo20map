@@ -1,0 +1,34 @@
+<volist name="result" id="vo">
+	<?php 
+	$hover_string = 'onmouseover="move_marker('.$vo['longitude'].','.$vo['latitude'].')" onmouseout="move_marker(0,0)"';
+	
+	?>
+    <div class="padding-container">
+        <?php if(isset($vo['event_name'])): ?>
+            <a href="{:U('Event/view')}/id/{$vo.event_id}" class="title-link" target="_blank" {$hover_string}>{$vo.event_name}</a>
+            
+            <?php $vo_fields = explode(' ', $vo['item_field']); ?>
+        <?php elseif(isset($vo['model']) && $vo['model']=='events'): ?>
+        	<a href="{:U('Event/view')}/id/{$vo.id}" class="title-link" target="_blank" {$hover_string}>{$vo.name}</a>
+        <?php else: ?>
+            <a href="{:U('User/home')}/id/{$vo.id}" class="title-link" target="_blank" {$hover_string}>{$vo.name}</a><br/>
+            <?php $vo_fields = explode(' ', $vo['work_field']); ?>
+        <?php endif; ?>
+        <?php if(isset($vo['event_name'])): ?>
+        	<p>
+	        	<?php if($vo['editable']): ?>
+	        		<a class="event-item-action-button event-item-edit" href="{:U('Event/edit')}/id/{$vo.event_id}">{:L('编辑')}</a>
+	        		<a class="event-item-action-button event-item-delete" href="{:U('Event/deleteEvent')}/id/{$vo.event_id}">{:L('删除')}</a>
+	        	<?php else: ?>
+	            <?php endif; ?>
+        	</p>
+        <?php endif; ?>
+        <div class="item-tag-list">
+        	
+        </div>
+    </div>
+</volist>
+<br/>
+<div id="page-show">
+    {$page}
+</div>

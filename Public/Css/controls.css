@@ -1,0 +1,21 @@
+.CheckBoxClass{
+        z-index: -1;
+        position: relative;
+        top: 22px;
+        left: 9px;
+}
+.CheckBoxLabelClass{
+        background: url("../Img/icons/UnCheck.png") no-repeat;
+        padding-left: 30px;
+        padding-top: 3px;
+        margin: 5px;
+        width: 150px;
+        display: inline;
+        line-height: 28px;
+}
+.CheckBoxLabelClass:hover{
+        text-decoration: underline;
+}
+.LabelSelected{
+        background: url("../Img/icons/Check.png") no-repeat;
+}

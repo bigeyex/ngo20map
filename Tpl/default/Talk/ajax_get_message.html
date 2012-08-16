@@ -1,0 +1,44 @@
+<div id="talk-header">
+    <div id="some-detail">
+        <label>{$talk_info.title}</label>
+    </div>
+    <div id="some-member">
+        <ul id="talk-member-list">
+            <volist name="relative_user" id="vo">
+                <li><img src="__APP__/Public/Uploaded/{$vo.image}" width="25" height="25"/><span>{$vo.name}</span></li>
+            </volist>
+        </ul>
+        <a class="little-button" href="javascript:void(0)" onclick="add_new_member();">添加成员</a>
+        <a class="little-button" href="javascript:void(0)" onclick="delete_talk(this);">退出话题</a>
+    </div>
+</div>
+<div id="talk-message">
+    <volist name="message_data" id="vo">
+        <if condition="$vo.user_id == $_SESSION['login_user']['id']">
+            <div class="message-detail">
+                <span class="message-info self">{$vo.username}</span> <span class="datestyle">{$vo.create_time}</span>
+                <p>{$vo.content}</p>
+            </div>
+            <else/>
+            <div class="message-detail">
+                <span class="message-info">{$vo.username}</span><span class="datestyle">{$vo.create_time}</span>
+                <p>{$vo.content}</p>
+            </div>
+        </if>
+    </volist>
+</div>
+<div id="ajax-new-message" style="display:none;">
+    <volist name="new_message_data" id="vo">
+        <if condition="$vo.user_id == $_SESSION['login_user']['id']">
+            <div class="message-detail">
+                <span class="message-info self">{$vo.username}</span><span class="datestyle">{$vo.create_time}</span>
+                <p>{$vo.content}</p>
+            </div>
+            <else/>
+            <div class="message-detail">
+                <span class="message-info">{$vo.username}</span><span class="datestyle">{$vo.create_time}</span>
+                <p>{$vo.content}</p>
+            </div>
+        </if>
+    </volist>
+</div>

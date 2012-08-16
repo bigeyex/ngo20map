@@ -1,0 +1,46 @@
+{:W('Header',array('title'=>L('倾听')))}
+<form id="search-form" action="{:U('Search/result')}" method="get">
+	<h1 id="search-title">{:L('倾听')}</h1>
+	<input type="text" name="q" value="{$q}"/>
+	<input type="hidden" name="preserve" value="1"/>
+	<button id="search-button" type="submit" value="{:L('搜索')}">{:L('开始听')}</button>
+</form>
+<span id="result-count">{$count}</span>
+<div class="container_12" id="recommend_list">
+	<div class="grid_4">
+		<div class="widget">
+			<h3>{:L('新浪微博')}</h3>
+			<div id="sina-content">
+				载入中...
+			</div>
+		</div>
+	</div> <!-- grid_4 -->
+	<div class="grid_4">
+		<div class="widget">
+			<h3>{:L('腾讯微博')}</h3>
+			<div id="tencent-content">
+				载入中...
+			</div>
+		</div>
+	</div> <!-- grid_4 -->
+	<div class="grid_4">
+	
+	</div> <!-- grid_4 -->
+</div> <!-- container_12 -->
+<div class="clearfix"></div>
+<css href="__APP__/Public/Css/960_12_col.css"/>
+<link rel="stylesheet" type="text/css" href="__APP__/Public/Css/SearchResult.css" />
+<link rel="stylesheet" type="text/css" href="__APP__/Public/Css/widget-like.css" />
+<script type="text/javascript">
+	$(function(){
+		$('#search-button').button({
+			icons: {
+				primary: "ui-icon-search"
+			}
+		});
+		
+		$('#sina-content').load("{:U('Listen/sina')}/q/{$q}");
+		$('#tencent-content').load("{:U('Listen/tencent')}/q/{$q}");
+	});
+</script>
+{:W('Footer')}

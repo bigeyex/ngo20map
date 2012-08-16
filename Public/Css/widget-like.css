@@ -1,0 +1,18 @@
+.widget{
+  border: 1px solid #b17735; 
+}
+.widget h3{
+  font-size: 14px;
+  padding: 5px 10px;
+  background-color: #b17735;
+  color: #fff;
+}
+.widget div{
+  padding: 5px;
+}
+.widget ul li{
+  font-size: 13px;
+  padding-bottom: 3px;
+  margin-bottom: 3px;
+  border-bottom: 1px solid #eedbc5;
+}

@@ -1,0 +1,66 @@
+<js href="__APP__/Public/Js/simplegallery.js"/>
+<css href="__APP__/Public/Css/EventView.css"/>
+
+<script language="javascript">
+$(document).ready(function(){
+    $('#page-show a').click(function(){
+        var regexp = /\d+$/;
+        var page=regexp.exec($(this).attr('href'));
+        var id = $('.media-container').attr('eid');
+         $('#picture .media-show').load(app_path+'/Event/ajaxImg/id/'+id+'/p/'+page);
+        return false;
+    });
+
+   $('#show-img').dialog({
+        autoOpen: false,
+        height: 400,
+        width: 700,
+        zIndex: 3999,
+        modal: true
+   });
+
+
+})
+
+function large_img(eid){
+var mygallery=new simpleGallery({
+	wrapperid: "show-img",
+	dimensions: [250, 365],
+	imagearray: [
+             <?php foreach($event_img as $img){ ?>
+                ["__APP__/Public/Uploaded/{$img.url}", "__APP__/Public/Uploaded/{$img.url}", "_blank", "{$img.title}"],
+            <?php }?>
+        ["", "", "", ""]
+    ],
+	autoplay: [true, 2500, 2],
+	persist: false,
+	fadeduration: 500
+})
+    mygallery.navigate(eid-1);
+    $( '#show-img' ).dialog( "open" );
+}
+
+</script>
+
+<present name="event_img">
+    <volist name="event_img" id="vo" key="i">
+        <div class="img-pre">
+            <div class="img">
+                <a href="javascript:void(0);" onclick="large_img('{$i}')">
+                    <img src="__APP__/Public/Uploadedthumb/thumbm_{$vo.url}"/>
+                </a>
+            </div>
+            <span>{$vo.title}</span>
+        </div>
+    </volist>
+    <br/>
+    <div id="page-show">
+    {$page}
+    </div>
+<else />
+    <p class="state">{:L('还没有图片')}</p>
+</present>
+
+<div id="show-img" title="{:L('图片浏览')}">
+    
+</div>

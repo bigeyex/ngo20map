@@ -1,0 +1,7 @@
+<h3>{$review_data.title}<span class="review-event">{$review_data.event.name}</span></h3>
+
+<p class="author-detail">{$review_data.user.name}
+    {:date("Y-m-d",strtotime($review_data['create_time']))}</p>
+<p class="review-content">
+    {$review_data.content}
+</p>

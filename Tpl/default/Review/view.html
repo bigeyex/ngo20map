@@ -1,0 +1,29 @@
+<css href="__APP__/Public/Css/EventView.css"/>
+<div class="review-view">
+    <h3 style="background: #C2C2C2">{:L('该事件的感想')}:</h3>
+    <volist name="get_reviews" id="vo">
+        <p class="view-title">{$vo.username}{:L('于')}<php> echo date('Y-m-d', strtotime($vo['create_time'])); </php>{:L('发表：')}</p>
+        <p class="view-title" id="view-title">{$vo.title}</p>
+        <div id="fast-action" <?php if($vo['user_id'] != $get_user){echo 'style="display:none"';}?>>
+            <a href="javascript:void();" class="review-edit-link">{:L('编辑')}</a>
+            <input type="hidden" class="oid" name="id" value="{$vo.id}"/>
+            <!--<input type="hidden" class="otitle" name="title" value="{$vo.title}"/>
+            <input type="hidden" class="ocontent" name="content" value="{$vo.content}"/>-->
+            <a href="{:U('Review/delete/id')}/{$vo.id}" id="review-del">{:L('删除')}</a>
+        </div>
+        <p class="view-content">{$vo.content}</p>
+        </volist>
+</div>
+<script type="text/javascript">
+var editReviewLink = "{:U('Review/save')}";
+var editReviewTitle = "{:L('修改感想')}";
+$(function(){
+   $('.review-edit-link').click(function(){
+        $('#read-review').dialog( "close" );
+        $('#edit-review').attr('title',editReviewTitle);
+        $('#edit-review-form').attr('action',editReviewLink);
+        $('#review-id').val($('.review-edit-link').next('.oid').val());
+        $('#edit-review' ).dialog( "open" );
+   });
+});
+</script>

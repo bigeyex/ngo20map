@@ -1,0 +1,204 @@
+
+
+.left-column{
+  padding: 10px;
+  width: 440px;
+  float: left;
+  background: #fff;
+}
+
+.right-column{
+  padding: 10px;
+  margin-left: 470px;
+  width: 440px;
+  background: #fff;
+}
+
+form label{
+  font-size: 16px;
+  color: #8B8F8C;
+  text-align: left;
+  display: block;
+  float: left;
+  line-height: 28px;
+}
+.form-field{
+  margin-left: 80px;
+  margin-bottom: 15px;
+}
+.form-field span.static-text{
+  line-height: 28px;
+}
+.locate-title{
+    float:left;
+}
+.map-field{
+  margin-left: 130px;
+  margin-bottom: 15px;
+}
+.form-field p{
+  padding-top: 3px;
+  color: #555;
+  clear: both;
+}
+.map-field p{
+  padding-bottom: 10px;
+  color: #555;
+}
+
+.little-widget{
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+
+}
+.little-widget h3{
+  background-color: #ccc;
+  padding: 5px;
+}
+.little-widget div{
+  padding: 5px;
+}
+.list-operation{
+  background-color: #ccc;
+}
+.list-operation label{
+  width: 80px;
+  height: 20px;
+  line-height: 20px;
+
+}
+.list-operation input{
+  height: 20px;
+  padding: 2px;
+  width: expression(this.type=="text"?"270px":"style");
+}
+.list-operation input[type="text"]{
+  width: 270px;
+}
+
+.link-list-item, .image-list-item, .video-list-item{
+  border-bottom: 1px dotted #ddd;
+
+}
+.delete-link{
+  float: right;
+  cursor: pointer;
+  color: blue;
+  border-bottom: 1px dotted blue;
+}
+.image-span{
+    margin-left: 10px;
+}
+.event-field span{
+  margin-left: 5px;
+  margin-bottom: 10px;
+}
+#finalbox{
+  margin-left: 70px;
+  margin-top: 40px;
+  background-color: #eee;
+  padding: 15px 20px;
+}
+#finalbox span{
+  margin-left: 1px;
+}
+#finalbox p{
+  margin-top: 10px;
+  margin-bottom: 20px;
+  color: #888;
+}
+#submit-button{
+  color: #FFF;
+  background-color: #9dd6c5;
+  padding: 5px 15px;
+  border: 0;
+}
+#submit-button:hover{
+  background-color: #95cbbb;
+}
+#submit-button:disabled{
+  background-color: #cccccc;
+}
+#related-links{
+  margin-top: 20px;
+}
+
+#tag-input{
+    padding: 0px;
+    width: 160px;
+    float: left;
+}
+
+#tag-input .token-input-dropdown{
+  width: 140px;
+  padding: 0px 5px;
+}
+
+#related-tags .list-operation{
+    height: 30px;
+}
+
+#related-tags-list{
+    padding:  0 5px 5px 5px;
+}
+
+.tag-list-item{
+    display: inline;
+    border-radius:2px 2px;
+    padding: 5px 10px;
+    background-color: #D3DBD6;
+    margin-right: 10px;
+    line-height: 35px;
+}
+
+.tag-list-item .delete-tag{
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+#main{
+    width: 940px;
+}
+.res-tag{
+   display: block;
+   float: left;
+    padding: 8px 15px;
+    background-color: #d3dbd6;
+}
+.res-tag label{
+	font-size: 14px;
+    color: #666676;
+    line-height: 14px;
+    float: none;
+    display: inline;
+}
+form input[type="text"],
+form input[type="password"]{
+    font-size: 18px;
+    height: 28px;
+}
+input.long-text{
+    width: 350px;
+    margin-bottom: 5px;
+}
+.calendar{
+    cursor: pointer;
+}
+#radio{
+    height: 40px;
+}
+h2.title{
+    color: #8B8E8C;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 20px auto 20px 80px;
+}
+
+/* section title of form */
+form h3{
+    margin: 20px 80px 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px dotted #8B8E8C;
+    color: #8B8E8C;
+    font-size: 18px;
+}

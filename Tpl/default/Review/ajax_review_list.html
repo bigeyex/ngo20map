@@ -1,0 +1,32 @@
+<div id="review_list">
+    <table>
+        <volist name="review_result" id="vo">
+            <tr>
+                <td class="review_title">
+                    <a href="javascript:void(0)" onclick="view_review('{$vo.id}')">{$vo.title}</a>
+                </td>
+                <td class="review_author">
+                    <span>{$vo.user.name}</span>
+                </td>
+                <td class="review_date">
+                    <span>{:date("Y-m-d",strtotime($vo['create_time']))}</span>
+                </td>
+                <td class="operation">
+                    <?php if ($vo['user_id'] == $_SESSION['login_user']['id'] ||
+                                $vo['event']['user_id'] == $_SESSION['login_user']['id'] ||
+                                        $_SESSION['login_user']['is_admin']): ?>
+                    <a href="javascript:void(0)" onclick="edit_review('{$vo.id}')">
+                        <img src="__APP__/Public/Img/icons/page_edit.png" alt="{:L('编辑')}"/>
+                    </a>
+                    <a href="javascript:void(0)" onclick="delete_review('{$vo.id}',event)">
+                        <img src="__APP__/Public/Img/icons/page_delete.png" alt="{:L('删除')}"/>
+                    </a>
+                                        <?php endif; ?>
+                </td>
+            </tr>
+        </volist>
+    </table>
+    <div id="pager">
+        {$pager_content}
+    </div>
+</div>

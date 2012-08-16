@@ -1,0 +1,192 @@
+
+{:W('Header',array('title'=>L('用户首页')))}
+
+<css href="__APP__/Public/Css/960_12_col.css"/>
+<div id="home-base">
+    <div id="user-namecard">
+        <div class="avatar">
+            <?php if($user_data['image']): ?>
+            <img width="150" src="__APP__/Public/Uploadedthumb/thumbm_{$user_data.image}"/>
+            <?php else: ?>
+            <img width="150" height="150" src="__APP__/Public/Img/default_photo.png" />
+            <?php endif; ?>
+        </div>  
+        
+        <div id="namecard-detail">
+        	<div id="namecard-map">
+	        	<img src="http://api.map.baidu.com/staticimage?width=300&height=200&zoom=5&center={$user_data.longitude},{$user_data.latitude}&labels={$user_data.longitude},{$user_data.latitude}&labelStyles={$user_data.name},1,12,0x000000,0xffffff,1" alt="{:L('在地图上的位置')}"/>
+	        	<p>{:L('此地图为图片，可在微博中使用')}</p>
+	        </div>
+        	<h1>
+	        	{$user_data.name}
+	            <span class="user-role">
+		            <?php if($user_data['is_admin']): ?>
+		                {:L('管理员')}
+		            <?php else: ?>
+		            <switch name="user_data['type']">
+		                <case value="ngo">{:L('公益组织')}</case>
+		                <case value="csr">{:L('企业CSR')}</case>
+		                <case value="fund">{:L('基金会')}</case>
+		                <case value="ind">{:L('公益人')}</case>
+		            </switch>
+		            <?php endif; ?>
+	            </span>
+            </h1>
+        	<?php if($user_data['type'] == 'ngo'): ?>
+        	<div>
+                <label class="namecard-label">{:L('所属领域')}</label>
+                <p class="namecard-content">{$user_data.work_field} </p>
+            </div>
+            <div>
+                <label class="namecard-label">{:L('服务区域')}</label>
+                <p class="namecard-content">{$user_data.service_area} </p>
+            </div>
+            <div>
+                <label class="namecard-label">{:L('成立年份')}</label>
+                <p class="namecard-content">{$user_data.register_year} </p>
+            </div>
+            <div>
+                <label class="namecard-label">{:L('办公地址')}</label>
+                <p class="namecard-content">{$user_data.place} {$user_data.post_code}</p>
+            </div>
+            <div>
+                <label class="namecard-label">{:L('联系方式')}</label>
+                <p class="namecard-content">
+                	{$user_data.contact_name} 
+                	<span class="mini-label">({:L('电话')})</span>{$user_data.phone} 
+                	<?php if(!empty($user_data['fax'])): ?>
+                	<span class="mini-label">({:L('传真')})</span>{$user_data.fax} 
+                	<?php endif; ?>
+                </p>
+                <p class="namecard-content">
+                	<a href="mailto:{$user_data.public_email}">{$user_data.public_email}</a>
+                </p>
+                <?php if(!empty($user_data['website'])): ?>
+                <p class="namecard-content">
+                	<a href="{$user_data.website}">{$user_data.website}</a>
+                </p>
+                <?php endif; //having a website ?>
+            </div>
+            <?php elseif($user_data['type'] == 'ind'): ?>
+            <div>
+                <label class="namecard-label">{:L('关注领域')}</label>
+                <p class="namecard-content">{$user_data.work_field} </p>
+            </div>
+            <div>
+                <label class="namecard-label">{:L('专长')}</label>
+                <p class="namecard-content">{$user_data.spec_str} </p>
+            </div>
+        	<?php elseif($user_data['type'] == 'csr'): ?>
+        	<div>
+                <label class="namecard-label">{:L('关注领域')}</label>
+                <p class="namecard-content">{$user_data.work_field} </p>
+            </div>
+            <div>
+                <label class="namecard-label">{:L('办公地址')}</label>
+                <p class="namecard-content">{$user_data.place} {$user_data.post_code}</p>
+            </div>
+            <?php endif; //type is ngo ?>
+        </div> <!-- namecard-detail -->
+        
+        <div class="clearfix"></div>
+        <div id="action-links">
+        	<?php if($user_data['type'] == 'ngo'): ?>
+        	<a id="namecard-expand-link" class="expanded" href="javascript:void(0);" onclick="$('#description-list').toggle();$(this).toggleClass('expanded');">{:L('详细资料')}</a>
+        	<?php endif; ?>
+	        <?php if ($is_self): ?>
+	        <a id="namecard-edit-link" href="{:U('User/edit')}/id/{$_SESSION['login_user']['id']}">{:L('修改资料')}</a>
+	        <?php else: ?>
+	        <a id="namecard-message-link" href="javascript:void(0);" onclick="expand_mailbox(event,{$user_data.id})">{:L('发送站内信')}</a>
+	        <?php if($follow_status): ?>
+		                 <a id="namecard-follow-link" href="javascript:void(0);" class="followed" onclick="follow({$user_data.id})">{:L('取消关注')}</a>
+		                <?php else: ?>
+		                 <a id="namecard-follow-link" href="javascript:void(0);" onclick="follow({$user_data.id})">{:L('关注')}</a>
+		                <?php endif; //follow status ?>
+	        <?php endif; ?>
+	        <div class="clearfix"> </span>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<div class="container_12">
+<div id="description-list" class="grid_9 alpha">
+	<?php if($user_data['type'] == 'ngo'): ?>
+	<div class="org-description">
+		<h2>{:L('机构简介')}</h2>
+		<p class="description-content">
+			{$user_data.introduction|nl2br}
+		</p>
+	</div>
+	<div class="org-description">
+		<h2>{:L('机构使命')}</h2>
+		<p class="description-content">
+			{$user_data.aim|nl2br}
+		</p>
+	</div>
+	<div class="org-description">
+		<h2>{:L('员工数量')}</h2>
+		<p class="description-content">
+			<span class="mini-label">{:L('全职人数')}:</span>{$user_data.staff_fulltime} 
+			<span class="mini-label">{:L('兼职人数')}:</span>{$user_data.staff_parttime} 
+			<span class="mini-label">{:L('志愿者数')}:</span>{$user_data.staff_volunteer}
+		</p>
+	</div>
+	<div class="org-description">
+		<h2>{:L('机构项目')}</h2>
+		<p class="description-content">
+			{$user_data.past_projects|nl2br}
+		</p>
+	</div>
+	<?php else: //type is not ngo ?>
+	<div class="org-description">
+		<h2>{:L('简介')}</h2>
+		<p class="description-content">
+			{$user_data.introduction|nl2br}
+		</p>
+	</div>
+	<?php endif; //user_data != ind ?>
+</div> <!-- description-list -->
+<div id="medal-list" class="grid_3">
+	<table>
+		<?php foreach($medals as $medal): ?>
+		<tr>
+			<td><img src="__APP__/Public/Img/medal/{$medal.image}" alt="medal_image"></td>
+			<td>{$medal.name}</td>
+		</tr>
+		<?php endforeach; ?>
+	</table>
+</div>
+</div>
+
+<?php if($user_data['type'] != 'ind' || $user_data['is_admin']): ?>
+<div class="media-box">
+	<h2 class="section-title">{$user_data.name}{:L('发布的项目')}</h2>
+	{:W('MapDisplay')}
+	{:W('UserEvent', array('user_id'=>$user_data['id']))}
+</div>
+<?php endif; ?>
+
+<div class="media-box">
+	<h2 class="section-title">{:L('评论')}</h2>
+	{:W('ReviewView', array('user_id'=>$user_data['id']))}
+</div>
+
+<script type="text/javascript">
+function follow(id){
+	$.post('__APP__/User/follow', {'id': id}, function(result){
+		var follow_link = $('#namecard-follow-link');
+		if(result == 0){
+			follow_link.removeClass('followed');
+			follow_link.text("{:L('关注')}");
+		}else{
+			follow_link.addClass('followed');
+			follow_link.text("{:L('取消关注')}");
+		}
+	});
+}
+
+</script>
+<css href="__APP__/Public/Css/homepage.css"/>
+<css href="__APP__/Public/Css/user_home.css"/>
+
+{:W('Footer')}

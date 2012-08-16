@@ -1,0 +1,53 @@
+.content-block{
+	margin-bottom: 20px;
+}
+h2.name{
+	font-size: 16px;
+	margin-bottom: 15px;
+  margin-top: 10px;
+}
+h2.section-title{
+	font-size: 19px;
+	margin: 10px;
+}
+table.user-suggestion{
+  border-collapse: collapse;
+}
+table.user-suggestion td{
+  border: 1px solid #ddd;
+  width: 330px;
+  vertical-align: top;
+  padding: 25px;
+  height: 220px;
+}
+.content-block h2.name{
+  background-color: #F4F0EC;
+  padding: 8px;
+  margin-bottom: 8px;
+}
+.content-block p.content{
+  padding-left: 8px;
+}
+.sidebar-title{
+  color: #006600;
+  font-size: 16px;
+  font-family: 黑体, sans-serif;
+  margin-top: 15px;
+}
+ul.side-list{
+  margin-bottom: 30px;
+}
+ul.side-list h2.name{
+  font-size: 14px;
+  margin: 8px 0 0;
+}
+ul.side-list p.content{
+  font-size: 12px;
+}
+span.no-data{
+  color: #999;
+}
+a.more{
+  font-size: 13px;
+  margin-left: 15px;
+}

@@ -1,0 +1,13 @@
+<link rel="stylesheet" type="text/css" href="__APP__/Public/Css/admin.css" />
+<link rel="stylesheet" type="text/css" href="__APP__/Public/Css/bootstrap.min.css" />
+<br/>
+<div class="well span2">
+    <ul class="nav nav-list">
+        <li <?php if(ACTION_NAME == 'users')echo 'class="selected"' ?>><a href="{:U('Admin/users')}/clear/1" >
+        	<i class="icon-user"></i>{:L('用户管理')}</a></li>
+        <li <?php if(ACTION_NAME == 'events')echo 'class="selected"' ?>><a href="{:U('Admin/events')}/type/all" >
+        	<i class="icon-file"></i>{:L('事件管理')}</a></li>
+        <li <?php if(ACTION_NAME == 'index')echo 'class="selected"' ?>><a href="{:U('Medal/index')}" >
+        	<i class="icon-bookmark"></i>{:L('勋章管理')}</a></li>
+    </ul>
+</div>

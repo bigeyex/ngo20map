@@ -1,0 +1,103 @@
+
+{:W('Header',array('title'=>L('事件管理')))}
+<link rel="stylesheet" type="text/css" href="__APP__/Public/Css/bootstrap.min.css" />
+<script type="text/javascript" src="__APP__/Public/Css/bootstrap.js"></script>
+<script language="javascript">
+
+$(document).ready(function(){
+	var rss_url = "http://{$_SERVER.HTTP_HOST}__APP__/User/recommend_rss/province/[province]/work_field/[work_field]";
+	var google_href = "http://fusion.google.com/add?source=atgs&feedurl=[rss_url]";
+	var xianguo_href = "http://xianguo.com/subscribe?url=[rss_url]";
+	var youdao_href = "http://reader.youdao.com/b.do?keyfrom=bookmarklet&url=[rss_url]";
+	var qq_href = "http://mail.qq.com/cgi-bin/feed?u=[rss_url]";
+	$("#select01, #select02").change(function(){
+		var real_url = rss_url.replace("[province]", $("#select01").val()).replace("[work_field]", $("#select02").val())
+		$("#rss-qq").attr("href", qq_href.replace("[rss_url]", real_url));
+		$("#rss-xianguo").attr("href", xianguo_href.replace("[rss_url]", real_url));
+		$("#rss-youdao").attr("href", youdao_href.replace("[rss_url]", real_url));
+		$("#rss-google").attr("href", google_href.replace("[rss_url]", real_url));
+		$("#rss-plain").attr("href", real_url);
+	});
+
+
+});
+
+
+</script>
+<div class="row">
+	<div class="span12">
+		<form class="form-horizontal" action="{:U('Medal/'.$action)}" method="POST">
+			<fieldset>
+				<legend>{:L('订阅公益地图')}</legend>
+
+				<div class="control-group">
+					<label class="control-label" for="select01">{:L('选择省份')}</label>
+					<div class="controls">
+						<select name="province" id="select01">
+							<option value="" selected>全部</option>
+							<option value="江苏">江苏</option>
+							<option value="北京">北京</option>
+							<option value="天津">天津</option>
+							<option value="上海">上海</option>
+							<option value="重庆">重庆</option>
+							<option value="广东">广东</option>
+							<option value="浙江">浙江</option>
+							<option value="福建">福建</option>
+							<option value="湖南">湖南</option>
+							<option value="湖北">湖北</option>
+							<option value="山东">山东</option>
+							<option value="辽宁">辽宁</option>
+							<option value="吉林">吉林</option>
+							<option value="云南">云南</option>
+							<option value="四川">四川</option>
+							<option value="安徽">安徽</option>
+							<option value="江西">江西</option>
+							<option value="黑龙江">黑龙江</option>
+							<option value="河北">河北</option>
+							<option value="陕西">陕西</option>
+							<option value="海南">海南</option>
+							<option value="河南">河南</option>
+							<option value="山西">山西</option>
+							<option value="内蒙古">内蒙古</option>
+							<option value="广西">广西</option>
+							<option value="贵州">贵州</option>
+							<option value="宁夏">宁夏</option>
+							<option value="青海">青海</option>
+							<option value="新疆">新疆</option>
+							<option value="西藏">西藏</option>
+							<option value="甘肃">甘肃</option>
+							<option value="台湾">台湾</option>
+							<option value="香港">香港</option>
+							<option value="澳门">澳门</option>
+							<option value="国外">国外</option>
+						</select>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="select02">{:L('选择项目领域')}</label>
+					<div class="controls">
+						<select name="province" id="select02">
+							<option value="" selected>全部</option>
+							<?php foreach(C('ORG_FIELDS') as $field): ?>
+							<option value="{$field}">{$field}</option>
+							<?php endforeach; ?>							
+						</select>
+					</div>
+				</div>
+				<div class="form-actions">
+					<div id="subscribe-links">
+						<a class="btn" id="rss-qq" href="http://mail.qq.com/cgi-bin/feed?u=http://{$_SERVER.HTTP_HOST}__APP__/User/recommend_rss">{:L('订阅到qq邮箱')}</a>
+						<a class="btn" id="rss-xianguo" href="http://xianguo.com/subscribe?url=http://{$_SERVER.HTTP_HOST}__APP__/User/recommend_rss">{:L('订阅到鲜果')}</a>
+						<a class="btn" id="rss-youdao" href="http://reader.youdao.com/b.do?keyfrom=bookmarklet&url=http://{$_SERVER.HTTP_HOST}__APP__/User/recommend_rss">{:L('订阅到有道')}</a>
+						<a class="btn" id="rss-google" href="http://fusion.google.com/add?source=atgs&feedurl=http://{$_SERVER.HTTP_HOST}__APP__/User/recommend_rss">{:L('订阅到谷歌')}</a>
+						<a class="btn" id="rss-plain" href="http://{$_SERVER.HTTP_HOST}__APP__/User/recommend_rss">{:L('获得RSS')}</a>
+					</div>
+					
+				</div>
+			</fieldset>
+		</form>
+	</div>
+</div>
+
+{:W('Footer')}
+

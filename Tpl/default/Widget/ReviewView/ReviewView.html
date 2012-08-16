@@ -1,0 +1,90 @@
+<div id="review-view">
+<?php if($show_post_button && isset($_SESSION['login_user'])): ?>
+
+	<button id="post-review-button" href="javascript:void(0);" onclick="$( '#post-review-dialog' ).dialog('open');">{:L('发表评论')}</button>
+
+<?php endif; ?>
+<ul>
+	<?php if(count($reviews) == 0): ?>
+	<li>
+		{:L('还没有评论')}
+	
+		 <?php if(!isset($_SESSION['login_user'])): ?>
+		 <br/>{:L('您还未登录，登录后可发表评论。')}
+		 <?php else: ?>
+			 <?php if($show_post_button): ?>
+			 <a href="javascript:void(0);" onclick="$( '#post-review-dialog' ).dialog('open');">{:L('发表评论')}</a>
+			 <?php endif; ?>
+		 <?php endif; ?>
+	</li>
+	<?php endif; ?>
+	<?php foreach($reviews as $review): ?>
+	<li>
+		<div class="comment-photo">
+			<a target="_blank" title="{$review.user.name}" href="{:U('User/home')}/id/{$review.user_id}">
+				<?php if($review['user']['image']): ?>
+	            <img width="48" src="__APP__/Public/Uploadedthumb/thumbs_{$review.user.image}" alt="头像">
+	            <?php else: ?>
+	            <img width="48" src="__APP__/Public/Img/default_photo.png" alt="头像">
+	            <?php endif; ?>
+				
+			</a>
+			<?php if($show_post_button): ?>
+			<span class="floor">{$floor}楼</span>
+			<?php endif; ?>
+		</div>
+		<h3>{$review.title}</h3>
+		<span class="create-time">{$review.create_time}</span>
+		<a class="author-name" target="_blank" href="{:U('User/home')}/id/{$review.user_id}">
+			{$review.user.name}
+		</a>
+		<div class="content">
+			{$review.content|strip_tags="<blockquote>"|nl2br}
+		</div>
+		<div class="actions">
+		<?php if($is_admin || $review['user_id'] == $my_id || $review['owner_id'] == $my_id): ?>
+			<a href="{:U('Review/delete')}/id/{$review.id}">{:L('删除评论')}</a>
+		<?php endif; ?>
+		</div>
+	</li>
+	<?php
+	 $floor++;
+	 endforeach; ?>
+</ul>
+	{$page_show}
+</div>
+<div id="post-review-dialog" style="display:none;" title="{:L('发表评论')}">
+	<form id="review-form" action="{:U('Review/insert')}" method="post">
+		<fieldset>
+			<label for="review-title">{:L('标题')}</label>
+			<input type="text" name="title" id="review-title" class="text ui-widget-content ui-corner-all" /><br/>
+			<label for="review-content">{:L('评论内容')}</label>
+			<textarea name="content" class=" ui-widget-content ui-corner-all" cols="75" rows="15"></textarea>
+		</fieldset>
+		<input type="hidden" name="owner_id" value="{$owner_id}"/>
+		<input type="hidden" name="event_id" value="{$event_id}"/>
+	</form>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('#post-review-dialog').dialog({
+		autoOpen: false,
+		height: 480,
+		width: 600,
+		modal: true,
+		buttons: {
+			"{:L('发布')}": function() {
+					$('#review-form').submit();
+					$( this ).dialog( "close" );
+			},
+			"{:L('取消')}": function() {
+				$( this ).dialog( "close" );
+			}
+		}
+	});
+
+});
+
+</script>
+<script type="text/javascript" src="__APP__/Public/Js/review-control.js"></script>
+<link rel="stylesheet" type="text/css" href="__APP__/Public/Css/review.css" />

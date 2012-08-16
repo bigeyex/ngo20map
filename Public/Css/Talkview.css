@@ -1,0 +1,252 @@
+body{
+  word-wrap: break-word;
+  width:645px;
+  height:480px;
+  margin: 0px auto;
+  font-family: 微软雅黑,黑体,sans-serif;
+  font-weight: normal;
+  color: #333333;
+  font-size: 12px;
+}
+#right-column{
+  position: relative;
+  border: 1px solid #cccccc;
+  float:right;
+  padding:0px;
+  width:200px;
+  height:100%;
+  background-color: #f6f6f6;
+}
+#left-column{
+  border: 1px solid #cccccc;
+  padding:0;
+  width:440px;
+  height:100%;
+
+}
+.titlestyle{
+  font-size:18px;
+  margin:1px 3px;
+}
+
+.message-info{
+  color: blue;
+}
+.message-detail p{
+  margin: 3px auto 10px 10px;
+}
+.message-info.self{
+  color: #7BA7A0;
+}
+.little-button{
+  background: url(../Img/talk/little_button_bg.gif);
+  width: 91px;
+  height: 21px;
+  display: block;
+  text-align: center;
+  padding-top: 3px;
+  color: #333;
+  text-decoration: none;
+}
+.button{
+  background: url(../Img/talk/button_bg.gif);
+  width: 76px;
+  height: 24px;
+  font-size: 14px;
+  display: block;
+  text-align: center;
+  padding: 0px;
+  margin: 0;
+  padding-top: 1px;
+  color: #333;
+  text-decoration: none;
+  border: 0;
+}
+.close-button{
+  display: block;
+  width: 11px;
+  height: 11px;
+  float: right;
+  text-indent: -9999px;
+  background: url(../Img/talk/close_button.png);
+}
+.projstyle{
+  color:#666666;
+  font-size:14px;
+}
+#some-detail{
+  background: url(../Img/talk/title_bg.png) repeat-x;
+  height:24px;
+  padding: 2px;
+}
+
+#talk-header{
+}
+#some-member{
+  padding: 8px 10px;
+  background: url(../Img/talk/member_bg.png) repeat-x;
+  height: 84px;
+  overflow: auto;
+}
+#some-member ul{
+  margin: 0;
+  padding: 0;
+}
+#some-member ul li{
+  list-style: none;
+  display: inline;
+}
+#some-member ul li img{
+  float: left;
+  clear: both;
+}
+#some-member ul li span{
+  display: block;
+  margin-left: 35px;
+  height: 19px;
+  padding-top: 6px;
+}
+#some-member .little-button{
+  margin-top: 5px;
+  float: left;
+}
+#talk-message{
+  height:177px;
+  overflow: auto;
+  background-color:#ffffff;
+  padding:5px;
+  border-top: 1px solid #ccc;
+}
+#talk-newmessage{
+}
+#talk-newmessage textarea{
+  height:134px;
+  width: 435px;
+  padding: 0px;
+  margin: 0;
+  font-size:14px;
+}
+#message-button{
+  text-align: right;
+}
+#message-button .button{
+  float: right;
+}
+.quick-action,#some-detail a{
+  background-color: #999999;
+    border: 1px solid #D7EBF4;
+    border-radius: 3px 3px 0 0;
+    box-shadow: 0 1px 0 #444444;
+    color: #FFFFFF;
+    font-size: 14px;
+    height: 22px;
+    line-height: 24px;
+    margin:0px 10px;
+    padding: 0px 13px;
+    text-align: center;
+    width:78px;
+}
+
+/*right-column*/
+#search-box{
+	height: 24px;
+	padding: 5px;
+
+}
+#search-box input{
+	height: 18px;
+	width: 105px;
+}
+#search-box .button{
+	float: right;
+}
+#search-control{
+	height: 20px;
+	padding: 3px;
+}
+#search-control a{
+    margin: 3px;
+}
+#talking-list{
+  height: 390px;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+ }
+.talk-detail{
+  padding: 3px 10px 3px 18px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+.talk-detail:hover{
+  background: url(../Img/talk/talk_hover_bg.jpg) repeat-x;
+}
+.talk-detail.current{
+  background: url(../Img/talk/talk_current_bg.gif) repeat-x;
+  border: 0px;
+}
+.talk-detail h3{
+  margin: 0;
+  padding: 0;
+  color: #333333;
+  font-size: 13px;
+}
+.talk-detail p{
+  height: 17px;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  margin-top: 2px;
+}
+.quick-button{
+  width:329px;
+  height:27px;;
+  margin:-4px 0px -4px -4px;
+  border: 1px solid #D7EBF4;
+  text-align:center;
+}
+#new-talk{
+  position: absolute;
+  bottom: 0px;
+  margin: 5px;
+  text-align: right;
+  background: #fff;
+}
+#new-talk .button{
+  float: right;
+  margin-right: 10px;
+}
+.type-off{
+  display:none;
+}
+#think_page_trace{
+    display: none;
+}
+#welcome-screen{
+    text-align: center;
+    line-height: 300px;
+    color: #999;
+}
+.new-mark{
+    color: red;
+    
+}
+#dialog-new-talk label{
+    display: block;
+    margin: 3px;
+}
+.talk-title {
+    display: block;
+    height: 20px;
+    overflow: hidden;
+    width: 150px;
+}
+.new-mark{
+    float: right;
+}
+#pager{
+    position: absolute;
+    bottom: 40px;
+    left: 5px;
+}

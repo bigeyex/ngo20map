@@ -1,0 +1,148 @@
+#home-base{
+    display: block;
+}
+#user-namecard{
+    background: #E2E7E4;
+    padding: 20px 0 15px 15px;
+    margin-bottom: 10px;
+    position: relative;
+}
+.avatar{
+    float: left;
+    width: 150px;
+    height: 150px;
+}
+#namecard-detail{
+    margin-left: 170px;
+    padding:  5px 0;
+    display: block;
+    color: #333;
+    font-size: 14px;
+}
+p.namecard-content{
+    margin-left: 75px;
+    margin-bottom: 8px;
+    min-height: 14px;
+}
+#namecard-detail div{
+    margin-bottom: 10px;
+    margin-right: 15px;
+}
+#namecard-detail label{
+    float: left;
+    width: 65px;
+    color: #006600;
+}
+.mini-label{
+	margin-left: 10px;
+	margin-right: 5px;
+}
+#namecard-name{
+    float: left;
+    margin-left: 20px;
+  color: #8B8D8C;
+  font-size: 14px;
+}
+#namecard-detail h1{
+  font-size: 17px;
+  margin: 0px 0 10px;
+  color: #006600;
+}
+#namecard-detail span.user-role{
+   color: #333;
+   font-size: 14px;
+   margin-left: 10px;
+}
+
+#namecard-map{
+	float: right;
+}
+#action-links{
+   margin: 10px 165px 5px;
+}
+#action-links a{
+   background-color: #9DD6C5;
+    padding: 7px 16px;
+   margin-left: 10px;
+    font-size: 14px;
+    float: left;
+   right: 0px;
+   color: #fff;
+}
+#action-links a:hover{
+  background-color: #80aea1;
+}
+.home-action-box{
+    float: left;
+    width: 296px;
+    margin-left: 10px; 
+}
+.home-action-box img{
+    float: left;
+}
+.home-action-box h2{
+   line-height: 30px;
+}
+.home-action-box label{
+    
+    font-size: 14px;
+    padding: 4px 10px;
+    float: right;
+    background-color:#D1D9D5 ;
+}
+.home-action-box label:hover{
+    background-color: #b6bdb9;
+    cursor: pointer;
+}
+.home-action-box label a{
+	line-height: 21px;
+    padding-left: 20px;
+    color: #666676;
+}
+.home-action-detail{
+    padding: 5px 15px;
+}
+#follow_result{
+    clear: both;
+    display: block;
+}
+#follow_result span{
+    float: right;
+}
+.org-description{
+   padding: 8px;
+}
+.org-description h2{
+    color: #006600;
+    margin: 0px 0px 10px;
+    font-size: 14px;
+}
+.description-content{
+	line-height: 18px;
+}
+/* left-align user map filter */
+#map-filters #select-filter{
+	float: left;
+}
+
+/* icons */
+.home-action-box label a{
+    background: url(../Img/manage.png) no-repeat;
+}
+#home-msg-header h2{
+    background: url(../Img/envelope.png) no-repeat 0 6px;
+}
+#home-follow-header h2{
+    background: url(../Img/follow.png) no-repeat;
+}
+#action-links #namecard-expand-link{
+   padding-left: 30px;
+   background-image: url(../Img/icons/button-arrow-right.png);
+   background-repeat: no-repeat;
+   background-position: 15px 9px;
+}
+
+#action-links #namecard-expand-link.expanded{
+   background-image: url(../Img/icons/button-arrow-down.png);
+   background-position: 15px 10px;
+}

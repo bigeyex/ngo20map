@@ -1,0 +1,282 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<js href="__APP__/Public/Js/jquery-1.4.2.js"/>
+<title>{:L('公益地图-在线交流')}</title>
+</head>
+    <body>
+<div id="right-column">
+    <div id="search-box">
+        <a href="javascript:void(0)" class="button" onclick="search_talk()">{:L('搜索')}</a><input type="text" id="search-q"/>
+    </div>
+    <div id="search-result" style="display:none;">
+        <div id="search-control">
+            {:L('搜索结果')}<a href="javascript:void(0)" class="close-button" onclick="end_search()">{:L('关闭')}</a>
+        </div>
+        <div id="search-result-list">
+        </div>
+    </div>
+    <div id="talking-list">
+        {:R('Talk','ajax_list_talk')}
+    </div>
+    <div id="new-talk">
+        <a href="javascript:void(0);" class="button" onclick="open_dialog('dialog-new-talk')">{:L('新话题')}</a>
+    </div>
+</div>
+<div id="left-column">
+    <div id="message-show">
+    <?php if ($_GET['id'] != 0): ?>
+        {:R('Talk','ajax_get_message')}
+    <?php endif; ?>
+    
+    
+    </div>
+    <div id="welcome-screen" style="display:none;">
+        {:L('请从右侧列表中选择话题，或单击')}
+        <a href="javascript:void(0);" onclick="open_dialog('dialog-new-talk')">
+            {:L('新话题')}
+        </a>{:L('以开启话题')}
+    </div>
+    <div id="talk-newmessage">
+        <form id="add-message-form" method="post" action="__APP__/Talk/ajax_post_message">
+            <textarea name="content" id="message-content"></textarea>
+            <input type="hidden" name="talk_id" id="to_post_talk_id" value="{.id}"/>
+            <div id="message-button">
+                <a href="javascript:void(0);" class="button" id="message-submit">{:L('发送')}</a>
+            </div>
+        </form>
+    </div>    
+</div>
+<div id="dialog-new-talk" title="{:L('新增话题')}">
+    <form id="new-talk-form" method="post" action="{:U('Talk/ajax_new_talk')}">
+        <label>{:L('话题标题')}</label><input id="new-talk-title" type="text" name="title"/><br/>
+        <label>{:L('话题参与者')}</label><input id="new-talk-member" type="text" name="member"/>
+    </form>
+</div>
+<div id="dialog-new-member" title="{:L('新增话题成员')}">
+    <form id="add-talk-member-form" method="post" action="{:U('Talk/ajax_add_talk_member')}">
+        <label>{:L('成员名')}</label><input id="add-talk-member" type="text" name="member"/>
+        <input id="add-talk-member-talk-id" type="hidden" name="talk_id"/>
+    </form>
+</div>
+<js href="__APP__/Public/Js/jquery-ui-1.8.9.custom.min.js"/>
+<css href="__APP__/Public/Css/start/jquery-ui-1.8.9.custom.css"/>
+<js href="__APP__/Public/Js/cleditor/jquery.cleditor.min.js"/>
+<Css href="__APP__/Public/Js/cleditor/jquery.cleditor.css"/>
+<js href="__APP__/Public/Js/jquery.tokeninput.js"/>
+<Css href="__APP__/Public/Css/token-input-facebook.css"/>
+<css href="__APP__/Public/Css/Talkview.css"/>
+<js href="__APP__/Public/Js/jquery.form.js"/>
+<css href="__APP__/Public/Css/jquery.fastconfirm.css"/>
+<js href="__APP__/Public/Js/jquery.fastconfirm.js"/>
+<script language="javascript">
+    app_path='__APP__';
+    token_option={
+             theme: "facebook",
+            hintText: "{:L('请输入中文或英文名')}",
+            noResultsText: "{:L('没有符合条件的用户')}",
+            searchingText: "{:L('正在查询...')}"
+
+         };
+    current_talk_id = {.id};
+    search_string = '';
+    current_event_id = 0;
+    message_editor = 0;
+    //当点击右侧对应talk时切换到相应talk所调用的函数
+    function talk_switch(id){
+        $('#welcome-screen').hide();
+        $('#message-show').show();
+        $('.talk-detail,.search-detail').removeClass('current');
+        $('#talk-detail-'+id+',#search-detail-'+id).addClass('current');
+        $('#talk-detail-'+id+' .new-mark').hide();
+        $('#message-show').load(app_path+'/Talk/ajax_get_message/id/'+id,function(){
+            $('#to_post_talk_id').val(id);
+            current_talk_id = id;
+            var show_box = document.getElementById('talk-message');
+            show_box.scrollTop = show_box.scrollHeight;
+        });
+        $('#message-submit').unbind('click');
+        $('#message-submit').click(submit_content);
+    }
+    function talk_page_loader(id){
+        $('#waiting-ball').show();
+        $('#talking-list').load('{:U("Talk/ajax_list_talk")}/id/{.id}/p/'+id,function(a,b,c){
+            $('#pager a').click(function(){
+                var regexp = /\d+$/;
+                talk_page_loader(regexp.exec($(this).attr('href')));
+                return false;
+            });
+            $('#waiting-ball').hide();
+        });
+
+    }
+    function search_page_loader(id){
+        $('#waiting-ball').show();
+        $('#search-result-list').load('{:U("Talk/ajax_list_talk")}/id/{.id}/q/'+search_string+'/p/'+id,function(a,b,c){
+            $('#pager-search a').click(function(){
+                var regexp = /\d+$/;
+                search_page_loader(regexp.exec($(this).attr('href')));
+                return false;
+            });
+            $('#waiting-ball').hide();
+        });
+
+    }
+    function check_new_message(){
+        if(current_talk_id == 0)return;
+        $.get(app_path+'/Talk/ajax_get_new_message/talk_id/'+current_talk_id, function(result){
+            $('#talk-message').append(result);
+        })
+    }
+    function check_new_talk(){
+        $.get(app_path+'/Talk/ajax_get_new_talk', function(result){
+            $(result).each(function(){
+                var talk_id = $(this).attr('id').substr(12);
+                if($('#talk-detail-'+talk_id).length > 0){
+                    $('#talk-detail-'+talk_id+' .new-mark').show();
+                }else{
+                    $('#talking-list').prepend(this);
+                }
+            });
+        })
+    }
+    function add_new_member(){
+        $('#add-talk-member-talk-id').val(current_talk_id);
+        open_dialog('dialog-new-member');
+    }
+    function delete_talk(item){
+        $(item).fastConfirm({
+                                    position: "right",
+                                    questionText: "{:L('确实退出话题么？')}",
+                                    onProceed: function(trigger) {
+                                           $.get(app_path+'/Talk/ajax_delete_talk/talk_id/'+current_talk_id,function(result){
+                                                $('#talk-detail-'+current_talk_id).remove();
+                                                $('#welcome-screen').show();
+                                                $('#message-show').hide();
+                                            })
+                                    },
+                                    onCancel: function(trigger) {
+                                    }
+                            });
+        
+    }
+
+    function open_dialog(dialog_name){
+        $('#'+dialog_name).dialog('open');
+    }
+    function search_talk(){
+        search_string = $('#search-q').val();
+        search_page_loader(0);
+        $('#search-result').show();
+        $('#talking-list').hide();
+    }
+    function end_search(){
+        $('#search-result').hide();
+        $('#talking-list').show();
+    }
+    function submit_content(){
+        if($('#message-content').val() == '' || $('#message-content').val() =='<br>'){
+            alert('{:L("发送内容为空")}');
+            return ;
+        }
+        message_editor[0].clear();
+        $('#add-message-form').ajaxSubmit({
+            success: function(result){
+                $('#talk-message').append(result);
+            }
+        });
+    }
+    $(function(){       //actions run at startup
+        if(current_talk_id == 0){
+            $('#message-content').hide();
+            $('#welcome-screen').show();
+        }
+
+        $('#message-submit').click(submit_content);
+
+      <?php if ($_GET['id'] == -1) : ?>
+        current_event_id = '{.event_id}';
+        $('#message-submit').unbind('click');
+        $('#message-submit').click(function(){
+            if($('#message-content').val() == '' || $('#message-content').val() =='<br>'){
+                alert('{:L("发送内容为空")}');
+                return ;
+            }
+            message_editor[0].clear();
+            $.post(app_path+'/Talk/ajax_new_talk',{
+                event_id : current_event_id
+            },function(result){
+                var talk_id = $(result).attr('id').substr(12);
+                $('#talking-list').prepend(result);
+                talk_switch(talk_id);
+                $('#to_post_talk_id').val(talk_id);
+                current_talk_id = talk_id;
+                submit_content();
+            });
+
+            
+        });
+      <?php endif; ?>
+
+        
+
+        message_editor = $('#message-content').cleditor({width: 435,height: 134});
+        message_editor[0].clear();
+        setInterval("check_new_message()", 5000);
+        setInterval("check_new_talk()", 15000);
+        $('#dialog-new-talk').dialog({
+            autoOpen : false,
+            height : 240,
+            width : 500,
+            modal : true,
+            buttons : {
+                "{:L('新建')}" : function(){
+                    $('#new-talk-form').ajaxSubmit({
+                        success: function(result){
+                            var talk_id = $(result).attr('id').substr(12);
+                            $('#talking-list').prepend(result);
+                            talk_switch(talk_id);
+                            $('#dialog-new-talk').dialog('close');
+                        }
+                    });
+                },
+                "{:L('取消')}" : function(){
+                    $(this).dialog("close");
+                }
+            }
+        });
+        $('#dialog-new-member').dialog({
+            autoOpen : false,
+            height : 200,
+            width : 500,
+            modal : true,
+            buttons : {
+                "{:L('新建')}" : function(){
+                    $('#add-talk-member-form').ajaxSubmit({
+                        success: function(result){
+                            $('#talk-member-list').append(result);
+                            $('#dialog-new-member').dialog('close');
+                        }
+                    });
+                },
+                "{:L('取消')}" : function(){
+                    $(this).dialog("close");
+                }
+            }
+        });
+        $('#new-talk-member').val('');
+        $('#new-talk-member').tokenInput("{:U('Event/suggest')}",
+        token_option);
+        $('#add-talk-member').val('');
+        $('#add-talk-member').tokenInput("{:U('Event/suggest')}",
+         token_option);
+         $('#pager a').click(function(){
+            var regexp = /\d+$/;
+            talk_page_loader(regexp.exec($(this).attr('href')));
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

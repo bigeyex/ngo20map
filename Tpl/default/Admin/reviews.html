@@ -1,0 +1,116 @@
+{:W('Header',array('title'=>L('感想管理')))}
+
+<css href="__APP__/Public/Css/AdminEvents.css"/>
+<css href="__APP__/Public/Css/jquery.fastconfirm.css"/>
+<js href="__APP__/Public/Js/jquery.fastconfirm.js"/>
+
+<script language="javascript">
+
+//全选当前页事件
+function CheckAll(strSection)
+{
+    var i;
+    var colInputs = $('#'+strSection).find('input');
+    for(i=1;i<colInputs.length;i++)
+    {
+        colInputs[i].checked=colInputs[0].checked;
+    }
+}
+
+function over(item){
+    $(item).addClass('over');
+}
+
+function out(item){
+    $(item).removeClass('over');
+}
+
+function add(){
+    window.location.href='{:U("Review/new")}';
+}
+
+//获取已选事件ids
+function getSelectCheckboxValues(){
+	var obj = document.getElementsByName('key');
+	var result ='';
+	for (var i=0;i<obj.length;i++)
+	{
+		if (obj[i].checked==true)
+				result += obj[i].value+",";
+
+	}
+	return result.substring(0, result.length-1);
+}
+
+//点击删除标签响应事件
+function foreverdel(item){
+	var keyValue= getSelectCheckboxValues();
+
+	if (!keyValue)
+	{
+		alert('请选择删除项！');
+		return false;
+	}
+        else{
+            $(item).fastConfirm({
+                                    position: "right",
+                                    questionText: "{:L('确实要永久删除所选评论吗？')}",
+                                    onProceed: function(trigger) {
+                                           window.location.href='{:U("Manage/del_review")}/ids/'+keyValue;
+                                    },
+                                    onCancel: function(trigger) {
+                                    }
+                            });
+             return false;
+        }
+}
+
+</script>
+
+
+<div id="tabs">
+    <div id="result-container">
+        <div id="operate">
+                <div class="button">
+                    <input class="delete imgButton" type="button" onclick="foreverdel(this);" ques="{:L('确实要永久删除所选事件吗？')}" value="{:L('删除')}">
+                </div>
+        </div>
+
+        <div id="syllabus">
+            <table class="syllabus-table">
+                <tr>
+                    <th><input id="check" type="checkbox" onclick="CheckAll('syllabus')"></th>
+                    <th width="40%">{:L('感想标题')}</th>
+                    <th width="10%">{:L('关联事件')}</th>
+                    <th width="10%">{:L('发表者')}</th>
+                    <th>{:L('状态')}</th>
+                    <th>{:L('操作')}</th>
+                </tr>
+                <volist name="review_result" id="vo">
+                    <tr <?php if($key%2!=0)echo 'class="odd"'; ?> onmouseover="over(this);" onmouseout="out(this);">
+                        <td><input type="checkbox" value="{$vo.id}" name="key"></td>
+                        <td>{$vo.title}</td>
+                        <td>
+                            <a href="{:U('Event/view')}/id/{$vo.event_id}">{$vo.event_id}</a>
+                        </td>
+                        <td>
+                            <a href="{:U('User/home')}/id/{$vo.user_id}">{$vo.user_id}</a>
+                        </td>
+                        <td>
+                            <eq name="vo['is_checked']" value="1"><img alt="{:L('显示')}" src="__APP__/Public/IMG/ok.gif"><else/><img alt="屏蔽" src="__APP__/Public/IMG/locked.gif"></eq></td>
+                        <td>
+                            <a href="{:U('Review/edit/id')}/{$vo.id}">{:L('编辑')}</a>
+                            <a href="{:U('Manage/change_type2/id')}/{$vo.id}/type/{$vo.is_checked}">
+                                <eq name="vo['is_checked']" value="1">{:L("屏蔽")}<else/>{:L("显示")}</eq></a>
+                            <a href="{:U('Manage/del_review/ids')}/{$vo.id}" class="fast-confirm" ques="{:L('确实要永久删除该感想吗？')}">{:L('删除')}</a>
+                        </td>
+                    </tr>
+                </volist>
+            </table>
+            <br/>{$page2}
+        </div>
+    </div>
+
+</div>
+
+{:W('Footer')}

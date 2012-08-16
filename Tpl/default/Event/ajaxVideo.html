@@ -1,0 +1,29 @@
+<script language="javascript">
+$(document).ready(function(){
+    $('#page-show a').click(function(){
+        var regexp = /\d+$/;
+        var page=regexp.exec($(this).attr('href'));
+        var id = $('.media-container').attr('eid');
+         $('#video .media-show').load(app_path+'/Event/ajaxVideo/id/'+id+'p/'+page);
+        return false;
+    });
+})
+</script>
+
+<present name="event_video">
+    <volist name="event_video" id="vo">
+        <?php
+        $partten ="^[(http://)(HTTP://)(Http://)]";
+        if(ereg($partten,$vo['url']))
+            echo '<p><a style="text-decoration: underline;" href="'.$vo['url'].'">'.$vo['title'].'</a></p>';
+        else
+            echo '<p><a style="text-decoration: underline;" href="http://'.$vo['url'].'">'.$vo['title'].'</a></p>';
+    ?>
+    </volist>
+    <br/>
+    <div id="page-show">
+    {$page}
+    </div>
+<else />
+    <p class="state">{:L('还没有视频')}</p>
+</present>

@@ -1,0 +1,40 @@
+{:W('Header',array('title'=>L('用户注册')))}
+<script type="text/javascript" src="{:C('MAP_APICONNECTSTR')}">
+</script>
+
+<div id="main">
+    <h2 class="title">{:L('我是...')}</h2>
+    <div class="choice">
+        <a href="{:U('User/newUser')}/type/ngo" class="ngo-button"><span>{:L('我是公益组织')}</span></a>
+        <p>{:L('在地图上标注我的组织，发布项目信息')}</p>
+    </div>
+    <div class="choice">
+        <a href="{:U('User/newUser')}/type/csr" class="ngo-button"><span>{:L('我是企业(社会责任部门)')}</span></a>
+        <p>{:L('在地图上标注我的组织，发布企业社会责任项目')}</p>
+    </div>
+    <div class="choice">
+        <a href="{:U('User/newUser')}/type/ind" class="ngo-button"><span>{:L('我是公益人')}</span></a>
+        <p>{:L('关注公益组织和企业社会责任的信息')}</p>
+    </div>
+    <div class="choice">
+        <a href="{:U('User/newUser')}/type/fund" class="ngo-button"><span>{:L('我是基金会')}</span></a>
+        <p>{:L('获得公益组织和企业社会责任的信息')}</p>
+    </div>
+</div>
+
+<css href="__APP__/Public/Css/EventEdit.css"/>
+<css href="__APP__/Public/Css/AdminEvents.css"/>
+<css href="__APP__/Public/Css/ngo-ui.css"/>
+
+<style>
+div.choice{
+    margin: 10px 0px 20px 80px;
+}
+div.choice p{
+    margin-top: 5px;
+}
+</style>
+
+
+
+{:W('Footer')}

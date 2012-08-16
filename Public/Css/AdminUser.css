@@ -1,0 +1,20 @@
+/* 
+    Document   : AdminUser
+    Created on : 2011-3-1, 18:52:56
+    Author     : 王全斌
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root { 
+    display: block;
+}
+
+.table{
+    margin: 10px auto;
+}

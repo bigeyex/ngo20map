@@ -1,0 +1,50 @@
+
+#login-box{
+  float: left;
+  width: 460px;
+  border-right: 1px solid #999;
+}
+#login-box h3, #register-box h3{
+  font-size: 20px;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+#login-form{
+  margin-left: 30px;
+}
+#login-form input{
+  margin: 5px;
+}
+#login-form label{
+  float: left;
+  clear: both;
+  font-size: 16px;
+  padding: 8px;
+  text-align: right;
+  width: 100px;
+}
+#login-form p input{
+  margin: 8px;
+}
+
+#submit-box{
+  margin-top: 30px;
+}
+
+#register-box{
+  margin-left: 460px;
+}
+#register-box p{
+  padding: 0 20px;
+  font-size: 16px;
+}
+#register-box a{
+  font-size: 20px;
+  margin: 30px 90px;
+  text-align: center;
+  display: block;
+  width: 188px;
+  line-height: 57px;
+  height: 57px;
+  background:  url(../Img/registerbutton.png) no-repeat;
+}

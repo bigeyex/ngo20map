@@ -1,0 +1,66 @@
+<div class="user-event ui-widget data-table">
+	<table class="ui-widget ui-widget-content">
+		<tr class="ui-widget-header">
+			<th>
+				{:L('项目名称')}
+			</th>
+			<th>
+				{:L('项目领域')}
+			</th>
+			<th>
+				{:L('主办方')}
+			</th>
+			<th>
+			</th>
+			<th>
+			</th>
+		</tr>
+		<?php if(count($user_events)==0): ?>
+			<tr>
+				<td colspan="5">
+					{:L('还没有发布项目')}
+				</td>
+			</tr>
+		<?php endif; ?>
+		<?php foreach($user_events as $event): 
+				if(!$event['is_checked'] && !$event['editable']){	//如果未审核、还不是自己或管理员的话
+					continue;
+				}
+		?>
+			<tr>
+				<td>
+					<a href="{:U('Event/view')}/id/{$event.id}">{$event.name}</a>
+					
+				</td>
+				<td>
+					<?php foreach($event['item_field_array'] as $field): ?>
+						<a class="event-tag"><span>{$field}</span></a>
+					<?php endforeach; ?>
+				</td>
+				<td>
+					{$event.host}
+				</td>
+				<td>
+					<?php foreach($event['res_tags_array'] as $field): ?>
+						<a class="event-tag"><span>{$field}</span></a>
+					<?php endforeach; ?>
+				</td>
+				<td>
+					<?php if($event['editable']): ?>
+					<a class="edit-link" href="{:U('Event/edit')}/id/{$event.id}">{:L('编辑')}</a>
+					<a class="delete-link" href="{:U('Event/deleteEvent')}/id/{$event.id}">{:L('删除')}</a>
+					<?php endif; ?>
+				</td>
+			</tr>
+		<?php endforeach; ?>	
+	</table>
+</div>
+
+<script type="text/javascript">
+	var event_points = [
+	<?php foreach($user_events as $event): ?>
+		[{$event.longitude}, {$event.latitude}, "{$event.name}", "{:U('Event/view')}/id/{$event.id}"],
+	<?php endforeach; ?>
+	
+	];
+</script>

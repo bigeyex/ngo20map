@@ -1,0 +1,218 @@
+{:W('Header',array('title'=>L('修改用户信息')))}
+
+<js href="__APP__/Public/Js/jquery-ui-1.8.9.custom.min.js"/>
+<css href="__APP__/Public/Css/start/jquery-ui-1.8.9.custom.css"/>
+<css href="__APP__/Public/Css/validate.css"/>
+<css href="__APP__/Public/Css/User.css"/>
+<js href="__APP__/Public/Js/jquery.validate.pack.js"/>
+<js href="__APP__/Public/Js/validate_messages_cn.js"/>
+
+
+<script>
+$(function() {
+       $( "#radio" ).buttonset();
+       $('#user').validate();
+       if($("#type").val()!="ind")
+           {
+               $('#map').show();
+               $('#organ').show();
+               $('#organ2').show();
+           }
+
+       map_default({$edit.longitude},{$edit.latitude});
+ });
+
+</script>
+
+<script langage="text/javascript">
+
+function hideMap(){
+    //var ra = document.getElementById("radio1");
+    $('#map').hide();
+}
+function showMap(){
+    $('#map').show();
+}
+
+</script>
+
+<div class="entire">
+    <form id="user" action="__APP__/Admin/commitedit" method="POST" enctype="multipart/form-data">
+        <div id="left-column" class="left-column">
+            <table class="userTable" cellpadding="0" cellspacing="10" style="">
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><input type="hidden" id="type" value="{$edit.type}">{:L('电子邮箱')}：</td>
+                    <td><input type="hidden" name="id" value="{$edit.id}">{$edit.email}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                 <tr>
+                    <td>{:L('用户名')}：</td>
+                    <td><input type="text" id="name" name="name" size="40" class="required" value="{$edit.name}"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><font color="#C0C0C0">{:L('在系统中显示的用户名，100个汉字以内')}</font></td>
+                </tr>
+                <tr>
+                    <td>{:L('英文名')}：</td>
+                    <td><input type="text" id="english_name" name="english_name" size="40" class="required" value="{$edit.english_name}"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><font color="#C0C0C0">{:L('显示给英文用户的用户名，100个字符以内')}</font></td>
+                </tr>
+                <tr>
+                    <td>{:L('密码')}：</td>
+                    <td><input type="password" id="editpassword" name="editpassword" size="40" value="@@@@@@"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><font color="#C0C0C0">{:L('设定该用户登录的密码')}</font></td>
+                </tr>
+                <tr>
+                    <td>{:L('个人简介')}：</td>
+                    <td><textarea name="introduction" cols="31" rows="10" title="aaaaaaa">{$edit.introduction}</textarea></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><font color="#C0C0C0">{:L('简单介绍一下你自己')}</font></td>
+                </tr>
+                <tr>
+                    <td>{:L('从事领域')}：</td>
+                    <td>
+                        <?php
+                              $i=0;
+                              $array = explode(' ',$edit['work_field']);
+                              foreach(C('ORG_FIELDS') as $field){ $i++; ?>
+                              <input type="checkbox" name="work_field[]" value="{:L($field)}" <?php if(in_array($field,$array)) echo "checked='checked'"; ?>>{:L($field)}
+                        <?php  if($i%3==0){echo "<p>";} }  ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>{:L('管理员')}：</td>
+                    <td>
+                        <input type="radio" id="is_admin" name="is_admin" value="0" <?php if(!$edit['is_admin'])echo 'checked="checked"'; ?>/>{:L('否')}
+                        <input type="radio" id="is_admin" name="is_admin" value="1" <?php if($edit['is_admin'])echo 'checked="checked"'; ?>/>{:L('是')}
+                    </td>
+                </tr>
+                <tr>
+                    <td>{:L('审核通过')}：</td>
+                    <td>
+                        <input type="radio" id="is_checked" name="is_checked" value="0" <?php if(!$edit['is_checked'])echo 'checked="checked"'; ?>/>{:L('否')}
+                        <input type="radio" id="is_checked" name="is_checked" value="1" <?php if($edit['is_checked'])echo 'checked="checked"'; ?>/>{:L('是')}
+                    </td>
+                </tr>
+            </table>
+            <div id="organ" class="left-column" class="userTable" cellpadding="0" cellspacing="10" style="display:none">
+                <table>
+                    <tr>
+                        <td>{:L('全职人员数量')}：</td>
+                        <td><input type="text" id="staff_fulltime" name="staff_fulltime" class="number" size="20" value="{$edit.staff_fulltime}"></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><font color="#C0C0C0">{:L('全职人员指管理人员和全职服务人员，也包括核心型志愿者')}</font></td>
+                    </tr>
+                    <tr>
+                        <td>{:L('兼职人员数量')}：</td>
+                        <td><input type="text" id="staff_parttime" name="staff_parttime" size="20" value="{$edit.staff_parttime}"></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><font color="#C0C0C0">{:L('在组织内兼职工作的人员数量')}</font></td>
+                    </tr>
+                    <tr>
+                        <td>{:L('志愿者数量')}：</td>
+                        <td><input type="text" id="staff_volunteer" name="staff_volunteer" size="20" value="{$edit.staff_volunteer}"></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><font color="#C0C0C0">{:L('组织招募的志愿者数量')}</font></td>
+                    </tr>
+                </table>
+             </div>
+           <table>
+                <tr>
+                    <td width="300"></td>
+                    <td align="right"><input type="submit" name="submit" id="submit" value="{:L('修改信息')}"></td>
+                </tr>
+            </table>
+        </div>
+        <div id="image" class="right-column">
+                    <dl>
+                        <dt>{:L('旧头像')}</dt>
+                        <dd><if condition="$edit.image!= ''">
+                        <img src="__APP__/Public/Uploadedthumb/{$edit.image}" height="150" width="150"/>
+                        <else/>
+                        <img src="__APP__/Public/Img/UserAvatar/default.jpg" height="150" width="150"/>
+                        </if>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>{:L('新头像文件')}</dt>
+                        <dd><input type="file" name="upload"></dd>
+                    </dl>
+               </div>
+        <div id="map" class="right-column" style="display:none;">
+            <br>
+            {:L('请选择组织位置：')}<p>
+            {:W('MapLocate')}
+        </div>
+        <div id="organ2" class="right-column" style="display:none">
+            <table class="userTable" cellpadding="0" cellspacing="10">
+                <tr>
+                    <td width="60">{:L('精确地址')}：</td>
+                    <td><input type="text" id="place" name="place" size="40" value="{$edit.place}"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><font color="#C0C0C0">{:L('组织所在的精确地址，越精确越好')}</font></td>
+                </tr>
+                 <tr>
+                    <td>{:L('服务区域')}：</td>
+                    <td><input type="text" id="service_area" name="service_area" size="40" value="{$edit.service_area}"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><font color="#C0C0C0">{:L('本组织服务的具体地区，全国性组织请填写“全国”')}</font></td>
+                </tr>
+                 <tr>
+                    <td>{:L('组织网站')}：</td>
+                    <td><input type="text" id="website" name="website" size="40" value="{$edit.website}"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><font color="#C0C0C0">{:L('如果组织有网站，请填写网址')}</font></td>
+                </tr>
+                <tr>
+                    <td>{:L('公用邮箱')}：</td>
+                    <td><input type="text" id="public_email" name="public_email" size="40" class="email" value="{$edit.public_email}"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><font color="#C0C0C0">{:L('组织的公用邮箱，用于和个人、企业CSR，基金会及其他公益组织联系')}</font></td>
+                </tr>
+                 <tr>
+                    <td>{:L('联系方式')}：</td>
+                    <td><input type="text" id="phone" name="phone" size="40" value="{$edit.phone}"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><font color="#C0C0C0">{:L('组织负责人的联系方式，请填写姓名和电话')}</font></td>
+                </tr>
+            </table>
+        </div>
+    </form>
+</div>
+
+
+
+{:W('Footer')}
+

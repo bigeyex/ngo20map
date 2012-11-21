@@ -41,7 +41,10 @@ class HeaderWidget extends EduWidget{
         	$css_class_of_tabs[MODULE_NAME . '_' .ACTION_NAME . '_' . $_GET['type']] = 'class="current"';
         }
         $tpl_data['css_class'] = $css_class_of_tabs;
-        
+
+        if(isset($data['top_bar'])){
+            $tpl_data['top_bar'] = $data['top_bar'];
+        }
         
         $content = $this->renderFile('Header',$tpl_data);
         return $content;

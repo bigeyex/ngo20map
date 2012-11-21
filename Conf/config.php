@@ -16,7 +16,7 @@ return array(
     'WEIBO_APPSECRET' => 'd5a0e9579f28467565c6eb86174835a5',
     'DB_TYPE' => 'mysql',
     'DB_HOST' => 'localhost',
-    'DB_NAME' => 'ngo20mapalpha',
+    'DB_NAME' => 'ngo20map',
     'DB_USER' => 'root',
     'DB_PWD' => '',
     'DB_PORT' => '3306',

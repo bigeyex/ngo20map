@@ -9,197 +9,334 @@
 <script type="text/javascript" src="{:C('MAP_APICONNECTSTR')}">
 </script>
 
-<form id="newform" name="newform" class="need-validate" action="__URL__/{$target_url}" method="post" >
-<div id="main">
-    <h2 class="title"><?php echo $page_title; ?></h2>
-      <input type="hidden" name="type" value="{$event_type}"/>
-      <?php if($target_url != 'insert' && $_SESSION['login_user']['is_admin']):  ?>
-      <label>{:L('创建人')}</label>
-      <div id="creator" class="form-field">
-          <input id="creator-field" name="creator" validate-url="{:U('User/check_exist')}" class="optional ajax-validate text-box long-text" type="text" value="{$event.creator_name}"/>
-      </div>
-      <?php endif; ?>
-      <?php if (isset($event)): ?>
-      <input type="hidden" name="id" value="{$event.id}"/>
-      <?php endif; ?>
-    <label>{$field_title.event_name}</label>
-    <div class="form-field">
-        <input type="text" id="name" name="name" class="required long-text" value="{$event.name}"/>
-        <p>{:L('100个汉字以内')}</p>
-    </div>
-    <label>{:L('相关机构')}</label>
-    <div class="form-field">
-    	<input type="text" class="long-text" id="host-field" name="host" value="{$event.host}"/><p>{:L('多个主办方用英文逗号分隔')}</p>
-    </div>
-    <?php if($event_type != 'ind' && $event_type != 'case'): ?>
-    <label>{:L('开始时间')}</label>
-    <div class="form-field">
-        <input type="text" name="begin_time" id="range-from" value="{$event.begin_time}"/>
-        <img src="__APP__/Public/Img/calendar.png" class="calendar"/>
-    </div>
-    <label>{:L('结束时间')}</label>
-    <div class="form-field">
-        <input type="text" name="end_time" id="range-to" value="{$event.end_time}"/>
-        <img src="__APP__/Public/Img/calendar.png" class="calendar"/>
-    </div>
-    <?php endif; ?>
-    <div>
-        {:W('MapLocate', array('longitude' => $event['longitude'], 'latitude' => $event['latitude'], 'place' => $event['place'], 'place_label' => $field_title['place']))}
-    </div>
-    <label>{$field_title.introduction}</label>
-    <div class="form-field">
-        <textarea name="description" id="description" class="required" cols="80" rows="15">{$event.description}</textarea>
-    </div>
-    <?php if($event_type != 'ind' && $event_type != 'case'): ?>
-    <label>{:L('项目成果')}</label>
-    <div class="form-field">
-        <textarea name="outcome" id="outcome" class="required" cols="80" rows="10">{$event.outcome}</textarea>
-        <p>{:L('已经取得的和预期的成果')}</p>
-    </div>
-    <?php endif; ?>
-    <label>{:L('项目领域')}</label>
-    <div class="form-field event-field">
-        <?php if(isset($event['item_field'])){
-                $event_field = explode(' ', $event['item_field']);
-              }else{
-                $event_field = array();
-              }
-              if(isset($event['res_tags'])){
-                $event_res_tags = explode(' ', $event['res_tags']);
-              }else{
-                $event_res_tags = array();
-              }
-        ?>
-        <?php
-            $i = 0;
-            foreach(C('ORG_FIELDS') as $org){
-            $i++;
-            ?>
-        <span class="res-tag">
-            <input id="event-field-{$i}" type="checkbox" name="event_field[]" value="{$org}" <?php if (in_array($org, $event_field)): ?> checked="checked" <?php endif; ?>/>
-            <label for="event-field-{$i}">{$org}</label>
-        </span>
-        <?php } ?>
-        <p>{:L('根据项目需要选择一或多个项目领域')}</p>
-    </div> 
+<div id="main" class="form-region">
+    <form id="newform" name="newform" class="need-validate" enctype="multipart/form-data" action="__URL__/{$target_url}" method="post" >
     <?php
-    	$config_event_type = C('EVENT_TYPE')
+    if($_SESSION['flash']){
     ?>
-    <?php if($event_type != 'ngo'): ?>
-    <label>{:L('项目资源')}</label>
-    <div class="form-field event-field">
-        <?php
-            $i = 0;
-            foreach($config_event_type['resource'] as $one_type){ 
-            $i++;
-        ?>
-        <span class="res-tag">
-            <input id="event-resource-{$i}" type="checkbox" name="event_type[]" value="{$one_type}" <?php if (in_array($one_type, $event_res_tags)||$create_resource_type==$one_type): ?> checked="checked" <?php endif; ?>/>
-            <label for="event-resource-{$i}">{$one_type}</label>
-        </span>
-        <?php } ?>
-        <p>{:L('选择项目能够提供给他方的资源。如没有可不选。')}</p>
-    </div>
-    <?php endif; ?>
-    <?php if($event_type != 'ind' && $event_type != 'case'): //对于对接案例和公益报道，不显示需求页 ?>
-    <label>{:L('项目需求')}</label>
-    <div class="form-field event-field">
-         <?php
-        	$i = 0;
-        	foreach($config_event_type['requirement'] as $one_type){ 
-        	$i++;
-        ?>
-        <span class="res-tag">
-            <input id="event-requirement-{$i}" type="checkbox" name="event_type[]" value="{$one_type}" <?php if (in_array($one_type, $event_res_tags)||$create_resource_type==$one_type): ?> checked="checked" <?php endif; ?>/>
-            <label for="event-requirement-{$i}">{$one_type}</label>
-        </span>
-        <?php } ?>
-        <p>{:L('选择项目需要他方帮助的需求。如没有可不选。')}</p>
-    </div>
-    <label>{:L('需求描述')}</label>
-    <div class="form-field">
-        <textarea name="req_description" id="req_description" class="optional" cols="80" rows="10">{$event.outcome}</textarea>
-        <p>{:L('请具体陈述您的需求，这将帮助您获得更有效的支持，如：需要200本小学生课外读物，需要环境保护领域的法律专家等……')}</p>
-    </div>
-    
-    <h3>{:L('联系信息')}</h3>
-    <label>{:L('联系人')}</label>
-    <div class="form-field">
-    	<input type="text" name="contact_name" value="{$event.contact_name}"/>
-    	<p>{:L('联系人的姓名')}</p>
-    </div>
-    <label>{:L('联系电话')}</label>
-    <div class="form-field">
-    	<input type="text" name="contact_phone" value="{$event.contact_phone}"/>
-    	<p>{:L('请填写机构电话')}</p>
-    </div>
-    <label>{:L('联系电子邮箱')}</label>
-    <div class="form-field">
-    	<input type="text" class="long-text" name="contact_email" value="{$event.contact_email}"/>
-    </div>
-    <label>{:L('联系QQ')}</label>
-    <div class="form-field">
-    	<input type="text" name="contact_qq" value="{$event.contact_qq}"/>
-    </div>
-    <?php endif; ?>
-    <label>{:L('项目标签')}</label>
-    <div class="form-field">
-        <div id="tag-input">
-        	<input type="text" id="tag-name" class="long-text" name="tags" value="{$tags}"/>
+    <div id="form-section flash_block" class="{@flash.type}">
+        <div id="flash_content">
+            {@flash.content}
         </div>
-        <div class="event-field"><p>{:L('可为项目添加若干标签。请使用逗号来分割标签')}</p></div>
     </div>
-    <?php if($event_type == 'ind' || $event_type == 'case'): ?>
-    <label>{:L('信息来源')}</label>
-    <div class="form-field"><input type="text" class="long-text" name="url" value="{$event.url}"/><p>{:L('此条信息的来源网址')}</p></div>
-    <?php else: ?>
-    <label>{:L('相关网址')}</label>
-    <div class="form-field"><input type="text" class="long-text" name="url" value="{$event.url}"/><p>{:L('如项目的网站地址。事件添加后可增加更多的网址')}</p></div>
-    <?php endif; ?>
-    <div class="form-field">
-        <span class="res-tag">
-            <input type="checkbox" id="is_commentable" name="is_commentable" value="1" <?php if (!isset($event['is_commentable']) || $event['is_commentable'] != 0): ?> checked="checked" <?php endif; ?>/>
-            <label class="inline-block" for="is_commentable">{:L('允许对该事件发表感想')}</label>
-        </span>
-        <p>{:L('事件添加后，您可以向事件中上传图片、添加视频链接。<br/>事件需要通过审核才能被他人看见。')}</p>
-    </div>
-    <div class="form-field"><input id="submit-button" type="submit" value="{:L('确认提交')}"/></div>
-    </div>
-</form>
+   <?php }
+   $_SESSION['flash']=null;
+    unset($_SESSION['flash']);
+   ?>
+    <div class="form-section" id="main-content">
+        <h3 style="padding-left:15px;"> 发布公益项目  <span class="ordinary">(<span class="required">*</span>  必須填写项)</span></h3>
+        <p class="after-title">{:L('以下信息将显示在公益项目页中，让大家看到你的事迹与故事。')}</p>
+        <div id="editor-zone">
+            <div id="editor-toolbar">
+                <span>{:L('插入')}: </span>
+                <a href="javascript:void(0);" id="insert-image">{:L('照片')}</a>
+                <a href="javascript:void(0);" id="insert-video">{:L('视频')}</a>
+                <a href="javascript:void(0);" id="insert-link">{:L('链接')}</a>
+            </div>
+            <p id="editor-help">{:L('为了确保资料完整请添加相关的<strong>照片</strong>和<strong>视频</strong>。')}</p>
+            <div id="editor-body">
+                <div id="title-part"><input type="text" name="name" id="editor-title" value="在这里输入标题"></div>
+                <div id="rte-part">
+                    <textarea name="description" id="editor" cols="115" rows="29">项目简介： （插入相关照片,你的项目将会展示在首页中）</textarea>
+                </div>
+                
+            </div>
+        </div>
 
-<script language="javascript">
-var validate_require_string = "{:L('(必填)')}";
-var validate_require_error_string = "{:L('此项必填')}";
-</script>
+        <div class="form-field">
+            <span class="title"><span class="required">*</span> {:L('相关机构')}</span>
+            <input type="text" name="host" class="validate[required]" value="{$event.host}"/>
+        </div>
+        <div class="form-field">
+            <span class="title">{:L('执行区域')}</span>
+                <select name="province" id="province" class="validate[required]"></select>省
+                <select name="city" id="city"></select>市
+                <select name="county" id="county"></select>区/县
+                <input type="text" class="short" name="place" id="place" value="{$place}"/>
+                <input type="hidden" name="latitude" id="latitude"/>
+                <input type="hidden" name="longitude" id="longitude"/>
+
+        </div>
+        <div class="form-field" id="map-box">
+            <span class="title">{:L('在地图上的位置')}</span>
+            <div style="width:267px;height:163px;border:1px solid gray" id="map-locate-container"></div>
+            <span>({:L('如果地图中所示位置不是您的机构位置，点击地图来标注机构位置')})</span>
+            <div class="clearfix"></div>
+        </div>
+        <div class="only ngo-only">
+            <div class="form-field">
+                <span class="title">{:L('联系人')}</span>
+                <input type="text" name="contact_name" value="{$user.contact_name}"/>
+            </div>
+            <div class="form-field">
+                <span class="title">{:L('联系电话')}</span>
+                <input type="text" name="phone" value="{$user.phone}"/>
+            </div>
+            <div class="form-field">
+                <span class="title">{:L('电子邮箱')}</span>
+                <input type="text" class="" name="public_email" value="{$user.public_email}"/>
+            </div>
+        </div>
+        <div class="submit-buttons">
+            <input id="submit-button" type="submit" disabled="true" value="{:L('完成')}"/>
+            <input id="submit-button" type="reset" value="{:L('重置')}"/>
+        </div>
+    </div> <!-- form-section -->
+    </form>
+</div>
+
+<div id="upload-dialog" class="model-dialog" style="display:none;">
+    <a href="javascript:void(0);" class="close-button"><img src="__APP__/Public/Img/close-button.gif" alt="关闭"/></a>
+    <h4>{:L('从本地上传图片')}</h4>
+    <div id="upload_button">{:L('选择本地图片')}</div>
+</div>
+
+<div id="insert-link-dialog" class="model-dialog" style="display:none;">
+    <a href="javascript:void(0);" class="close-button"><img src="__APP__/Public/Img/close-button.gif" alt="关闭"/></a>
+    <h4>{:L('添加链接')}</h4>
+    <input type="text" id="insert-link-text"/>
+    <a id="insert-link-button">{:L('添加链接')}</a>
+</div>
+
+<div id="insert-video-dialog" class="model-dialog" style="display:none;">
+    <a href="javascript:void(0);" class="close-button"><img src="__APP__/Public/Img/close-button.gif" alt="关闭"/></a>
+    <h4>{:L('添加在线视频')}</h4>
+    <p>
+        {:L('请填入网络视频地址。暂支持优酷、土豆、56网视频。')}<br/>
+        <span class="error" id="video-error-message"></span>
+
+
+    </p>
+    <input type="text" id="insert-video-text"/>
+    <a id="insert-video-button">{:L('添加视频')}</a>
+</div>
+
 <css href="__APP__/Public/Css/EventEdit.css"/>
-<css href="__APP__/Public/Css/ngo-validate.css"/>
-<css href="__APP__/Public/Css/AdminEvents.css"/>
-<js href="__APP__/Public/Js/jquery-ui-1.8.9.custom.min.js"/>
-<css href="__APP__/Public/Css/start/jquery-ui-1.8.9.custom.css"/>
-<js href="__APP__/Public/Js/jquery.ui.datepicker-zh-CN.js"/>
-<js href="__APP__/Public/Js/ngo-validate.js"/>
-<script language="javascript">
-$(document).ready(function(){ 
-    //MapLocate组建选择显示'项目地点'及相符信息
-   $('.event_locate').show();
-   $("#range-from, #range-to" ).datepicker({ dateFormat: 'yy-mm-dd' } , $.datepicker.regional[ "zh-CN" ] );
-   $('.calendar').click(function(){
-       $(this).siblings().focus();
+<link rel="stylesheet" href="__APP__/Public/Css/validationEngine.jquery.css" type="text/css"/>
+<script type="text/javascript" src="__APP__/Public/Js/PCASClass.js">
+</script>
+<script type="text/javascript" src="__APP__/Public/Js/ajaxupload.js">
+</script>
+<script type="text/javascript" src="{:C('MAP_APICONNECTSTR')}">
+</script>
+<script src="__APP__/Public/Js/jquery.validationEngine.js" type="text/javascript" charset="utf-8"></script>
+<script src="__APP__/Public/Js/jquery.rte.js" type="text/javascript" charset="utf-8"></script>
+<script src="__APP__/Public/Js/jquery.validationEngine-zh_CN.js" type="text/javascript" charset="utf-8"></script>
+
+
+<script langage="text/javascript">
+function protocol1(){
+    var sub = document.getElementById("submit-button");
+    var check = document.getElementById("protocol");
+    if(check.checked)
+    {
+        sub.disabled = undefined;
+    }
+    else
+        {
+            sub.disabled = true;
+        }
+}
+function newwindow(){
+    $("#contract").dialog({
+        autoOpen: false,
+        height: 400,
+        width: 700,
+        zIndex: 3999,
+        modal: true,
+        buttons: {
+            "{:L('关闭')}" : function(){
+                $( this ).dialog( "close" );
+            }
+        }
    });
-   
-   $('#host-field').autocomplete("{:U('Event/suggest')}",{
-	   	multiple: true,
-		matchContains: true
-   });
-   $('#creator-field').autocomplete("{:U('Event/suggest')}",{
-	   	multiple: false,
-		matchContains: true
-   });
-   $('#tag-name').autocomplete("{:U('Event/suggest')}/type/tag",{
-	   	multiple: true,
-		matchContains: true
-   });
+   $("#contract").dialog("open");
+}
+
+
+$('.check-group label').click(function(e){
+    var selected_status = $('#'+$(e.target).attr('for')).attr('checked');
+    if(!selected_status){
+        $(e.target).addClass('selected');
+    }
+    else{
+        $(e.target).removeClass('selected');
+    }
 });
+
+$('#type-selector label').click(function(e){
+    $('#type-selector label').removeClass("selected");
+    $(e.currentTarget).addClass("selected");
+    $('#main-content').show();
+    $('.only').hide();
+    $('.except').show();
+    var type=$('#'+$(e.currentTarget).attr('for')).val();
+    $('.'+type+'-only').show();
+    $('.except-'+type).hide();
+});
+
+new PCAS("province","city","county");
+
+var map = new BMap.Map("map-locate-container");
+var point = new BMap.Point(116.404, 39.915);
+var gc = new BMap.Geocoder();
+map.centerAndZoom(point, 5);
+map.addControl(new BMap.NavigationControl({anchor: BMAP_ANCHOR_BOTTOM_RIGHT, type: BMAP_NAVIGATION_CONTROL_ZOOM}));  
+$("#newform").validationEngine('attach');
+
+function relocate_map(){
+    var place = '';
+    if($('#province').val() != '')place+=$('#province').val();
+    if($('#city').val() != '')place+=$('#city').val();
+    if($('#county').val() != '')place+=$('#county').val();
+    place+=$('#place').val();
+
+    gc.getPoint(place, function(point){
+      if (point) {
+        map.centerAndZoom(point, 16);
+        addPointMarker(point);
+      }
+    });
+}
+
+function addPointMarker(p){
+    map.clearOverlays();
+    var marker = new BMap.Marker(p);
+    map.addOverlay(marker);
+    $('#latitude').val(p.lat);
+    $('#longitude').val(p.lng);
+}
+
+map.addEventListener("click",function(e){
+    addPointMarker(e.point);
+});
+
+$('#province, #city, #county, #place').change(relocate_map);
+$('#editor').rte();
+$('iframe#editor-rte').contents().find('body').css('font-size','12px');
+$('iframe#editor-rte').contents().find('body').css('color','#b5b5b5');
+var touched_editor_title = false;
+var touched_editor_content = false;
+$('#editor-title').focus(function(){
+    if(!touched_editor_title){
+        $('#editor-title').val('');
+        touched_editor_title = true;
+    }
+});
+$('iframe#editor-rte').contents().find('body').focus(function(){
+    if(!touched_editor_content){
+        touched_editor_content = true;
+        var doc = $('iframe#editor-rte').contents()[0];
+        $('iframe#editor-rte').contents().find('body').css('color','#000');
+        doc.execCommand('SelectAll');
+        doc.execCommand('Delete');
+    }
+});
+
+$('#insert-video-button').click(function(){
+    var youku_url = /youku\.com.+id_(.+)\.html/;
+    var tudou_url = /tudou\.com\/programs\/view\/(.+)\//;
+    var video_url = $('#insert-video-text').val();
+    var url_56 = /56\.com.+v_(.+)\.html/;
+    var result = "";
+    
+    if(m=video_url.match(youku_url)){
+        result = 'http://player.youku.com/player.php/sid/'+m[1]+'/v.swf';
+    }
+    else if(m=video_url.match(tudou_url)){
+        result = 'http://www.tudou.com/v/'+m[1]+'/v.swf';
+    }
+    else if(m=video_url.match(url_56)){
+        result = 'http://player.56.com/v_'+m[1]+'.swf';
+    }
+
+    if(result != ''){
+        var html = '<embed src="'+result+'" quality="high" width="480" height="400" align="middle" allowScriptAccess="sameDomain" allowFullscreen="true" type="application/x-shockwave-flash"></embed>';
+        insertIt('editor-rte',html);
+    }
+    else{
+        $('#video-error-message').text('无法解析视频地址');
+    }
+
+    //var doc = $('iframe#editor-rte').contents()[0];
+    //doc.execCommand('CreateLink', false, $('#insert-link-text').val());
+    //$('#insert-link-dialog').trigger('close');
+});
+
+$('#insert-link-button').click(function(){
+    var doc = $('iframe#editor-rte').contents()[0];
+    doc.execCommand('CreateLink', false, $('#insert-link-text').val());
+    $('#insert-link-dialog').trigger('close');
+});
+
+//rte-section
+$('#insert-image').click(function(){
+    $('#upload-dialog').lightbox_me({centered: true});
+    new AjaxUpload('upload_button', {
+        action: app_path+'/Event/upload_image',
+        onComplete: function(file, response) {
+            console.log(response);
+            $('#upload-dialog').trigger('close');
+            var doc = $('iframe#editor-rte').contents()[0];
+            doc.execCommand('InsertImage', false, app_path+'/Public/Uploadedthumb/thumbl_'+response);
+        }
+    });
+});
+$('#insert-link').click(function(){
+    $('#insert-link-dialog').lightbox_me({centered: true});
+    $('#insert-link-text').val('http://');
+});
+$('#insert-video').click(function(){
+    $('#insert-video-dialog').lightbox_me({centered: true});
+    $('#insert-video-text').val('');
+    $('#video-error-message').text('');
+});
+
+$('#upload-dialog .close-button').click(function(){
+    $('#upload-dialog').trigger('close');
+});
+$('#insert-link-dialog .close-button').click(function(){
+    $('#insert-link-dialog').trigger('close');
+});
+$('#insert-video-dialog .close-button').click(function(){
+    $('#insert-video-dialog').trigger('close');
+});
+
+function insertIt(editor,html) {
+    var win = document.getElementById(editor).contentWindow, doc = win.document;
+    var sel, range;
+    if (win.getSelection) {
+        // IE9 and non-IE
+        sel = win.getSelection();
+        if (sel.getRangeAt && sel.rangeCount) {
+            range = sel.getRangeAt(0);
+            range.deleteContents();
+
+            // Range.createContextualFragment() would be useful here but is
+            // non-standard and not supported in all browsers (IE9, for one)
+            var el = doc.createElement("div");
+            el.innerHTML = html;
+            var frag = doc.createDocumentFragment(), node, lastNode;
+            while ( (node = el.firstChild) ) {
+                lastNode = frag.appendChild(node);
+            }
+            range.insertNode(frag);
+
+            // Preserve the selection
+            if (lastNode) {
+                range = range.cloneRange();
+                range.setStartAfter(lastNode);
+                range.collapse(true);
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+        }
+    } else if (doc.selection && doc.selection.type != "Control") {
+        // IE < 9
+        doc.selection.createRange().pasteHTML(html);
+    }
+}
+
 </script>
 
 {:W('Footer')}

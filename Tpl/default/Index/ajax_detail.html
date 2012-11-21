@@ -1,34 +1,38 @@
-<volist name="result" id="vo">
-	<?php 
-	$hover_string = 'onmouseover="move_marker('.$vo['longitude'].','.$vo['latitude'].')" onmouseout="move_marker(0,0)"';
-	
-	?>
-    <div class="padding-container">
-        <?php if(isset($vo['event_name'])): ?>
-            <a href="{:U('Event/view')}/id/{$vo.event_id}" class="title-link" target="_blank" {$hover_string}>{$vo.event_name}</a>
-            
-            <?php $vo_fields = explode(' ', $vo['item_field']); ?>
-        <?php elseif(isset($vo['model']) && $vo['model']=='events'): ?>
-        	<a href="{:U('Event/view')}/id/{$vo.id}" class="title-link" target="_blank" {$hover_string}>{$vo.name}</a>
-        <?php else: ?>
-            <a href="{:U('User/home')}/id/{$vo.id}" class="title-link" target="_blank" {$hover_string}>{$vo.name}</a><br/>
-            <?php $vo_fields = explode(' ', $vo['work_field']); ?>
-        <?php endif; ?>
-        <?php if(isset($vo['event_name'])): ?>
-        	<p>
-	        	<?php if($vo['editable']): ?>
-	        		<a class="event-item-action-button event-item-edit" href="{:U('Event/edit')}/id/{$vo.event_id}">{:L('编辑')}</a>
-	        		<a class="event-item-action-button event-item-delete" href="{:U('Event/deleteEvent')}/id/{$vo.event_id}">{:L('删除')}</a>
-	        	<?php else: ?>
-	            <?php endif; ?>
-        	</p>
-        <?php endif; ?>
-        <div class="item-tag-list">
-        	
-        </div>
+<div class="point-detail">
+<?php if($type == 'users'): ?>
+
+    <h3 style="height:19px;"><a href="{:U('User/home')}/id/{$user.id}">{$user.name}</a></h3>
+    <div class="detail-content">
+    <?php if(count($user_events)>0): ?>
+        <ul class="event-images">
+            <li></li>
+            <?php $first = 1;foreach ($user_events as $event): ?>
+            <li class="<?php if($first==1){ ?>current<?php $first=0;} ?> <?php if($event['image']){ ?>image<?php } ?>">
+                <a href="{:U('Event/view')}/id/{$event.id}" target="_blank">
+                <?php if($event['image']): ?>
+                <img src="__APP__/Public/Uploadedthumb/thumbm_{$event.image}" width="157" alt="{$event.name}">
+                <?php endif; ?>
+                <p <?php if($event['image']){ ?>class="image"<?php } ?>>{$event.name}</p>
+                </a>
+                <div class="float-mask"></div>
+            </li>
+            <?php endforeach ?>
+            <li></li>
+        </ul>
+        <div class="next-event float-control">下一张</div>
+        <div class="prev-event float-control">上一张</div>
+    <?php else: ?>
+    <p class="position"><span class="label">{:L('位置')}: </span>{$user.place}</p>
+    <p class="aim">{$user.aim}</p>
+    <?php endif; ?>
     </div>
-</volist>
-<br/>
-<div id="page-show">
-    {$page}
+
+<?php else: ?>
+
+    <h3><a href="{:U('Event/view')}/id/{$event.id}">{$event.name}</a></h3>
+    <div class="detail-content">
+       <p class="position"><span class="label">{:L('位置')}: </span>{$event.place}</p>
+    </div>
+
+<?php endif; ?>
 </div>

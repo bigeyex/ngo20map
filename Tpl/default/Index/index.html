@@ -1,107 +1,109 @@
 {:W('Header',array('title'=>'NGOMAP'))}
-<js href="__APP__/Public/Js/jquery.form.js"/>
-
-<js href="__APP__/Public/Js/jquery.bubblepopup.v2.3.1.min.js"/>
-<css href="__APP__/Public/Css/jquery.bubblepopup.v2.3.1.css"/>
-<css href="__APP__/Public/Css/homepage.css"/>
-<css href="__APP__/Public/Css/960_12_col.css"/>
-<css href="__APP__/Public/Css/recommend.css"/>
-<css href="__APP__/Public/Css/ngo-ui.css"/>
 
 <?php $curr_lang = cookie('think_language'); ?>
-<?php if($curr_lang == 'en-us'): ?>
-<div id="link-banner">
-	NGOmap is a subproject of 
-		<img src="__APP__/Public/Img/title_logo.png" height="12"/>
-		<a href="http://www.ngo20.org/?lang=en" target="_blank">NGO2.0</a>,
-	    There are <span style="color:green">{$record_count}</span> entries on the map now.
-		<a href="{:U('Index/subscribe')}">Subscribe</a>
+<css href="__APP__/Public/Css/homepage.css"/>
+<css href="__APP__/Public/Css/liveStream.css"/>
+
+<div style="width:980px;height:415px;" id="map"></div>
+
+<div id="map-legend" class="all">
+	<ul>
+		<li id="legend-current-location">{:L('您当前的位置')}</li>
+		<li id="legend-ngo" class="switch">{:L('公益组织')}</li>
+		<li id="legend-csr" class="switch">{:L('企业')}</li>
+		<li id="legend-case" class="switch">{:L('对接案例')}</li>
+
+	</ul>
+	<div class="clearfix"></div>
 </div>
-<?php else: ?>
-<div id="link-banner">
-	本项目为
-		<img src="__APP__/Public/Img/title_logo.png" height="12"/>
-		<a href="http://www.ngo20.org" target="_blank">中国公益2.0</a>
-	的子项目。现有公益信息<span style="color:green">{$record_count}</span>条。
-		<a href="{:U('Index/subscribe')}">订阅本站</a>
-</div>
-<?php endif; ?>
 
-
-{:R('Index','_map')}
-
-<div class="container_12" id="recommend_list">
-	<div class="grid_9">
-		<h2 class="section-title">{:L('公益组织展示')}<a class="more" href="{:U('Search/result')}/preserve/0/model/users/type/ngo">更多</a></h2>
-		<table class="user-suggestion">
-			<tr>
-				<?php foreach($random_users as $user): ?>
-				<td>
-					<p class="photo">
-						<?php if($user['image']): ?>
-			            <img width="80" src="__APP__/Public/Uploadedthumb/thumbm_{$user.image}"/>
-			            <?php else: ?>
-			            <img width="80" src="__APP__/Public/Img/default_photo.png" />
-			            <?php endif; ?>
-			        </p>
-		            <h2 class="name"><a href="{:U('User/home')}/id/{$user.id}">{$user.name}</a></h2>
-					<p class="content">{$user.aim|mb_substr=0,60|nl2br}</p>
-				</td>
-				<?php endforeach; ?>
-			</tr>
-		</table>
-		<h2 class="section-title">{:L('最新公益项目')}<a class="more" href="{:U('Search/result')}/preserve/0/model/events">更多</a></h2>
-		<?php foreach($recent_events as $event): ?>
-		<div class="content-block">
-			<h2 class="name"><a href="{:U('Event/view')}/id/{$event.id}">{$event.name}</a></h2>
-			<p class="content">{$event.description|mb_substr=0,130|nl2br}</p>
+<div id="showcase">
+	<div id="showcase-ngo" class="tile">
+		<div class="showcase-img">
+			<img height="170" src="__APP__/Public/Uploadedthumb/thumbm_{$recommend_ngo.url}" alt="{$recommend_ngo.name}">
 		</div>
-		<?php endforeach; ?>
-		<div class="clear"></div>
-	</div> <!-- grid-9 -->
-	<div class="grid_3">
-		<h2 class="sidebar-title first">{:L('公益关键词')}</h2>
-		<ul class="keyword-list">
-			<?php foreach(C('HOMEPAGE_TAG') as $tag): ?>
-			<li><a href="{:U('Search/result')}/q/{$tag}">{$tag}</a></li>
-			<?php endforeach; ?>
-		</ul>
-		<div class="clearfix"></div>
-		<h2 class="sidebar-title">{:L('热门标签')}</h2>
-		<ul class="keyword-list">
-			<?php foreach($hot_tags as $tag): ?>
-			<li><a href="{:U('Search/result')}/q/tag:{$tag.name}">{$tag.name}</a></li>
-			<?php endforeach; ?>
-		</ul>
-		<div class="clearfix"></div>
-		<h2 class="sidebar-title weibo">{:L('公益微博文摘')}</h2>
-		<iframe width="100%" height="500"  frameborder="0" scrolling="no" src="http://widget.weibo.com/livestream/listlive.php?language=zh_cn&width=0&height=500&uid=1998038407&skin=6&refer=1&pic=1&titlebar=1&border=1&publish=0&atalk=1&recomm=0&at=0&atopic=NGO20%E5%BE%AE%E5%8D%9A%E6%96%87%E6%91%98&ptopic=NGO20%E5%BE%AE%E5%8D%9A%E6%96%87%E6%91%98&colordiy=0&dpc=1"></iframe>
-		<div class="clearfix"></div>
+		
+		<h3 class="tile-title"><a>{$recommend_ngo.name}</a></h3>
+		<p class="tile-more"><a>{:L('更多公益组织')} >></a></p>
+	</div>
+	<div id="showcase-csr" class="tile">
+		<div class="showcase-img">
+			<img height="170" src="__APP__/Public/Uploadedthumb/thumbm_{$recommend_csr.url}" alt="{$recommend_csr.name}">
+		</div>
+		
+		<h3 class="tile-title"><a>{$recommend_csr.name}</a></h3>
+		<p class="tile-more"><a>{:L('更多社会责任企业')} >></a></p>
+	</div>
+	<div id="showcase-weibo" class="tile">
+		<h3 class="tile-title"><a>{:L('新浪微博')}</a></h3>
+		<div id="weibo-region">
+			<iframe width="100%" height="206" style="margin-top:-30px;zoom:1;position:relative;" frameborder="0" scrolling="no" src="http://widget.weibo.com/livestream/listlive.php?language=zh_cn&width=0&height=206&uid=1998038407&skin=1&refer=1&pic=1&titlebar=0&border=0&publish=0&atalk=1&recomm=0&at=0&atopic=NGO20%E5%BE%AE%E5%8D%9A%E6%96%87%E6%91%98&ptopic=NGO20%E5%BE%AE%E5%8D%9A%E6%96%87%E6%91%98&colordiy=0&dpc=1"></iframe>
+		</div>
 	</div>
 	<div class="clearfix"></div>
-	<h2 class="section-title">{:L('友情链接')}</h2>
-		<div class="content-block partener">
-			<h4>合作伙伴:</h4>
-			<span class="link-tag"><a href="http://stpc.ustc.edu.cn">中国科学技术大学知识管理研究所</a></span>
-			<span class="link-tag"><a href="http://web.mit.edu/newmediaactionlab/www/">麻省理工学院新媒体行动实验室</a></span>
-			<span class="link-tag"><a href="http://scd.sysu.edu.cn/Item/443.aspx">中山大学公益传播研究所</a></span>
-			<span class="link-tag"><a href="http://fmedialab.com/">清华大学未来媒体研究中心</a></span>
-			<span class="link-tag"><a href="http://www.ngocn.net/">NGOCN</a></span>
-			<span class="link-tag"><a href="http://www.fon.org.cn/">自然之友</a></span>
-			<span class="link-tag"><a href="http://www.ogilvy.com.cn/#/cn/ogilvy">中国奥美公关</a></span>
-			<div class="clearfix"></div>
-			<h4>友情链接:</h4>
-			<span class="link-tag"><a href="http://ics.sysu.edu.cn/">中山大学公民与社会发展研究中心</a></span>
-			<span class="link-tag"><a href="http://www.ecauses.org/">E惠社</a></span>
-			<span class="link-tag"><a href="http://www.chinadevelopmentbrief.org.cn/">中国发展简报</a></span>
-			<span class="link-tag"><a href="http://www.foundationcenter.org.cn/">基金会中心网</a></span>
-			<span class="link-tag"><a href="http://www.projectpengyou.com">朋友项目</a></span>
-			<span class="link-tag"><a href="http://www.npodevelopment.org/">上海映绿公益事业发展中心</a></span>
-			<span class="link-tag"><a href="http://www.greenhj.org/">绿色汉江</a></span>
-			<span class="link-tag"><a href="http://www.gdschina.org/">陕西妇源汇性别发展培训中心</a></span>
-			<span class="link-tag"><a href="http://www.gsean.org/">济溪环境交流网络</a></span>
-			<span class="link-tag"><a href="http://www.leli365.com">乐力帮公益网</a></span>	
-		</div>
 </div>
+
+<div id="register-stub">
+	<a href="" id="register-button">{:L('立即注册')}</a>
+	<div id="slogan-region">
+		<p>
+			{:L('一旦成功注册，你就可以：')}
+			<span class="slogan">{:L('联系所有本网站登记机构，成为NGO2.0会员，即时获得活动信息')}</span>
+		</p>
+		<p>{:L('已经有QQ或者Weibo?你可以用这些账号登陆。')}</p>
+	</div>
+	<div class="clearfix"></div>
+</div>
+
+<div id="info-desk">
+	<div id="recent-events" class="info-desk-block">
+		<h3>{:L('最新发布项目')}</h3>
+		<div id="recent-event-list">
+			<?php foreach ($recent_events as $event): ?>
+				<div>{$event.name}</div>
+			<?php endforeach; ?>
+		</div>
+		<a href="" class="more">{:L('查看更多')}>></a>
+		<div class="slider-control">
+			<a class="prev" onclick="recent_event_slider.goToPreviousSlide();">&lt</a>
+			<a class="next" onclick="recent_event_slider.goToNextSlide();">&gt</a>
+		</div>
+	</div>
+	<div id="media-and-help" class="info-desk-block">
+		<h3>{:L('媒体关注')}</h3>
+		<p>{:L('更多关于NGO2.0的新闻')}</p>
+		<h3 id="help-center">{:L('帮助中心')}</h3>
+		<p>{:L('快速寻找你可能感兴趣的关键词')}</p>
+	</div>
+	<div id="hot-tags" class="info-desk-block">
+		<h3>{:L('热门标签')}</h3>
+		<div id="hot-tag-pages">
+			<div>
+			<?php 
+			$i = 0;
+			foreach (C('HOMEPAGE_TAG') as $tag): ?>
+			<?php if($i % 12 == 0): ?>
+			</div><div>
+			<?php endif; ?>
+			<a href="">{$tag}</a>
+			<?php 
+			$i++;
+			endforeach; ?>
+			</div>
+		</div>
+		<div class="slider-control">
+			<a class="prev" onclick="hot_tags_slider.goToPreviousSlide();">&lt</a>
+			<a class="next" onclick="hot_tags_slider.goToNextSlide();">&gt</a>
+		</div>
+	</div>
+	<div class="clearfix"></div>
+</div>
+
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.3"></script>
+<js href="__APP__/Public/Js/jquery.bxSlider.min.js"/>
+<js href="__APP__/Public/Js/map-control.js"/>
+
+
+		
 
 {:W('Footer')}

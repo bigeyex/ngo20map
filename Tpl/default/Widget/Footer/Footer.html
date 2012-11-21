@@ -1,10 +1,36 @@
+<div id="footer" class="footer">
+	<div class="content-block partener">
+	NGO20相关媒体：
+	
+		合作伙伴：
+		<span class="link-tag"><a href="http://stpc.ustc.edu.cn">中国科学技术大学知识管理研究所</a></span>
+		<span class="link-tag"><a href="http://web.mit.edu/newmediaactionlab/www/">麻省理工学院新媒体行动实验室</a></span>
+		<span class="link-tag"><a href="http://scd.sysu.edu.cn/Item/443.aspx">中山大学公益传播研究所</a></span>
+		<span class="link-tag"><a href="http://fmedialab.com/">清华大学未来媒体研究中心</a></span>
+		<span class="link-tag"><a href="http://www.ngocn.net/">NGOCN</a></span>
+		<span class="link-tag"><a href="http://www.fon.org.cn/">自然之友</a></span>
+		<span class="link-tag"><a href="http://www.ogilvy.com.cn/#/cn/ogilvy">中国奥美公关</a></span>
+		<br/>
+		友情链接:
+		<span class="link-tag"><a href="http://ics.sysu.edu.cn/">中山大学公民与社会发展研究中心</a></span>
+		<span class="link-tag"><a href="http://www.ecauses.org/">E惠社</a></span>
+		<span class="link-tag"><a href="http://www.chinadevelopmentbrief.org.cn/">中国发展简报</a></span>
+		<span class="link-tag"><a href="http://www.foundationcenter.org.cn/">基金会中心网</a></span>
+		<span class="link-tag"><a href="http://www.projectpengyou.com">朋友项目</a></span>
+		<span class="link-tag"><a href="http://www.npodevelopment.org/">上海映绿公益事业发展中心</a></span>
+		<span class="link-tag"><a href="http://www.greenhj.org/">绿色汉江</a></span>
+		<span class="link-tag"><a href="http://www.gdschina.org/">陕西妇源汇性别发展培训中心</a></span>
+		<span class="link-tag"><a href="http://www.gsean.org/">济溪环境交流网络</a></span>
+		<span class="link-tag"><a href="http://www.leli365.com">乐力帮公益网</a></span>	
+	</div>
+
+    <p id="footer1">技术支持 @ 中国科学技术大学跨媒体实验室
+	<br/><a href="http://www.ngo20.org/?page_id=2">关于我们</a> | <a href="http://www.ngo20map.com/index.php/page/index/8">{:L('感谢页面')}</a> | <a href="http://www.ngo20map.com/index.php/contact">{:L('联系我们')}</a> | <a href="http://bug.ngo20.org/projects/ngo20map/news">2.0 beta 2</a> <a href="http://www.miibeian.gov.cn/">皖ICP备10014970号-2</a></p>
+</div>
 </div><!-- //container -->
 </div><!-- //wrapper -->
 <div class="blank_block"></br></div>
-<div id="footer" class="footer">
-    <p id="footer1">技术支持 @ 中国科学技术大学跨媒体实验室</p>
-    <p id="footer2"><a href="http://www.ngo20.org/?page_id=2">关于我们</a> | <a href="http://www.ngo20map.com/index.php/page/index/8">{:L('感谢页面')}</a> | <a href="http://www.ngo20map.com/index.php/contact">{:L('联系我们')}</a> | <a href="http://bug.ngo20.org/projects/ngo20map/news">2.0 beta 2</a> <a href="http://www.miibeian.gov.cn/">皖ICP备10014970号-2</a></p>
-</div>
+
 
 <!--[if lt IE 8]>
 <css href="__APP__/Public/Css/iefix/ie7.css"/>
@@ -12,10 +38,26 @@
 <![endif]-->
 
 <script type="text/javascript">
+
+$(function(){
+	// default text field value
+	$('input[defaultValue]').focus(function() {
+      if($(this).val() == $(this).attr('defaultValue')) {
+         $(this).val('');
+      }
+   })
+   .blur(function() {
+      if($(this).val().length == 0) {
+         $(this).val($(this).attr('defaultValue'));
+      }
+   });
+
+
+});
+
+
 var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
 document.write(unescape('%3Cscript src="' + _bdhmProtocol + 'hm.baidu.com/h.js%3F872dddf0962c4b1a38db3a043b36affc" type="text/javascript"%3E%3C/script%3E'));
 </script>
-
-<js href="__APP__/Public/Js/jquery.pngFix.pack.js"/>
 </body>
 </html>

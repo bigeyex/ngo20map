@@ -2,23 +2,8 @@
 define('OFFSET', 268435456);
 define('RADIUS', 85445659.4471); /* $offset / pi() */
 class UserAction extends Action {
-    public function pre_register(){
-        $this->display();
-    }
 
     public function newUser() {
-        if(!isset($_GET['type'])){
-            $this->redirect('pre_register');
-        }
-
-    	if(!empty($_GET['type'])){
-    		$type = $_GET['type'];
-    	}
-    	else{
-    		$type = 'ind';
-    	}
-        $type_string = C('USER_TYPE');
-           
         //显示当提交失败重定向到此页时，用户已经填好的信息
         $last_form_data = null;
         if(isset($_SESSION['last_form'])){
@@ -28,10 +13,6 @@ class UserAction extends Action {
         if(is_array($last_form_data['work_field'])){
             $last_form_data['work_field'] = implode(',', $last_form_data['work_field']);
         }
-        
-        $this->assign('type',$type);
-        $this->assign('target_url','insert');
-        $this->assign('type_string', $type_string);
         $this->assign('field_title', $this->build_field_title($type));
         $this->assign('user', $last_form_data);
         $this->display();
@@ -188,34 +169,14 @@ class UserAction extends Action {
 	        }
         }
         $user_data = $user_model->find($_GET['id']);
+
+        // assign a default position to avoid js error
         if(!$user_data['longitude']) {
             $user_data['longitude'] = 116.404;
             $user_data['latitude'] = 39.915;
         }
-        
-        //决定主页上的筛选条件哪条是预先选中的
-        $type_select_status = array(
-        	'followed_events' => '',
-        	'host_events' => '',
-        	'own_events' => '',
-        );
-        if(empty($_GET['type'])){
-        	$type_select_status['host_events'] = 'selected';
-        }
-        else{
-        	$type_select_status[$_GET['type'].'_'.$_GET['model']] = 'selected';
-        }
-		
-		$is_self = false;
-        if ($_SESSION['login_user']['id']==$_GET['id']){
-            $tab_value['followed']=L("我关注的项目");
-            $tab_value['whois']=L("我的项目");
-            $is_self = true;
-        }
-        else{
-            $tab_value['followed']=L("TA关注的项目");
-            $tab_value['whois']=L("TA的项目");
-        }
+        	
+		$is_self = ($_SESSION['login_user']['id']==$_GET['id']);
         
         //处理url地址
 		if(!preg_match('/^https?:/', $user_data['website'])){
@@ -246,6 +207,11 @@ class UserAction extends Action {
         $model = new Model();
 
         $medals = $model->query("select * from medal where medal.id in (select medal_id from medalmap where user_id=$user_id)");
+        $related_ngo = $this->query_recommend("ngo","users",2,$user_id);
+        $related_csr = $this->query_recommend("csr","users",2,$user_id);
+        $user_events = $model->query('select id,name from events where user_id='.$user_id);
+
+
         $this->assign('medals', $medals);
         
         $this->assign('is_self', $is_self);
@@ -254,58 +220,7 @@ class UserAction extends Action {
         $this->assign('type_select_status', $type_select_status);
         $this->display();
     }
-    public function my() {
-        $user_model = M('Users');       //获取用户资料
-        
-        //现在此页面删除
-        $this->redirect('recommend');
-        
-        if(isset($_SESSION['login_user'])){
-        	$my_id = $_SESSION['login_user']['id'];
-        }
-        else{
-	        $my_id = 0;
-        }
-        
-        if(!isset($_GET['id'])) {
-            if($my_id != 0) {
-                $_GET['id'] = $_SESSION['login_user']['id'];
-            }
-            else {
-                $this->redirect('Index/index');
-            }
-        }
-        else{
-	        if($my_id != 0){
-	        	$follow_model = M('Follow');
-	        	$follow_status = $follow_model->where(array('from' => $my_id, 'to' => $_GET['id']))->count();
-	        	$this->assign('follow_status', $follow_status);
-	        }
-        }
-        $user_data = $user_model->find($_GET['id']);
-        if(!$user_data['longitude']) {
-            $user_data['longitude'] = 116.404;
-            $user_data['latitude'] = 39.915;
-        }
-        
-        
-		
-		$is_self = false;
-        if ($_SESSION['login_user']['id']==$_GET['id']){
-            $tab_value['followed']=L("我关注的项目");
-            $tab_value['whois']=L("我的项目");
-            $is_self = true;
-        }
-        else{
-            $tab_value['followed']=L("TA关注的项目");
-            $tab_value['whois']=L("TA的项目");
-        }
-        $this->assign('is_self', $is_self);
-        $this->assign('user_data', $user_data);
-        $this->assign('tab_value', $tab_value);
-        $this->display();
-    }
-    
+
     public function recommend(){
     	//获取推荐数据
     	$ngo_users = $this->query_recommend("ngo","users",3);
@@ -417,7 +332,7 @@ class UserAction extends Action {
         $user->create();
         
         //检查验证码是否一致
-        if($_SESSION['verify'] != md5($_POST['verify'])) {
+        if($_SESSION['verify'] != strtolower($_POST['verify'])) {
         	setflash('error','',L('验证码不一致'));
         	$_SESSION['last_form'] = $_POST;
             redirect($_SERVER['HTTP_REFERER']);
@@ -481,7 +396,7 @@ class UserAction extends Action {
                 setflash('ok','', L('您的帐号类型为组织类用户，管理员审核后可获得更多权限！'));
 
             }
-            $this->redirect('recommend');//写好User/home后定位到该目标
+            $this->redirect('home');//写好User/home后定位到该目标
         }
     }
     
@@ -499,6 +414,14 @@ class UserAction extends Action {
     		$follow_model->where(array('from' => $my_id, 'to' => $target_id, 'type'=>'user'))->delete();
     		echo 0;
     	}
+    }
+
+    public function captcha(){
+        require_cache(LIB_PATH . "/Util/validateCode.php");
+        $_vc = new ValidateCode();      //实例化一个对象
+        $_vc->doimg();
+        $_SESSION['verify'] =strtolower($_vc->getCode());//验证码保存到SESSION中
+
     }
     
     private function build_field_title($type){

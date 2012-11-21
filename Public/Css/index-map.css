@@ -1,0 +1,346 @@
+#map-filters {
+    background: #81b460;
+    margin-top: -11px;
+    height: 28px;
+    text-align: center;
+}
+
+#map-filters ul {
+    width: 1040px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+#map-filters li {
+    float: left;
+    list-style: none;
+    width: 99px;
+    font-size: 14px;
+    color: white;
+    line-height: 28px;
+    position: relative;
+    border-left: 1px solid #6d9850;
+    border-right: 1px solid #8ec569;
+    padding-left: 8px;
+    cursor: pointer;
+    background: url(../Img/icons/filter-icon.gif) no-repeat 93px;
+}
+
+#map-filters li.first {
+    text-indent: -9999px;
+    width: 1px;
+    border-left: 0;
+}
+
+#map-filters li.last {
+    text-indent: -9999px;
+    width: 1px;
+    border-right: 0;
+}
+
+#map-filters div.dropdown {
+    display: none;
+    position: absolute;
+    color: #709944;
+    font-size: 12px;
+    left: 0px;
+    border: 1px solid #81b460;
+    background: #fff;
+    z-index: 1000;
+}
+
+#map-filters div.dropdown span {
+    display: block;
+    width: 93px;
+    margin: 1px;
+    padding: 8px 6px;
+    line-height: 12px;
+}
+
+#map-filters div.dropdown span:hover {
+    color: #fff;
+    background-color: #81b460;
+}
+
+#map-filters div.field-dropdown {
+    width: 219px;
+}
+
+#map-filters div.field-dropdown span {
+    float: left;
+    width: 71px;
+    text-align: center;
+    padding: 8px 0;
+}
+
+#container {
+    margin-top: 12px;
+}
+
+#map {
+    margin-top: 0;
+    float: left;
+}
+
+#map-detail {
+    float: left;
+    width: 265px;
+}
+
+#record-count {
+    font-size: 15px;
+    color: white;
+    background: #81b460;
+    text-align: center;
+    line-height: 38px;
+}
+
+#record-set {
+    height: 463px;
+    background: #f0f0ec;
+    margin: 0;
+    padding: 0 8px;
+}
+
+#record-set ul {
+    margin: 0;
+    padding: 0;
+}
+
+#record-set li {
+    display: table;
+    list-style: none;
+    height: 37px;
+    overflow: hidden;
+    position: relative;
+    border-bottom: 1px solid #c7c7c6;
+    width: 100%;
+    padding-left: 17px;
+    background: url(../Img/icons/marker-list-style.gif) no-repeat 6px;
+}
+
+#record-set li p {
+    margin: 0;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+#record-set li a {
+    padding-left: 32px;
+    display: block;
+    color: #000;
+    font-family: "宋体", sans-serif;
+}
+.record-1{
+    background: url(../Img/icons/marker-list-icon.gif) no-repeat 5px 6px;
+}
+.record-2{
+    background: url(../Img/icons/marker-list-icon.gif) no-repeat 5px -32px;
+}
+.record-3{
+    background: url(../Img/icons/marker-list-icon.gif) no-repeat 5px -71px;
+}
+.record-4{
+    background: url(../Img/icons/marker-list-icon.gif) no-repeat 5px -109px;
+}
+.record-5{
+    background: url(../Img/icons/marker-list-icon.gif) no-repeat 5px -148px;
+}
+.record-6{
+    background: url(../Img/icons/marker-list-icon.gif) no-repeat 5px -186px;
+}
+.record-7{
+    background: url(../Img/icons/marker-list-icon.gif) no-repeat 5px -225px;
+}
+.record-8{
+    background: url(../Img/icons/marker-list-icon.gif) no-repeat 5px -263px;
+}
+.record-9{
+    background: url(../Img/icons/marker-list-icon.gif) no-repeat 5px -302px;
+}
+.record-10{
+    background: url(../Img/icons/marker-list-icon.gif) no-repeat 5px -340px;
+}
+.record-11{
+    background: url(../Img/icons/marker-list-icon.gif) no-repeat 5px -379px;
+}
+.record-12{
+    background: url(../Img/icons/marker-list-icon.gif) no-repeat 5px -417px;
+}
+
+#filter-labels {
+    float: left;
+    margin-top: 4px;
+}
+
+#filter-labels span {
+    display: block;
+    float: left;
+    line-height: 20px;
+    background-color: #fff;
+    color: #85b552;
+    padding: 0 18px 0 5px;
+    margin-left: 4px;
+    font-family: "宋体" sans-serif;
+    position: relative;
+}
+
+#filter-labels span i {
+    width: 9px;
+    height: 10px;
+    display: block;
+    position: absolute;
+    background: url(../Img/icons/cross-sign.gif) no-repeat;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+}
+
+span.prev-page, span.next-page{
+    width: 6px;
+    height: 12px;
+    text-indent: -9999px;
+    margin-top: 6px;
+    background: url(../Img/icons/pager-arrows.gif) no-repeat;
+    cursor: pointer;
+}
+span.next-page{
+    background: url(../Img/icons/pager-arrows.gif) no-repeat 0 -13px;
+}
+
+#pager {
+    background: #f0f0ec;
+    height: 39px;
+    padding: 10px 0 0 14px;
+}
+
+#pager div, #pager span {
+    display: block;
+    float: left;
+}
+
+#pager div{
+    margin: 0 15px;
+}
+
+#pager div span{
+    line-height: 12px;
+    padding: 4px 1px;
+    margin: 1px;
+    cursor: pointer;
+}
+#pager span.current{
+    border: 1px solid #bbbbbb;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    background:  -webkit-gradient(linear, 0 0, 0 100%, from(#dfdfdf), to(white));
+    background: -moz-linear-gradient(top, #dfdfdf, white);
+    filter: progid:DXImageTransform.Microsoft.gradient(startcolorstr=#dfdfdf,endcolorstr=white,gradientType=1);
+    margin: 0;
+}
+
+/* showcase */
+
+#showcase {
+    clear: both;
+    margin-top: 10px;
+}
+
+#showcase div.tile {
+    width: 320px;
+    height: 170px;
+    margin-left: 10px;
+    overflow: hidden;
+    float: left;
+    position: relative;
+    font-family: 宋体, serif;
+}
+
+#showcase a {
+    color: white;
+}
+
+#showcase h3 {
+    font-size: 14px;
+}
+
+#showcase div.showcase-img {
+    height: 170px;
+    width: 155px;
+    background: white;
+    overflow: hidden;
+}
+
+#showcase #showcase-ngo {
+    margin-left: 0;
+}
+
+#showcase div.colored-region {
+    float: right;
+}
+
+.tile-title {
+    position: absolute;
+    top: 12px;
+    left: 165px;
+    margin: 0;
+    padding: 0;
+    padding-right: 15px;
+    font-family: 宋体, serif;
+}
+
+.tile-more {
+    position: absolute;
+    left: 165px;
+    bottom: 0px;
+}
+
+div#project-zone {
+    float: left;
+    width: 320px;
+}
+
+div.project {
+    width: 320px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+#showcase div.project div.showcase-img {
+    height: 80px;
+}
+
+.org1-tile div.showcase-img {
+    float: right;
+}
+
+.org1-tile .tile-title {
+    padding-right: 150px;
+    left: 10px;
+}
+
+.org1-tile .tile-more {
+    left: 10px;
+}
+
+#project-ngo-1 {
+    background: #81b460;
+}
+
+#project-ngo-2 {
+    background: #00651b;
+}
+
+#showcase-ngo-1 {
+    background: #00651b;
+}
+
+#showcase-ngo-2 {
+    background: #81b460;
+}
+
+#main-menu li.current{
+    background: url(../Img/icons/menubar-current-icon.gif) no-repeat 50px 24px;
+}

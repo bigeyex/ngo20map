@@ -13,252 +13,96 @@ document.write("<!--[iflteIE6]><script>is_ie6=1;</scr"+"ipt><![endif]-->");
 is_ie6 = 1;
 </script>
 <![endif]-->
+<css href="__APP__/Public/Css/normalize.css"/>
 <css href="__APP__/Public/Css/base.css"/>
-<css href="__APP__/Public/Css/controls.css"/>
-<css href="__APP__/Public/Css/mailbox.css"/>
-<js href="__APP__/Public/Js/jquery-1.4.2.js"/>
-<js href="__APP__/Public/Js/jquery.autobox.js"/>
-<js href="__APP__/Public/Js/jquery-ui-1.8.9.custom.min.js"/>
-<css href="__APP__/Public/Css/humanity/jquery-ui-1.8.17.custom.css"/>
-<js href="__APP__/Public/Js/jquery.autocomplete.js"/>
-<css href="__APP__/Public/Css/jquery.autocomplete.css"/>
-<?php if(isset($_SESSION['login_user'])): ?>
-<js href="__APP__/Public/Js/mail-box.js"/>
-<?php endif; ?>
+<js href="__APP__/Public/Js/jquery-1.6.min.js"/>
 <title>{$title} - {:L('公益地图')}</title>
 </head>
-    <script type="text/javascript">
-        $(function(){
-            $('.autobox').autobox();
-            $('#language-selector').change(function(){
-                window.location.href = '__SELF__/l/'+$('#language-selector').val();
-            });
-            $('.glass i').click(function(){
-                $('#search-form').submit();
-            });
-            my_label = "{:L('我')}";
-        });
-        $(function(){
-			$( "#login-dialog-form" ).dialog({
-				autoOpen: false,
-				height: 300,
-				width: 350,
-				modal: true,
-				buttons: {
-					"{:L('登录')}": function() {
-							$('#login-form').submit();
-							$( this ).dialog( "close" );
-					},
-					"{:L('取消')}": function() {
-						$( this ).dialog( "close" );
-					}
-				}
-			});
-			$( "#register-form" ).dialog({
-				autoOpen: false,
-				height: 350,
-				width: 350,
-				modal: true
-			});
-			$(".jqui-button").button();
-		});
-    </script>
-<script type="text/javascript">
-    function doLogin(){
-        $('#login-panel-form').submit();
-    }
-    function bubble_pop(t,word){
-		        if($(t).HasBubblePopup())return;
-		        $(t).CreateBubblePopup({innerHtml: word,themePath: '__APP__/Public/Css/jquerybubblepopup-theme/'});
-		        $(t).ShowBubblePopup();
-		        $(t).FreezeBubblePopup();
-		        setTimeout(function(){
-		            $(t).RemoveBubblePopup();
-		        }, 1500);
-		    }
-</script>
 <body>
 
-<div id="wrapper">
-<div id="header">
-<div id="header-wrapper">
-    <div id="logo"><a href="{:U('Index/index')}"></a></div>
-    <div id="head_nav_list">
-        <ul>           
-        	<?php if(LANG_SET == 'zh-cn'): ?>
-        	<li><a href="__SELF__/?l=en-us">English</a></li>
-        	<?php elseif(LANG_SET == 'en-us'): ?>
-        	<li><a href="__SELF__/?l=zh-cn">中文</a></li>
-        	<?php endif; ?>
-            <?php if (isset($_SESSION['login_user'])): 
-            //针对当前页面将相应链接标红。
-            $link_selected = array('home'=>'','search'=>'','new_event'=>'');
-            //如果是User/home且id为本人id, 则“概览”标红
-            if(MODULE_NAME == 'User' && ACTION_NAME == 'home' && $_GET['id'] == $_SESSION['login_user']['id']){
-            	$link_selected['home'] = 'class="selected"';
-            }
-            else if(MODULE_NAME == 'Index' && ACTION_NAME == 'index'){ //如果是Index/index, 则“地图搜索”标红
-            	$link_selected['search'] = 'class="selected"';
-            }
-            else if(MODULE_NAME == 'Event' && ACTION_NAME == 'add'){
-            	if(isset($_GET['type'])){
-            		$link_selected['new_event_ind'] = 'class="selected"';
-            	}
-            	else{
-            		$link_selected['new_event'] = 'class="selected"';
-            	}	
-            }
-            
-            ?>
-            <!--<li id="global-nav-myhome"><a href="{:U('User/home')}/id/{@login_user.id}" {$link_selected.home}>{:L('概览')}</a></li>-->
-            <?php if($_SESSION['login_user']['type'] != 'ind'): ?>
-            <li id="global-nav-new-event"><a href="{:U('Event/add')}" {$link_selected.new_event}>{:L('发布项目')}</a></li>
-            <?php endif; ?>
-            <li id="global-nav-mail">
-            	<a id="mail-box-menu-link" class="" href="javascript:void(0);" onclick="expand_mailbox(event, 0)">{:L('站内信')}</a>
-            	<div id="new-mail-num"></div>
-            	<div id="mail-box" style="display:none;">
-            		<div id="mail-box-content">
-            			<div id="talk-section">
-							<div class="section-header">
-								<a href="javascript:void(0)" id="new-message-link" onclick="new_message()">{:L('发送新信息')}</a>
-					<!--			<div id="mailbox-search-form" style="display:none;">
-									<input type="text" id="mail-search-keyword"/>
-									<span onclick="mail_search()"/>
-								</div> -->
-							</div>
-							<div id="talk-list">
-							</div>
-						</div>
-						<div id="message-section" style="display:none;">
-							<div class="section-header">
-								<a href="javascript:void(0)" id="back-to-talk-link" onclick="back_to_talks();">{:L('返回')}</a>
-								<div id="message-target-form">
-									<span>收件人:</span>
-									<input id="message-target" type="text" value=""/>
-								
-								</div>
-							</div>
-							
-							<div id="message-wrapper">
-								<p class="waiting-ball message-notice" style="display:none;">
-						            				{:L('读取中')}
-						 	    </p>
-						 	    <p class="message-notice no-message-notice" style="display:none">
-						 	    	{:L('没有往来信息')}
-						 	    </p>
-								<div id="message-contents">
-								</div>
-							</div>
-							
-							<div id="send-message-form">
-								<textarea id="message-writer" cols="30" rows="3"></textarea>
-								<input id="send-message-button" type="button" onkeydown="ctrl_enter(event)" onclick="send_message()" value="{:L('发送')}"/>
-							</div>
-						</div>
-            		</div><!-- end of mailbox-content -->
-            		<div id="mail-box-footer">
-            			<a class="close-link" onclick="$('#mail-box').hide();">{:L('关闭')}</a>
-            			<div class="clearfix"></div>
-            		</div>
-            	</div>
-            </li><!-- mail -->
-            <?php else: //if user is not logged in ?>
-            <li id="global-nav-search"><a href="javascript:void(0);" onclick="$( '#login-dialog-form' ).dialog('open');">{:L('登录')}</a></li>
-            <li id="global-nav-search"><a href="javascript:void(0);" onclick="$( '#register-form' ).dialog('open');">{:L('注册')}</a></li>
-            <li id="global-nav-search"><a href="https://open.t.qq.com/cgi-bin/oauth2/authorize?client_id={:C('QQ_APPKEY')}&response_type=code&redirect_uri=http://{$_SERVER.HTTP_HOST}__APP__/Api/qq_login"><img src="__APP__/Public/Img/qq_login.gif" alt="用腾讯微博登陆"/></a></li>
-            <li id="global-nav-search"><a href="https://api.weibo.com/oauth2/authorize?client_id={:C('WEIBO_APPKEY')}&response_type=code&redirect_uri=http://{$_SERVER.HTTP_HOST}__APP__/Api/weibo_login"><img src="__APP__/Public/Img/sina_login_btn.png" alt="用新浪微博登陆"/></a></li>
-            <?php endif; ?>
-        <?php if(isset($_SESSION['login_user'])){ ?>
-             <li><a class="profile-links" href="{:U('User/home')}/id/{@login_user.id}">
-                 <?php 
-                 	$login_name = $_SESSION['login_user']['name'];
-                 	if(mb_strlen($login_name) > 12){
-                 		$login_name = mb_substr($login_name,0,12) . '...';
-                 	}
-                  ?>{$login_name}
-             </a></li>
-             <?php if(!$_SESSION['login_user']['is_checked']){ ?>
-             <li><font color="red">({:L('未审核')})</font></li>
-             <?php } //is checked ?>
-             <?php if($_SESSION['login_user']['is_admin']){ ?>
-             <li><a href="{:U('Admin/events')}/type/all">{:L('管理')}</a></li>
-             <?php } //is admin ?>
-             <li><a href="{:U('Index/logout')}">{:L('注销')}</a></li>
-         <?php }else{ ?>
-         <?php } //is logged in ?>
-         </ul>
-         <div class="clearfix"></div>
-    </div> <!-- head-nav-list -->
-	<div id="tabs-holder">
-		<div id="tabs1">
-			<ul>
-				<li {$css_class.Index_index}><a href="{:U('Index/index')}"><span>{:L('首页')}</span></a></li>
-				<li {$css_class.Search_result}><a href="{:U('Search/result')}"><span>{:L('搜索')}</span></a></li>
-				<?php if(isset($_SESSION['login_user'])): ?>
-				<?php if(!$_SESSION['login_user']['is_admin']): ?>
-				<?php if($_SESSION['login_user']['type'] != 'ind' && $_SESSION['login_user']['type'] != 'fund'): ?>
-				<li {$css_class.Event_add}><a href="{:U('Event/add')}"><span>{:L('发布项目')}</span></a></li>
-				<?php endif; ?>
-				<li {$css_class.User_recommend}><a href="{:U('User/recommend')}"><span>{:L('猜你喜欢')}</span></a></li>
-				<li {$css_class.User_home}><a href="{:U('User/home')}/id/{@login_user.id}"><span>{:L('我的页面')}</span></a></li>
-				<?php if($_SESSION['login_user']['type'] != 'ind'): ?>
-				<li {$css_class.User_my_events}><a href="{:U('User/my_events')}"><span>{:L('我发布的项目')}</span></a></li>
-				<li {$css_class.User_my_comments}><a href="{:U('User/my_comments')}"><span>{:L('对我的评论')}</span></a></li>
-				<?php endif; ?> <!-- if not individual -->
-				<?php else: ?> <!-- if admin -->
-				<li {$css_class.Event_add_ngo}><a href="{:U('Event/add')}/type/ngo"><span>{:L('发布公益项目')}</span></a></li>
-				<li {$css_class.Event_add_csr}><a href="{:U('Event/add')}/type/csr"><span>{:L('发布企业项目')}</span></a></li>
-				<li {$css_class.Event_add_ind}><a href="{:U('Event/add')}/type/ind"><span>{:L('发布公益报道')}</span></a></li>
-				<li {$css_class.Event_add_case}><a href="{:U('Event/add')}/type/case"><span>{:L('发布对接案例')}</span></a></li>
-				<li {$css_class.Admin}><a href="{:U('Admin/events')}/type/ind"><span>{:L('管理')}</span></a></li>
-				<?php endif; ?> <!-- if not admin -->
-				<?php endif; ?> <!-- if login -->
+	<js href="__APP__/Public/Js/jquery.lightbox_me.js"/>
+	<div id="login-box" style="display:none;">
+		<a href="javascript:void(0);" id="login-close-button"><img src="__APP__/Public/Img/close-button.gif" alt="关闭"/></a>
+		<div id="login-box-left">
+			<h4>{:L('登录到NGO2.0')}</h4>
+			<p class="sub-title">{:L('已有账号？请在下面登录。')}</p>
+			<form action="{:U('Index/login_action')}" method="POST">
+			<label for="login-email" id="login-email-label">{:L('邮箱')}</label>
+			<input name="email" id="login-email" type="text" />
+			<label for="login-password">{:L('密码')}</label>
+			<input type="password" name="password" id="login-password"/>
+			<a href="{:U('User/forget_password')}" id="forget-password-link">{:L('忘记密码')}?</a>
+			<div id="login-remember">
+				<input type="checkbox" name="remember" value="1"/>
+				<span>{:L('记住我')}</span>
+			</div>
+			<div class="action-region">
+				<input type="submit" value="{:L('登录')}"/>
+				<a id="login-with-qq" href="https://open.t.qq.com/cgi-bin/oauth2/authorize?client_id={:C('QQ_APPKEY')}&response_type=code&redirect_uri=http://{$_SERVER.HTTP_HOST}__APP__/Api/qq_login">{:L('用QQ登录')}</a>
+				<a id="login-with-weibo" href="https://api.weibo.com/oauth2/authorize?client_id={:C('WEIBO_APPKEY')}&response_type=code&redirect_uri=http://{$_SERVER.HTTP_HOST}__APP__/Api/weibo_login">{:L('用微博登录')}</a>
+			</div>
+			</form>
+		</div>
+		<div id="login-box-right">
+			<h4>{:L('我没有账户')}</h4>
+			<p class="sub-title">{:L('注册时间不到一分钟')}</p>
+			<p>{:L('一旦注册，您可以')}</p>
+			<strong>
+				{:L('联系所有本网站登记机构')}, <br/>
+				{:L('成为NGO2.0会员')}, <br/>
+				{:L('即可获得活动信息')}<br/>
+			</strong>
+			<div class="action-region">
+				<a href="{:U('User/newUser')}">注册</a>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	$(function(){
+		$('#login-link').click(function(){
+			$('#login-box').lightbox_me({
+		        centered: true, 
+		        onLoad: function() { 
+		            $('#login-box').find('input:first').focus();
+		            }
+		        });
+		    e.preventDefault();
+		});
+		$('#login-close-button').click(function(){
+			$('#login-box').trigger('close');
+		});
+	});
+	</script>
+
+	<div id="masthead">
+		<div id="header">
+			<div id="header-control">
+				<div class="search-box">
+					<form action="{:U('Search/result')}" method="GET" id="search-miniform">
+						<input type="text" value="搜索" defaultValue="搜索" name="q"/>
+						<a href="javascript:void(0);" onclick="$('search-miniform').submit();">{:L('搜索')}</a>
+					</form>
+				</div>
+				<div id="language-switch">
+					<a href="" class="active">中文</a> /
+					<a href="">ENG</a>
+				</div>
+				<div id="login-tab">
+					<a id="login-link" href="javascript:void(0);" class="active">{:L('登录')}</a> |
+					<a href="{:U('User/newUser')}">{:L('注册')}</a>
+				</div>
+			</div>
+			<a href="{:U('Index/index')}"><h1 id="ngo20-logo">NGO20</h1></a>
+			<ul id="main-menu">
+				<li {:cif('Index/index')}><a href="{:U('Index/index')}">{:L('首页')}</a></li>
+				<li {:gif('type=exngo')}><a href="{:U('Index/map')}/type/exngo">{:L('公益组织')}</a></li>
+				<li {:gif('type=excsr')}><a href="{:U('Index/map')}/type/excsr">{:L('企业')}</a></li>
+				<li {:gif('type=case')}><a href="{:U('Index/map')}/type/case">{:L('对接案例')}</a></li>
 			</ul>
 		</div>
 		<div class="clearfix"></div>
+	<?php if(!isset($top_bar)): ?>
 	</div>
-</div> <!-- header-wrapper -->
-</div> <!-- header -->
-    
-  <?php
-    if($_SESSION['flash']){
-    ?>
-    <div id="flash_block" class="{@flash.type}">
-        <div id="flash_content">
-            {@flash.content}
-        </div>
-    </div>
-   <?php }
-   $_SESSION['flash']=null;
-    unset($_SESSION['flash']);
-   ?>
-   
-   <?php if(!isset($_SESSION['login_user'])): ?>
-   		<div id="login-dialog-form" title="{:L('登录')}" style="display:none;">
-			<form id="login-form" action="{:U('Index/login_action')}" method="post">
-			<fieldset>
-				<label for="login-email">{:L('电子邮件')}</label>
-				<input type="text" name="email" id="login-email" class="text ui-widget-content ui-corner-all" /><br/>
-				<label for="password">{:L('密码')}</label>
-				<input type="password" name="password" id="login-password" value="" class="text ui-widget-content ui-corner-all" />
-			</fieldset>
-			<input type="checkbox" name="remember" value="1"/>两周内自动登录
-			</form>
-			<a href="{:U('User/forget_password')}">{:L('忘记密码?')}</a>
-		</div>
-		<div id="register-form" title="{:L('注册')}" style="display:none;">
-			<fieldset>
-				<p>{:L('请选择注册用户类型')}</p>
-				<a class="jqui-button" href="{:U('User/newUser/type/ngo')}">{:L('我是公益组织')}</a>
-				<p>{:L('注册后，您的组织将被标注在地图上。您还可以发布项目信息')}</p>
-				<a class="jqui-button" href="{:U('User/newUser/type/csr')}">{:L('我是企业(社会责任部门)')}</a>
-				<p>{:L('注册后，您的单位将被标注在地图上，您还可以发布企业社会责任项目')}</p>
-				<a class="jqui-button" href="{:U('User/newUser/type/ind')}">{:L('我是公益人')}</a>
-				<p>{:L('注册后，您可以关注公益组织和企业社会责任的信息，发布公益评论')}</p>
-				<a class="jqui-button" href="{:U('User/newUser/type/fund')}">{:L('我是基金会')}</a>
-				<p>{:L('注册后，您可以获得公益组织和企业社会责任的信息')}</p>
-			</fieldset>
-		</div>
-   <?php endif; ?>
-<div id="container">
+	<div id="wrapper">
+	<div id="container">
+	<?php endif; ?>

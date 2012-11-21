@@ -417,34 +417,24 @@ class EventAction extends Action{
     public function upload_image(){
         import('ORG.Net.UploadFile');
         import('ORG.Util.Image');
-        $media_model = M('Media');
-        $user_model = M('Users');
         $upload = new UploadFile();
         $upload->maxSize = 3145728;
         $upload->savePath = './Public/Uploaded/';
         $upload->thumb = true;
         $upload->thumbPath = './Public/Uploadedthumb/';
-        $upload->thumbPrefix="thumbs_,thumbm_,thumb_";
+        $upload->thumbPrefix="thumbs_,thumbm_,thumb_,thumbl_";
         $upload->allowExts=array('jpg','jpeg','png','gif');
-        $upload->thumbMaxWidth = "50,150,200";
-        $upload->thumbMaxHeight = "50,150,200";
+        $upload->thumbMaxWidth = "50,150,200,600";
+        $upload->thumbMaxHeight = "50,150,200,600";
         $upload->saveRule = 'uniqid';
         if($upload->upload()){
             $info = $upload->getUploadFileInfo();
-            $file_name = $info[0]["savename"];
-            $media_model->title = $_POST['title'];
-            $media_model->event_id = $_POST['event_id'];
-            $media_model->type = 'image';
-            $media_model->url = $file_name;
-            $media_id = $media_model->add();
-            if($media_id){
-            	setflash('ok','',L('上传图片成功'));
-            	$this->redirect('Event/view/id/'.$_POST['event_id']);
-            	return;
-            }
+            echo $info[0]["savename"];
+            return;
         }
-        setflash('error','',L('上传图片失败，原因：').$upload->getErrorMsg());
-        $this->redirect('Event/view/id/'.$_POST['event_id']);
+        else{
+            echo $upload->getErrorMsg();
+        }
     }
 
     public function ajax_upload(){

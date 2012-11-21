@@ -13,6 +13,12 @@ class EventsModel extends RelationModel{
         protected $_validate = array(
             array('name', 'require', '事件名必须')
         );
+
+        public function getImage($id){
+            $media_model = M('Media');
+            $media = $media_model->where(array('event_id'=>$id, 'type'=>'image'))->find();
+            return $media['url'];
+        }
 }
 
 ?>

@@ -1,152 +1,237 @@
-.left-column{
-  width: 710px;
-  float: left;
-}
-.right-column{
-  width: 230px;
-  float: right;
-}
-.event-map{
-	clear: both;
-}
-.ckepop{
-	margin-bottom: 10px;
-}
-#eventintro{
-  background-color: #E2E7E4;
-  padding: 15px;
+body a{
+    color: #85b552;
 }
 
-#event-intro-text{
-  width: 500px;
-  float: right;
-  padding: 0 0 0 12px;
+#container{
+    width: 830px;
 }
 
-#event-name{
-  font-size: 17px;
-  font-family: 华文细黑, 黑体, sans-serif;
-  color: #666676;
+#container h2 {
+    font-size: 24px;
+    color: #83b550;
+    margin: 24px 0 12px;
 }
 
-#event-owner{
-  font-size: 14px;
-  margin: 5px 0 10px 5px;
+#left-column {
+    float: left;
+    width: 265px;
 }
 
-#event-owner a.category{
-  padding-left: 10px;
-  color: #8B8D8C;
+div#event-intro{
+    background-color: #f7f7f7;
 }
 
-#info-detail dt{
-  line-height: 17px;
-  float:left;
-  clear: both;
-  margin: 0 0 8px 5px;
-  color: #8B8D8C;
-  font-family: 华文细黑, 黑体, sans-serif;
-  width: 75px;
-}
-#info-detail dd{
-  line-height: 17px;
-  min-height: 17px;
-  margin: 0 0 8px 8px;
-  color: #006600;
-  font-family: 宋体, serif;
-}
-#quick-links{
-  clear: both;
-}
-#quick-links li a{
-  margin: 5px;
-  padding: 8px 10px 8px 33px;
-  background-color: #9DD6C5;
-  font-size: 14px;
-  float:left;
-  color: #fff;
-}
-#quick-links li a:hover{
-  background-color: #83b3a5;
-}
-.detail-box, .media-box{
-  padding: 15px 10px 10px;
-}
-#description-text{
-  padding: 10px;
-  font-size: 14px;
-  line-height: 18px;
-}
-/* 次级标题下面的新增链接 */
-h2.section-title a{
-  font-size: 16px;
-  padding: 3px 30px;
-}
-h2.section-title a:hover{
-  background-color: #eee;
+div.event-fields {
+    margin: 0;
+    padding: 5px 15px;
+    clear: both;
+    line-height: 18px;
 }
 
-/* pop-up box */
-.form-field{
-  margin:10px;
-  font-size: 14px;
-}
-.form-field label{
-  margin-right: 10px;
+div.event-fields label {
+    float: left;
+    display: block;
+    font-weight: bold;
 }
 
-/* media style */
-#event-link-list div{
-  margin-left: 20px;
-  padding: 5px 20px;
-  background: url(../Img/icons/link_16.png) 0 3px no-repeat;
+div.event-fields p {
+    margin: 0;
+    margin-left: 60px;
+    padding: 0;
+    display: block;
 }
-.delete-link{
-  margin-left: 30px;
+
+a.more-fields {
+    padding: 7px 0px 10px 170px;
+    display: block;
+    color: #82b460;
+    font-family: 宋体, serif;
 }
-#event-image-list{
-  margin-top: 10px;
+
+#action-link a {
+    display: block;
+    width: 128px;
+    height: 34px;
+    background-color: #82b460;
+    float: left;
+    font-size: 18px;
+    color: white;
+    line-height: 34px;
+    text-align: center;
 }
-.image-box{
-  float: left;
-  border: 1px solid #ddd;
-  padding: 8px;
+
+#action-link a.second-link{
+    margin-left: 9px;
 }
-.image-actions{
-  padding: 5px 15px 0;
+
+#right-column {
+    margin-left: 275px;
 }
-/* icon sprites */
-#event-edit{
-  background: url(../Img/icons/event-edit.jpg) 8px 6px no-repeat;
+
+h3#event-title {
+    font-size: 18px;
+    color: white;
+    background-color: #82b460;
+    padding: 5px 8px;
+    display: inline;
 }
-#event-del{
-  background: url(../Img/icons/event-delete.jpg) 8px 6px no-repeat;
+
+div.event-description, div.org-description {
+    font-family: 宋体, serif;
 }
-#event-send-message{
-  background: url(../Img/icons/event-mail.jpg) 5px 7px no-repeat;
+
+div.event-description h3 {
+    font-size: 16px;
+    font-weight: normal;
 }
-#event-go-to-user{
-  background: url(../Img/icons/event-home.jpg) 5px 4px no-repeat;
+
+div.org-description {
+    line-height: 22.4px;
+    font-size: 12px;
 }
-#event-description h2.section-title{
-  background: url(../Img/icons/event-description.jpg) 9px 0 no-repeat;
-  padding: 
+a.more-activities{
+    color: #3366cc;
+    margin-left: 14px;
+    font-family: SimSun, sans-serif;
 }
-#images h2.section-title{
-  background: url(../Img/icons/event-photos.jpg) 9px 0 no-repeat;
+
+
+/* user/home */
+#prev-image, #next-image{
+    background: url(../Img/big-arrow-lr.gif) no-repeat;
 }
-#links h2.section-title{
-  background: url(../Img/icons/link.png) 9px 0 no-repeat;
+#prev-event, #next-event{
+    background: url(../Img/small-arrow-lr.gif) no-repeat;
 }
-#video h2.section-title{
-  background: url(../Img/icons/event-video.jpg) 9px 0 no-repeat;
+#event-list li.current{
+    background: url(../Img/icons/menubar-current-icon.gif) no-repeat;
 }
-a.add-link{
-  background: url(../Img/icons/plus_24.png) 9px 3px no-repeat;
+
+div#hero-image {
+    position: relative;
 }
-a.upload-photo{
-  background: url(../Img/icons/photo-upload.png) 9px 3px no-repeat;
+
+div.hero-images {
+    height: 323px;
+    overflow: hidden;
 }
-#comment-container h2{
-	background: url(../Img/comment-icon.png) no-repeat;
+
+#prev-image, #next-image {
+    position: absolute;
+    text-indent: -9999px;
+    height: 323px;
+    width: 40px;
+    top: 0;
 }
+
+#next-image {
+    background-position: -58px;
+    right: 0;
+}
+
+#prev-image {
+    background-position: 5px;
+}
+
+#prev-image, #next-image {
+    height: 323px;
+    position: absolute;
+    text-indent: -9999px;
+    top: 0;
+    width: 40px;
+}
+
+div#hero-image {
+    position: relative;
+}
+
+div.hero-images {
+    height: 323px;
+    width: 555px;
+    overflow: hidden;
+}
+#hero-image-label{
+    background: #85b552;
+    color: white;
+    font-weight: normal;
+}
+#hero-image-label span.title{
+    display: block;
+    padding: 7px 20px 5px;
+    font-size: 14px;
+}
+#hero-image-label h3{
+    margin: 0;
+    padding: 0 20px 12px;
+    font-size: 18px;
+}
+
+#event-list-wrapper {
+    padding-left: 18px;
+}
+
+#event-browser {
+    position: relative;
+}
+
+#event-list {
+    padding: 0;
+    margin: 0;
+}
+
+#event-list li {
+    width: 160px;
+    padding-left: 10px;
+    float: left;
+    display: block;
+    padding-top: 14px;
+}
+
+div.event-wrapper {
+    position: relative;
+    border: 1px solid #f0f0f0;
+    height: 73px;
+    overflow: hidden;
+}
+
+#event-list li.current{
+    padding-left: 9px;
+    padding-top: 13px;
+    background-position: 83px 7px;
+}
+
+#event-list li.current div.event-wrapper{
+    border: 2px solid #85b552;
+}
+
+div.event-wrapper a {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    color: black;
+    width: 72px;
+    height: 58px;
+    display: block;
+}
+
+
+#prev-event, #next-event {
+    position: absolute;
+    top: 14px;
+    height: 75px;
+    width: 25px;
+    text-indent: -9999px;
+    background-position: 5px;
+}
+
+#next-event {
+    right: 0px;
+    background-position: -41px;
+}
+
+div.event-thumb {
+    width: 75px;
+    height: 75px;
+    overflow: hidden;
+}
+

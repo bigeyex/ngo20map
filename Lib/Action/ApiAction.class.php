@@ -40,7 +40,7 @@ class ApiAction extends Action{
 				$this->redirect('User/recommend');
 			}
 			else{
-				$this->redirect('User/pre_register');
+				$this->redirect('User/newUser');
 			}
 		}
 	}

@@ -34,9 +34,10 @@
 }
 
 #map-filters li.last {
-    text-indent: -9999px;
-    width: 1px;
-    border-right: 0;
+    border: none;
+    margin-left: 5px;
+    width: auto;
+    background: none;
 }
 
 #map-filters div.dropdown {
@@ -109,15 +110,19 @@
 }
 
 #record-set li {
-    display: table;
     list-style: none;
     height: 37px;
     overflow: hidden;
     position: relative;
     border-bottom: 1px solid #c7c7c6;
-    width: 100%;
     padding-left: 17px;
     background: url(../Img/icons/marker-list-style.gif) no-repeat 6px;
+}
+
+#record-set li div{
+    height: 37px;
+    overflow: hidden;
+    display: table;
 }
 
 #record-set li p {
@@ -339,6 +344,48 @@ div.project {
 
 #showcase-ngo-2 {
     background: #81b460;
+}
+
+#showcase #project-ngo-1:hover img, #showcase #project-ngo-2:hover img, #showcase #showcase-ngo-2:hover img{
+    margin-top: -2px;
+    margin-left: -2px;
+}
+
+#showcase #showcase-ngo-1:hover img{
+    margin-top: -2px;
+    margin-left: 2px;
+}
+
+#showcase #showcase-ngo-1:hover, #showcase #showcase-ngo-2:hover{
+    background: none;
+    border: 2px solid #00651b;
+    width: 316px;
+    height: 166px;
+    color: black;
+}
+
+#showcase #project-ngo-1:hover, #showcase #project-ngo-2:hover{
+    background: none;
+    border: 2px solid #00651b;
+    width: 316px;
+    height: 76px;
+    color: black;
+}
+
+#showcase #project-ngo-1:hover{
+    border-color: #81b460;
+}
+
+#showcase #showcase-ngo-2:hover{
+    border-color: #81b460;
+}
+
+#showcase-ngo-1:hover a,#showcase-ngo-2:hover a,#project-ngo-1:hover a,#project-ngo-2:hover a{
+    color: black;
+}
+
+#showcase div.project{
+    overflow: hidden;
 }
 
 #main-menu li.current{

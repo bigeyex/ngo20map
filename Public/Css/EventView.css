@@ -46,6 +46,11 @@ a.more-fields {
     display: block;
     color: #82b460;
     font-family: 宋体, serif;
+    background: url(../Img/icons/more-info-arrow.gif) no-repeat 223px 6px;
+}
+
+a.more-fields.expanded{
+    background-position: 223px -25px;
 }
 
 #action-link a {
@@ -154,6 +159,7 @@ div.hero-images {
     background: #85b552;
     color: white;
     font-weight: normal;
+    position: relative;
 }
 #hero-image-label span.title{
     display: block;
@@ -163,6 +169,18 @@ div.hero-images {
 #hero-image-label h3{
     margin: 0;
     padding: 0 20px 12px;
+    font-size: 18px;
+}
+
+#hero-image-label span.no-project {
+    padding: 14px 0 16px 8px;
+}
+
+#hero-image-label a.action-link {
+    color: white;
+    position: absolute;
+    right: 15px;
+    top: 10px;
     font-size: 18px;
 }
 
@@ -235,3 +253,120 @@ div.event-thumb {
     overflow: hidden;
 }
 
+#recommend-users {
+    margin: 30px 0 20px;
+    position: relative;
+}
+
+#recommend-users h3{
+    font-size: 14px;
+}
+
+#recommend-users a.more {
+    position: absolute;
+    float: left;
+    top: 2px;
+    left: 195px;
+    font-size: 12px;
+    text-decoration: underline;
+}
+
+#recommend-list-left{
+    float: left;
+    width: 236px;
+}
+
+#recommend-list-right{
+    margin-left: 278px;
+    width: 248px;
+}
+
+.recommend-user{
+    height: 160px;
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+
+.user-pic{
+    float: left;
+}
+
+.user-content{
+    margin-left: 57px;
+}
+
+.event-count{
+    margin: 0;
+    color: #85b552;
+}
+
+.event-count span{
+    color: #9f999f;
+}
+
+.event-description{
+    margin: 3px 0;
+    line-height: 24px;
+}
+
+#switcher-wrapper {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    width: 500px;
+    text-align: right;
+}
+
+#switchers {
+    margin-left: auto;
+    float: right;
+}
+
+.switcher {
+    background: white;
+    width: 5px;
+    height: 5px;
+    display: block;
+    float: left;
+    margin-left: 7px;
+    margin-top: 1px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.switcher.current {
+    width: 7px;
+    height: 7px;
+    margin-top: 0;
+}
+
+.progress-bar {
+    display: block;
+    padding-top: 7px;
+    position: relative;
+}
+
+/* progress-bar */
+.progress-filler, .progress-filled {
+    border-radius: 5px;
+}
+
+.progress-filler {
+    display: block;
+    width: 120px;
+    margin-left: 80px;
+    height: 6px;
+    background-color: #dedede;
+}
+
+.progress-filled {
+    background-color: #87b767;
+    display: block;
+    height: 6px;
+}
+
+.progress-number {
+    position: absolute;
+    top: 0;
+    left: 208px;
+}

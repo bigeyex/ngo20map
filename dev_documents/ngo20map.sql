@@ -1,18 +1,4 @@
-/*
- Navicat Premium Data Transfer
 
- Source Server         : 43
- Source Server Type    : MySQL
- Source Server Version : 50137
- Source Host           : 202.141.163.43
- Source Database       : ngo20map
-
- Target Server Type    : MySQL
- Target Server Version : 50137
- File Encoding         : utf-8
-
- Date: 08/16/2012 17:21:55 PM
-*/
 
 SET NAMES utf8;
 SET FOREIGN_KEY_CHECKS = 0;
@@ -54,7 +40,7 @@ CREATE TABLE `events` (
   `contact_email` text,
   `contact_qq` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5406 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=5406 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 --  Table structure for `follow`
@@ -67,7 +53,7 @@ CREATE TABLE `follow` (
   `type` varchar(10) NOT NULL DEFAULT 'user',
   `extra` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=157 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=159 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 --  Table structure for `forget_password`
@@ -120,7 +106,7 @@ CREATE TABLE `media` (
   `type` varchar(20) NOT NULL,
   `title` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=212 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=212 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 --  Table structure for `messages`
@@ -134,7 +120,7 @@ CREATE TABLE `messages` (
   `create_time` datetime NOT NULL,
   `is_read` smallint(6) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=70 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=70 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 --  Table structure for `related_links`
@@ -146,7 +132,7 @@ CREATE TABLE `related_links` (
   `url` varchar(500) NOT NULL,
   `label` varchar(200) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=214 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=214 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 --  Table structure for `reviews`
@@ -162,7 +148,7 @@ CREATE TABLE `reviews` (
   `create_time` datetime NOT NULL,
   `owner_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=77 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=77 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 --  Table structure for `tagmap`
@@ -173,7 +159,7 @@ CREATE TABLE `tagmap` (
   `tag_id` int(11) NOT NULL,
   `event_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1416 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=1416 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED;
 
 -- ----------------------------
 --  Table structure for `tags`
@@ -186,7 +172,7 @@ CREATE TABLE `tags` (
   `create_time` datetime NOT NULL,
   `change_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=547 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=547 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 --  Table structure for `users`
@@ -236,32 +222,4 @@ CREATE TABLE `users` (
   `fund_source` text,
   `login_count` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1256 DEFAULT CHARSET=utf8;
-
--- ----------------------------
---  Procedure structure for `swap_lat_lon`
--- ----------------------------
-DROP PROCEDURE IF EXISTS `swap_lat_lon`;
-delimiter ;;
-CREATE DEFINER=`root`@`%` PROCEDURE `swap_lat_lon`()
-begin
-	declare event_id int;
-	declare lon varchar(200);
-	declare lat varchar(200);
-	declare stop int default 0;
-	declare cur cursor for select id,longitude,latitude from `events` where latitude<longitude;
-	declare CONTINUE HANDLER FOR SQLSTATE '02000' SET stop=1;
-
-	open cur;
-
-	
-	while stop <> 1 DO
-		fetch cur into event_id,lon,lat;
-		update `events` set longitude=lat,latitude=lon where id=event_id;
-	end while;
-
-	close cur;
-end
- ;;
-delimiter ;
-
+) ENGINE=MyISAM AUTO_INCREMENT=1259 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;

@@ -18,57 +18,11 @@ class UserAction extends Action {
         $this->display();
     }
 
-    public function save_avatar() {
-        import('ORG.Net.UploadFile');
-        import('ORG.Util.Image');
-        $user_model = M('Users');
-        $upload = new UploadFile();
-        $upload->maxSize = 3145728;
-        $upload->savePath = './Public/Uploaded/';
-        $upload->thumb = true;
-        $upload->thumbPath = './Public/Uploadedthumb/';
-        $upload->thumbPrefix="thumbs_,thumbm_,thumb_";
-        $upload->thumbMaxWidth = "50,150,200";
-        $upload->thumbMaxHeight = "50,150,200";
-        $upload->saveRule = 'uniqid';
-        if(!$upload->upload()) {
-            print_r($upload->getErrorMsg());
-            die(L('图片上传失败'));
-        }
-        else {
-            $info = $upload->getUploadFileInfo();
-        }
-        $user_model->id = $_SESSION['login_user']['id'];
-        $user_model->image = $info[0]["savename"];
-        $user_model->save();
-        setflash('ok',L('成功修改用户头像'),L('成功修改用户头像'));
-        $_SESSION['login_user']['photo'] = $info[0]["savename"];
-        $this->redirect('avatar');
-    }
-
     public function commitedit() {
         import('@.Util.Authority');
 
         $user=M('Users');
         $user->create();
-
-        //以下为头像上传代码
-        import('ORG.Net.UploadFile');
-        import('ORG.Util.Image');
-        $upload = new UploadFile();
-        $upload->maxSize = 3145728;
-        $upload->savePath = './Public/Uploaded/';
-        $upload->thumb = true;
-        $upload->thumbPath = './Public/Uploadedthumb/';
-        $upload->thumbPrefix="thumbs_,thumbm_,thumb_";
-        $upload->thumbMaxWidth = "50,150,200";
-        $upload->thumbMaxHeight = "50,150,200";
-        $upload->saveRule = 'uniqid';
-        if($upload->upload()) {
-            $info = $upload->getUploadFileInfo();
-            if($info[0]["savename"])
-                $user->image = $info[0]["savename"];
-        }
         
         //如果不是管理员或者没有传id，则改自己的资料
         if(!isset($_POST['id']) || !$_SESSION['login_user']['is_admin']){
@@ -96,10 +50,10 @@ class UserAction extends Action {
             else{
                 setflash('error','',L('信息更新失败'));
             }
-            $this->redirect('home');//写好User/home后定位到该目标
+            $this->redirect('edit');//写好User/home后定位到该目标
         }
 
-        $this->redirect('home');//写好User/home后定位到该目标
+        $this->redirect('edit');//写好User/home后定位到该目标
     }
 
     public function edit() {
@@ -111,14 +65,12 @@ class UserAction extends Action {
         $user_model = M('Users');
         $user_data = $user_model->find($id);
         $type = $user_data['type'];
-        $type_string = C('USER_TYPE');
-        
+        $completeness = $this->calculate_completeness();
+        $this->assign('complete_100',$completeness);
+        $this->assign('complete_pixel',$completeness/100*162);
         $this->assign('type', $type);
         $this->assign('user', $user_data);
-        $this->assign('type_string', $type_string);
-        $this->assign('field_title', $this->build_field_title($type));
-        $this->assign('target_url', 'commitedit');
-        $this->display('newUser');
+        $this->display();
     }
 
     public function editpass() {
@@ -205,19 +157,43 @@ class UserAction extends Action {
         //get all medals
         $user_id = $user_data['id'];
         $model = new Model();
-
         $medals = $model->query("select * from medal where medal.id in (select medal_id from medalmap where user_id=$user_id)");
+        
+        //get recommends
+        $event_model = M('Events');
         $related_ngo = $this->query_recommend("ngo","users",2,$user_id);
         $related_csr = $this->query_recommend("csr","users",2,$user_id);
-        $user_events = $model->query('select id,name from events where user_id='.$user_id);
+        for($i=0;$i<count($related_ngo);$i++){
+            $related_ngo[$i]['event_count'] = $event_model->where(array('user_id'=>$related_ngo[$i]['id']))->count();
+        }
+        for($i=0;$i<count($related_csr);$i++){
+            $related_csr[$i]['event_count'] = $event_model->where(array('user_id'=>$related_csr[$i]['id']))->count();
+        }
 
+        //get user events
+        $user_events = $model->query('select id,name from events where enabled=1 and user_id='.$user_id);
+        $user_event_images = $model->query("select url,event_id from media where event_id in (select id from events where enabled=1 and user_id=$user_id)");
+        $event_image_map = array();
+        foreach ($user_event_images as $image) {
+            $event_image_map[$image['event_id']][] = $image['url'];
+        }
+
+        //get completeness data
+        if($is_self){
+            $completeness = $this->calculate_completeness();
+            $this->assign('complete_100',$completeness);
+            $this->assign('complete_pixel',$completeness/100*120);
+        }
 
         $this->assign('medals', $medals);
-        
         $this->assign('is_self', $is_self);
         $this->assign('user_data', $user_data);
         $this->assign('tab_value', $tab_value);
         $this->assign('type_select_status', $type_select_status);
+        $this->assign('user_events',$user_events);
+        $this->assign('event_image_map',$event_image_map);
+        $this->assign('related_ngo',$related_ngo);
+        $this->assign('related_csr',$related_csr);
         $this->display();
     }
 
@@ -288,33 +264,41 @@ class UserAction extends Action {
     
     
 
-    public function check_unique() {
+    public function check_unique_email() {
         $user=M('Users');
-        $user->create();
-        $email = $_GET['q'];
+        $email = $_GET['fieldValue'];
         $u = $user->where(array('email'=>array('eq',$email)))->count();
         if($u!=0) {
-            echo L('电子邮箱已被使用');
+            echo json_encode(array('email', false));
         }
         else {
-            echo 'ok';
+            echo json_encode(array('email', true));
         }
     }
     
     public function check_unique_name(){
+        if(isset($_SESSION['login_user']) && $_SESSION['login_user']['name']==$_GET['fieldValue']){
+            echo json_encode(array('name', true));
+            return;
+        }
 		$user_model = M('Users');
-		if($_GET['name'] == $_GET['q']){
-			echo 'ok';
-			return;
-		}
-		$user_count = $user_model->where(array('name' => $_GET['q']))->count();
+		$user_count = $user_model->where(array('name' => $_GET['fieldValue']))->count();
 		if($user_count == 0){
-			echo 'ok';
+			echo json_encode(array('name', true));
 		}
 		else{
-			echo L('用户名已存在');
+			echo json_encode(array('name', false));
 		}
 	}
+
+    public function check_verify(){
+        if($_SESSION['verify'] != strtolower($_GET['fieldValue'])) {
+            echo json_encode(array('verify', false));
+        }
+        else{
+            echo json_encode(array('verify', true));
+        }
+    }
 	
 	public function check_exist(){
 		$user_model = M('Users');
@@ -566,6 +550,28 @@ class UserAction extends Action {
     	$forget_password_model->where(array('id'=>$issue['id']))->delete();
     	setflash('ok','', L('密码修改成功'));
     	$this->redirect('Index/index');
+    }
+
+    function calculate_completeness($user=null){
+        $user = $_SESSION['login_user'];
+        $check_fields = array('aim', 'work_field', 'register_year', 'service_area', 'staff_fulltime', 'staff_parttime', 'staff_volunteer', 'website', 'public_email', 'phone', 'province', 'city', 'county', 'place', 'contact_name', 'weibo');
+        $completeness = 10;
+        $point_per_item = 60/count($check_fields);
+        foreach ($check_fields as $field) {
+            if(!empty($user[$field])){
+                $completeness += $point_per_item;
+            }
+        }
+        $model = new Model();
+        $event_count_result = $model->query('select count(*) cnt from events where user_id='.$user['id']);
+        if($event_count_result[0]['cnt']>0){
+            $completeness+=20;
+        }
+        $image_count_result = $model->query('select count(*) cnt from media where event_id in (select id from events where user_id='.$user['id'].')');
+        if($image_count_result[0]['cnt']>0){
+            $completeness+=10;
+        }
+        return round($completeness);
     }
 }
 ?>

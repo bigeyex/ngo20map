@@ -35,7 +35,6 @@
 }
 
 .form-field input[type=text], .form-field input[type=password] {
-    box-shadow: 7px 7px #888 inset;
     background: #e9e9e9;
     height: 14px;
     width: 261px;
@@ -55,7 +54,7 @@
     margin-bottom: 10px;
 }
 
-#type-selector label, .check-group label {
+#type-selector label{
     padding: 3px 8px;
     background: #81b460;
     color: white;
@@ -64,10 +63,32 @@
 .check-group label {
     display: block;
     float: left;
-    margin: 3px;
+    width: 72px;
+    height: 29px;
+    margin: 1px;
+    padding: 0;
+    line-height: 29px;
+    text-align: center;
+    background: white;
+    color: #85b552;
 }
 
-#type-selector label.selected, .check-group label.selected {
+.check-group label.selected{
+    background: #85b552;
+    color: white;
+}
+
+.check-group label:hover{
+    background: #85b552;
+    color: white;
+}
+
+.check-group label:active{
+    background: #709944;
+    color: white;
+}
+
+#type-selector label.selected{
     background: #00651b;
 }
 
@@ -275,3 +296,41 @@
     cursor: pointer;
 }
 
+.multi-select-box{
+    position: relative;
+    background: url(../Img/multi_select_box.gif) no-repeat;
+    background-position: 108px;
+    width: 220px;
+}
+
+.check-group .multi-select-box input {
+    border: none;
+    background: none;
+    box-shadow: none;
+    width: 80px;
+    margin-left: 3px;
+    height: 20px;
+}
+
+.multi-select-dropdown {
+    position: absolute;
+    width: 222px;
+    background: white;
+    border: 1px solid #85b552;
+    display: none;
+    z-index: 1000;
+    left: 108px;
+}
+
+#newform a.hideable-section{
+    background: url(../Img/fold-arrows.gif) no-repeat 59px 2px;
+    margin-left: 50px;
+    display: block;
+    font-size: 14px;
+    color: #b5b5b5;
+    margin-bottom: 17px;
+}
+
+#newform a.hideable-section.folded{
+    background-position: 59px -24px;
+}

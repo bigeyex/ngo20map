@@ -12,11 +12,22 @@
 			<span><img src="__APP__/Public/Img/medal/{$medal.image}" alt="medal_image"></span>
 			<?php endforeach; ?>
 		</div>
+		<?php if($is_self): ?>
+			<div class="event-fields">
+				<label for="">{:L('资料完成度')}: </label>
+				<span class="progress-bar">
+                    <span class="progress-filler">
+                        <span class="progress-filled" style="width:{$complete_pixel}px;"></span>
+                    </span>
+                    <span class="progress-number">{$complete_100}%</span>
+                </span>
+			</div>
+		<?php endif; ?>
 		<div class="event-fields">
 			<?php if($user_data['type'] != 'ind'): ?>
 			<label for="">{:L('办公地址')}: </label>
 			<p>
-				{$user_data.place}
+				{$user_data.province}{$user_data.city}{$user_data.county}{$user_data.place}
 				<?php if($user_data['post_code']): ?>
 				({:L('邮编')}: {$user_data.post_code})
 				<?php endif; ?>
@@ -26,7 +37,10 @@
 		<?php if($user_data['type'] != 'ind'): ?>
 		<div class="event-fields">
 			<label for="">{:L('联系方式')}: </label>
-			<p>{$user_data.contact_name}({:L('电话')}):{$user_data.phone} <br/>
+				<?php if(!empty($user_data['contact_phone'])): ?>
+			<p>{$user_data.contact_name}({:L('电话')}):
+				<a href="javascript:void(0);" class="reveal-phone-number" user-id="{$user_data.id}">查看</a> <br/>
+				<?php endif; ?>
 		       ({:L('QQ号码')}){$event_data.contact_qq}<br/>
 		   </p>
 		</div>
@@ -63,8 +77,15 @@
 		<a href="javascript:void(0);" class="more-fields" onclick="$('#more-fields').toggle();$('.more-fields').toggleClass('expanded');">{:L('更多信息')}</a>
 	</div>
 	<div id="action-link">
-		<a href="">{:L('关注')}</a>
-		<a href="" class="second-link">{:L('交换名片')}</a>
+		<?php if($is_self): ?>
+		<a href="{:U('Manage/events')}">{:L('项目管理')}</a>
+		<a href="{:U('User/edit')}" class="second-link">{:L('修改资料')}</a>
+		<?php else: ?>
+		<?php if(isset($_SESSION['login_user'])): ?>
+		<a id="namecard-follow-link" href="javascript:void(0);" onclick="follow({$user_data.id})">{:L('关注')}</a>
+		<?php endif; ?>
+		<!-- <a href="" class="second-link">{:L('交换名片')}</a> -->
+		<?php endif; ?>
 	</div>
 
 </div>
@@ -72,6 +93,7 @@
 
 <div id="right-column">
 	<div id="event-carousal">
+		<?php if(count($user_events)>0): ?>
 		<div id="hero-image">
 			<div id="hero-image-group">
 				<div class="hero-images">
@@ -87,38 +109,93 @@
 			<div id="prev-image" onclick="image_slider.goToPreviousSlide();">&lt;</div>
 			<div id="next-image" onclick="image_slider.goToNextSlide();">&gt;</div>
 		</div>
-		
 		<div id="hero-image-label">
 			<span class="title">{:L('案例分享')}</span>
-			<h3>云顶观光之亲子游学活动方案</h3>
-			<span class="switcher current"></span>
-			<span class="switcher"></span>
-			<span class="switcher"></span>
+			<h3></h3>
+			<div id="switcher-wrapper"><div id="switchers"></div></div>
 		</div>
 		<div id="event-browser">
 			<div id="prev-event" onclick="event_slider.goToPreviousSlide();">&lt;</div>
 			<div id="next-event" onclick="event_slider.goToNextSlide();">&gt;</div>
 			<div id="event-list-wrapper">
 				<ul id="event-list">
-					<li>
+					<?php $i=0;foreach ($user_events as $event): ?>
+					<li slide-count="{$i}" event-id="{$event.id}">
 						<div class="event-wrapper">
-							<div class="event-thumb"><img src="__APP__/Public/Img/no-image-small.gif" height="75" alt="no-image"/></div>
-							<a>云顶观光之亲子游学活动方案</a>
+							<div class="event-thumb">
+								<?php if (isset($event_image_map[$event['id']])): ?>
+									<img src="__APP__/Public/Uploadedthumb/thumbm_<?=$event_image_map[$event[
+									'id']][0]?>" height="75" alt="{$event.name}"/>
+								<?php else: ?>
+									<img src="__APP__/Public/Img/no-image-small.gif" height="75" alt="no-image"/>
+								<?php endif ?>
+							</div>
+							<a href="{:U('Event/view')}/id/{$event.id}" target="_blank">{$event.name}</a>
 						</div>
 					</li>
-					<li>
-						<div class="event-wrapper">
-							<div class="event-thumb"><img src="__APP__/Public/Img/no-image-small.gif" height="75" alt="no-image"/></div>
-							<a>云顶观光之亲子游学活动方案</a>
-						</div>
-					</li>
-					<li>
-						<div class="event-wrapper">
-							<div class="event-thumb"><img src="__APP__/Public/Img/no-image-small.gif" height="75" alt="no-image"></div>
-							<a>云顶观光之亲子游学活动方案</a>
-						</div>
-					</li>
+					<?php $i++;endforeach; ?>
 				</ul>
+			</div>
+		</div>
+		<?php else: ?>
+		<div id="hero-image">
+			<div id="hero-image-group">
+				<div class="hero-images">
+					<img src="__APP__/Public/Img/no-project.gif" width="555" alt="hero image"/>
+				</div>
+			</div>
+		</div>
+		<?php if($is_self): ?>
+		<div id="hero-image-label">
+			<span class="title no-project">{:L('发布项目后不仅方便大家对你的了解而且提高组织的关注度。')}</span>
+			<a href="{:U('Event/add')}" class="action-link">{:L('发布项目')}</a>
+		</div>
+		<?php endif; ?>
+		<?php endif; ?>
+	</div>
+
+	<div id="recommend-users">
+		<h3>{:L('你可能感兴趣的NGO和企业')}</h3><a class="more" href="{:U('Search/result')}/model/users/rec_id/{$user_data.id}">{:L('查看更多')}</a>
+		<div id="recommend-list">
+			<div id="recommend-list-left">
+				<?php foreach($related_ngo as $user): ?>
+				<div class="recommend-user">
+					<div class="user-pic">
+						<a href="{:U('User/home')}/id/{$user.id}">
+						<?php if($user['photo']): ?>
+							<img id="photo-image" src="__APP__/Public/Uploadedthumb/thumbm_{$user.photo}" alt="" width="50"/>
+						<?php else: ?>
+							<img id="photo-image" src="__APP__/Public/Img/no-image-small.gif" alt=""  width="50"/>
+						<?php endif; ?>
+						</a>
+					</div>
+					<div class="user-content">
+						<a href="{:U('User/home')}/id/{$user.id}" class="user-name">{$user.name}</a>
+						<p class="event-count"><span>{$user.event_count}</span> {:L('项目')}</p>
+						<p class="event-description">{$user.introduction|mb_substr=0,200}</p>
+					</div>
+				</div>
+				<?php endforeach; ?>
+			</div>
+			<div id="recommend-list-right">
+				<?php foreach($related_csr as $user): ?>
+				<div class="recommend-user">
+					<div class="user-pic">
+						<a href="{:U('User/home')}/id/{$user.id}">
+						<?php if($user['photo']): ?>
+							<img id="photo-image" src="__APP__/Public/Uploadedthumb/thumbm_{$user.photo}" alt="" width="50"/>
+						<?php else: ?>
+							<img id="photo-image" src="__APP__/Public/Img/no-image-small.gif" alt=""  width="50"/>
+						<?php endif; ?>
+						</a>
+					</div>
+					<div class="user-content">
+						<a href="{:U('User/home')}/id/{$user.id}" class="user-name">{$user.name}</a>
+						<p class="event-count"><span>{$user.event_count}</span> {:L('项目')}</p>
+						<p class="event-description">{$user.introduction|mb_substr=0,200}</p>
+					</div>
+				</div>
+				<?php endforeach; ?>
 			</div>
 		</div>
 	</div>
@@ -130,6 +207,10 @@
 <script type="text/javascript">
 	var longitude = {$user_data.longitude};
 	var latitude = {$user_data.latitude};
+	var user_event_images = {:json_encode($event_image_map)};
+	var events_count = {:count($user_events)};
+
+
 	var map = new BMap.Map("mini-map");
 	var point = new BMap.Point(longitude, latitude);
 	map.centerAndZoom(point, 10);
@@ -158,15 +239,50 @@
     	controls: false
 	});
 
+	var display_count = events_count>3?3:events_count;
 	var event_slider = $('#event-list').bxSlider({
 		controls: false,
-		displaySlideQty: 3,
+		displaySlideQty: display_count,
     	moveSlideQty: 1,
     	onAfterSlide: function(num, qty, html){
     		$('#event-list li').removeClass('current');
     		$(html).addClass('current');
+    		var event_id = $(html).attr('event-id');
+    		var event_name = $(html).find('a').text();
+    		$('#hero-image-group').empty();
+    		$('#switchers').empty();
+    		if(user_event_images[event_id] != undefined){
+    			var j=0;
+	    		for(var i in user_event_images[event_id]){
+	    			$('#hero-image-group').append('<div class="hero-images"><img src="__APP__/Public/Uploaded/'+user_event_images[event_id][i]+'" width="555" alt="hero image"/></div>');
+	    			$('#switchers').append('<span class="switcher" slider-count="'+j+'"></span>');
+	    			j++;
+	    		}
+	    		$('.switcher').click(function(e){
+	    			image_slider.goToSlide($(e.currentTarget).attr('slider-count'));
+	    		});
+    		}
+    		else{
+    			$('#hero-image-group').append('<div class="hero-images"><img src="__APP__/Public/Img/no-image.gif" width="555" alt="hero image"/></div>');
+    		}
+    		image_slider = $('#hero-image-group').bxSlider({
+		    	controls: false,
+		    	onAfterSlide: function(num, qty, html){
+		    		$('.switcher').removeClass('current');
+		    		$('.switcher[slider-count='+num+']').addClass('current');
+		    	}
+			});
+			$('#hero-image-label h3').text(event_name);
     	}
-	})
+	});
+
+	$('#event-list li').click(function(e){
+		event_slider.goToSlide($(e.currentTarget).attr('slide-count'));
+	});
+
+	$('.reveal-phone-number').click(function(e){
+		$(e.currentTarget).replaceWith('<img src="{:U('Service/get_user_phone')}/id/'+$(e.currentTarget).attr('user-id')+'" />');
+	});
 
 </script>
 

@@ -4,7 +4,7 @@
 		<div id="long-search-box" class="block">
 			<div class="search-box long-search-box">
 				<form action="{:U('Search/result')}" method="GET" id="search-form">
-					<input type="text" name="q" value="{.q}"/>
+					<input type="text" name="q" value="{$q}"/>
 					<input type="hidden" name="preserve" value="1"/>
 					<a href="javascript:void(0);" onclick="$('search-form').submit();">{:L('搜索')}</a>
 				</form>
@@ -18,7 +18,10 @@
 						<a href="{:U('Search/result')}/preserve/1/work_field/0">{:L('全部领域')}</a>
 					</li>
 					<?php foreach(C('ORG_FIELDS') as $field){ ?>
-					        <li <?php if(isset($work_field) && $work_field == $field): ?> class="selected" <?php endif; ?>>
+					<li <?php if(isset($work_field) && $work_field == $field): ?> class="selected" <?php endif; ?>>
+					    <?php if(isset($work_field) && $work_field == $field): ?>
+							<a href="{:U('Search/result')}/preserve/1/work_field/0" class="cancel-link">取消选择</a>
+						<?php endif; ?>
 						<a href="{:U('Search/result')}/preserve/1/work_field/{$field}">{:L($field)}</a>
 					</li>
 					        <?php } ?>
@@ -31,12 +34,21 @@
 						<a href="{:U('Search/result')}/preserve/1/progress/0">{:L('全部项目进度')}</a>
 					</li>
 					<li <?php if(isset($progress) && $progress == 'planning'): ?> class="selected" <?php endif; ?>>
+						<?php if(isset($progress) && $progress == 'planning'): ?>
+							<a href="{:U('Search/result')}/preserve/1/progress/0" class="cancel-link">取消选择</a>
+						<?php endif; ?>
 						<a href="{:U('Search/result')}/preserve/1/progress/planning">{:L('筹划中')}</a>
 					</li>
 					<li <?php if(isset($progress) && $progress == 'running'): ?> class="selected" <?php endif; ?>>
+						<?php if(isset($progress) && $progress == 'running'): ?>
+							<a href="{:U('Search/result')}/preserve/1/progress/0" class="cancel-link">取消选择</a>
+						<?php endif; ?>
 						<a href="{:U('Search/result')}/preserve/1/progress/running">{:L('进行中')}</a>
 					</li>
 					<li <?php if(isset($progress) && $progress == 'finished'): ?> class="selected" <?php endif; ?>>
+						<?php if(isset($progress) && $progress == 'finished'): ?>
+							<a href="{:U('Search/result')}/preserve/1/progress/0" class="cancel-link">取消选择</a>
+						<?php endif; ?>
 						<a href="{:U('Search/result')}/preserve/1/progress/finished">{:L('已完成')}</a>
 					</li>
 				</ul>
@@ -50,7 +62,10 @@
 					<?php
 					        	$config_event_type = C('EVENT_TYPE');
 					        	foreach($config_event_type['requirement'] as $field){ ?>
-					    	<li <?php if(isset($req) && $req == $field): ?> class="selected" <?php endif; ?>>
+					<li <?php if(isset($req) && $req == $field): ?> class="selected" <?php endif; ?>>
+						<?php if(isset($req) && $req == $field): ?>
+							<a href="{:U('Search/result')}/preserve/1/req/0" class="cancel-link">取消选择</a>
+						<?php endif; ?>
 						<a href="{:U('Search/result')}/preserve/1/req/{$field}">{:L($field)}</a>
 					</li>
 					        <?php } ?>
@@ -65,7 +80,10 @@
 					<?php
 					        	$config_event_type = C('EVENT_TYPE');
 					        	foreach($config_event_type['resource'] as $field){ ?>
-					    	<li <?php if(isset($res) && $res == $field): ?> class="selected" <?php endif; ?>>
+					<li <?php if(isset($res) && $res == $field): ?> class="selected" <?php endif; ?>>
+						<?php if(isset($res) && $res == $field): ?>
+							<a href="{:U('Search/result')}/preserve/1/res/0" class="cancel-link">取消选择</a>
+						<?php endif; ?>
 						<a href="{:U('Search/result')}/preserve/1/res/{$field}">{:L($field)}</a>
 					</li>
 					        <?php } ?>
@@ -74,7 +92,21 @@
 		</div>
 	</div>
 	<div id="search-result" class="block">
-		<div id="result-count">{:L('找到')}<span id="result-count">{$result_count}</span>{:L('条关于')}“<span class="keyword">{.q}</span>”{:L('的信息')}</div>
+		<div id="result-count">{:L('找到')}<span id="result-count">{$result_count}</span>{:L('条关于')}“<span class="keyword">{$sq}{$q}</span>
+			<?php if($work_field): ?>
+				,<a href="{:U('Search/result')}/preserve/1/work_field/0">{$work_field}</a>
+			<?php endif; ?>
+			<?php if($progress_text): ?>
+				,<a href="{:U('Search/result')}/preserve/1/progress/0">{$progress_text}</a>
+			<?php endif; ?>
+			<?php if($req): ?>
+				,<a href="{:U('Search/result')}/preserve/1/req/0">{$req}</a>
+			<?php endif; ?>
+			<?php if($res): ?>
+				,<a href="{:U('Search/result')}/preserve/1/res/0">{$res}</a>
+			<?php endif; ?>
+
+			”{:L('的信息')}</div>
 		<div id="primary-filter" class="section">
 			{:L('筛选结果')} : 
 			<a href="{:U('Search/result')}/preserve/1/type/0" <?php if(!$type): ?>class="current"<?php endif; ?>>{:L('全部')}</a> |
@@ -101,8 +133,8 @@
 					</a>
 				</h3>
 				<p class="content">
-					{$result.content|mb_substr=0,200}
-					<?php if(mb_strlen($result['content']) > 200): ?> ... <?php endif; ?>
+					{$result.content}
+					<?php if(mb_strlen($result['content']) > 150): ?> ... <?php endif; ?>
 				</p>
 				
 				<?php else: ?>
@@ -112,8 +144,8 @@
 					</a>
 				</h3>
 				<p class="content">
-					{$result.content|mb_substr=0,200}
-					<?php if(mb_strlen($result['content']) > 200): ?> ... <?php endif; ?>
+					{$result.content}
+					<?php if(mb_strlen($result['content']) > 150): ?> ... <?php endif; ?>
 				</p>
 				
 				<?php endif; ?>

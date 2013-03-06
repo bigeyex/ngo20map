@@ -124,7 +124,7 @@ class EventAction extends Action{
         	$event_type = $_GET['type'];
         }
         else{
-        	$event_type = empty($user_type) ? 'ind' : $user_type ;
+        	$event_type = empty($user_type) ? 'csr' : $user_type ;
         }
         
         $event_type_label = $event_types[$event_type];	//事件类型的文字描述
@@ -163,8 +163,6 @@ class EventAction extends Action{
             return;
         }
 
-        $event_model->item_field = implode(' ',$_POST['event_field']);
-        $event_model->res_tags = implode(' ',$_POST['event_type']);
         if($_POST['begin_time']){
             $event_model->begin_time = $_POST['begin_time'];
         }
@@ -189,6 +187,16 @@ class EventAction extends Action{
         }
         else{
             $event_model->user_id = $_SESSION['login_user']['id'];
+        }
+
+        if($_SESSION['login_user']['is_admin']){
+            if(isset($_POST['type'])) 
+                $event_model->type = $_POST['type'];
+            else 
+                $event_model->type = 'ind';
+        }
+        else{
+            $event_model->type = $_SESSION['login_user']['type'];
         }
 
         $event_model->host = $this->build_db_string($_POST['host']);
@@ -222,6 +230,15 @@ class EventAction extends Action{
         		$tag_id = $existing_tag['id'];
         	}
         	$tagmap_model->add(array('tag_id'=>$tag_id, 'event_id'=>$this_id));
+        }
+
+        //处理图片媒体
+        $media_model = M('Media');
+        $media_model->where(array('event_id'=>$this_id))->delete();
+        $match_all = array();
+        preg_match_all('/thumbl_([^\"]+)\\"/i',$_POST['description'],$match_all);
+        foreach ($match_all[1] as $url) {  
+            $media_model->add(array('url'=>$url, 'event_id'=>$this_id, 'type'=>'image'));
         }
        
         setflash('ok','','事件已成功添加');
@@ -299,6 +316,15 @@ class EventAction extends Action{
         $event_model->save();
         
         setflash('ok','','事件已成功保存');
+
+        //处理图片媒体
+        $media_model = M('Media');
+        $media_model->where(array('event_id'=>$this_id))->delete();
+        $match_all = array();
+        preg_match_all('/thumbl_([^\"]+)\\"/i',$_POST['description'],$match_all);
+        foreach ($match_all[1] as $url) {  
+            $media_model->add(array('url'=>$url, 'event_id'=>$this_id, 'type'=>'image'));
+        }
 
         $this->redirect('Event/view/id/'. $_POST['id']);
     }

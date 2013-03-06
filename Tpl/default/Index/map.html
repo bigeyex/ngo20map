@@ -13,9 +13,8 @@
 				<span model="users" type="fund">{:L('基金会名称')}</span>
 				<?php elseif ($_GET['type'] == 'excsr'): ?>
 				<span model="" type="csr" all="1">{:L('全部')}</span>
-				<span model="events" type="ind">{:L('企业资源')}</span>
+				<span model="events" type="csr">{:L('企业资源')}</span>
 				<span model="users" type="csr">{:L('企业名单')}</span>
-				<span model="events" type="csr">{:L('企业项目')}</span>
 				<?php endif; ?>
 			</div>
 		</li>
@@ -55,10 +54,10 @@
 			</div>
 		</li>
 		<?php endif; ?>
-		<li class="last">-</li>
+		<li class="last"><div id="filter-labels"></div></li>
+		
 	</ul>
-	<div id="filter-labels">
-	</div>
+	
 	<div class="clearfix"></div>
 </div>
 </div>
@@ -72,7 +71,9 @@
 		<div id="record-set">
 			<ul data-bind="foreach: records">
 				<li>
-					<p class="sugar" data-bind="attr: {class: class_id}"><a href="" data-bind="text: name, attr:{href: url}"></a></p>
+					<div data-bind='attr: {"class": class_id, "className": class_id}'>
+						<p class="sugar"><a href="" data-bind="text: name, attr:{href: url}"></a></p>
+					</div>
 				</li>
 			</ul>
 		</div>

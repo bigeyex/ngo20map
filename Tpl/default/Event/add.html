@@ -11,18 +11,9 @@
 
 <div id="main" class="form-region">
     <form id="newform" name="newform" class="need-validate" enctype="multipart/form-data" action="__URL__/{$target_url}" method="post" >
-    <?php
-    if($_SESSION['flash']){
-    ?>
-    <div id="form-section flash_block" class="{@flash.type}">
-        <div id="flash_content">
-            {@flash.content}
-        </div>
-    </div>
-   <?php }
-   $_SESSION['flash']=null;
-    unset($_SESSION['flash']);
-   ?>
+    <?php if ($target_url == 'save'): ?>
+        <input type="hidden" name="id" value="{$event.id}"/>
+    <?php endif ?>
     <div class="form-section" id="main-content">
         <h3 style="padding-left:15px;"> 发布公益项目  <span class="ordinary">(<span class="required">*</span>  必須填写项)</span></h3>
         <p class="after-title">{:L('以下信息将显示在公益项目页中，让大家看到你的事迹与故事。')}</p>
@@ -35,9 +26,15 @@
             </div>
             <p id="editor-help">{:L('为了确保资料完整请添加相关的<strong>照片</strong>和<strong>视频</strong>。')}</p>
             <div id="editor-body">
-                <div id="title-part"><input type="text" name="name" id="editor-title" value="在这里输入标题"></div>
+                <div id="title-part"><input type="text" name="name" id="editor-title" value="<?php if(isset($event['description'])): ?>{$event.name}<?php else: ?>在这里输入标题<?php endif; ?>"></div>
                 <div id="rte-part">
-                    <textarea name="description" id="editor" cols="115" rows="29">项目简介： （插入相关照片,你的项目将会展示在首页中）</textarea>
+                    <textarea name="description" id="editor" cols="115" rows="29">
+                        <?php if(isset($event['description'])): ?>
+                        {$event.description}
+                        <?php else: ?>
+                        项目简介： （插入相关照片,你的项目将会展示在首页中）
+                        <?php endif; ?>
+                    </textarea>
                 </div>
                 
             </div>
@@ -48,11 +45,11 @@
             <input type="text" name="host" class="validate[required]" value="{$event.host}"/>
         </div>
         <div class="form-field">
-            <span class="title">{:L('执行区域')}</span>
+            <span class="title"><span class="required">*</span> {:L('执行区域')}</span>
                 <select name="province" id="province" class="validate[required]"></select>省
                 <select name="city" id="city"></select>市
                 <select name="county" id="county"></select>区/县
-                <input type="text" class="short" name="place" id="place" value="{$place}"/>
+                <input type="text" class="short" name="place" id="place" value="{$event.place}"/>
                 <input type="hidden" name="latitude" id="latitude"/>
                 <input type="hidden" name="longitude" id="longitude"/>
 
@@ -63,23 +60,100 @@
             <span>({:L('如果地图中所示位置不是您的机构位置，点击地图来标注机构位置')})</span>
             <div class="clearfix"></div>
         </div>
-        <div class="only ngo-only">
+        <div class="form-field">
+            <span class="title">{:L('开始时间')}</span>
+            <input type="text" name="begin_time" id="begin_time" class="short" value="{$event.begin_time}"/>
+        </div>
+        <div class="form-field">
+            <span class="title">{:L('结束时间')}</span>
+            <input type="text" name="end_time" id="end_time" class="short" value="{$event.end_time}"/>
+        </div>
+        <div class="form-field check-group">
+            <span class="title">{:L('项目领域')}</span><!-- 工作领域 -->
+            <div class="multi-select-box">
+                <input type="text" name="item_field" readonly="readonly" onselectstart="return false" value="{$event.item_field}"/>
+                <div class="multi-select-dropdown">
+                <?php
+                    $i = 0;
+                    foreach(C('ORG_FIELDS') as $org){
+                    $i++;
+                    ?>
+                <span class="res-tag" id="focus-area">
+                    <input style="display:none" id="event-field-{$i}" type="checkbox" value="{$org}" <?php if (stripos($event['item_field'], $org) !== FALSE): ?> checked="checked" <?php endif; ?>/>
+                    <label for="event-field-{$i}">{$org}</label>
+                </span>
+                <?php } ?>
+                <div class="clearfix"></div>
+                </div>
+            </div> <!-- end of 工作领域 -->
+        </div>
+        <div class="form-field check-group">
+            <?php if($event_type == 'ngo'): ?>
+            <span class="title">{:L('项目需求')}</span><!-- 工作领域 -->
+            <?php else: ?>
+            <span class="title">{:L('项目资源')}</span><!-- 工作领域 -->
+            <?php endif; ?>
+            <div class="multi-select-box">
+                <input type="text" name="res_tags" readonly="readonly" onselectstart="return false"value="{$event.res_tags}"/>
+                <div class="multi-select-dropdown">
+                <?php
+                    $i = 0;
+                    $event_types = C('EVENT_TYPE');
+                    if($event_type == 'ngo'){
+                        $type_list = $event_types['requirement'];
+                    }
+                    else{
+                        $type_list = $event_types['resource'];
+                    }
+                    foreach($type_list as $org){
+                    $i++;
+                    ?>
+                <span class="res-tag" id="focus-area">
+                    <input style="display:none" id="event-field-{$i}" type="checkbox" value="{$org}" <?php if (stripos($event['res_tags'], $org) !== FALSE): ?> checked="checked" <?php endif; ?>/>
+                    <label for="event-field-{$i}">{$org}</label>
+                </span>
+                <?php } ?>
+                <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+        <?php if($event_type == 'ngo'): ?>
+        <div class="form-field">
+            <span class="title">{:L('需求描述')}</span>
+            <textarea name="req_description" cols="35" rows="7">{$event.req_description}</textarea>
+            <span>({:L('已经取得的和预期的成果')})</span>
+        </div>
+        <a class="hideable-section" href="javascript:void(0);" onclick="$(this).next().toggle();$(this).toggleClass('folded')">{:L('联系信息')}</a>
+        <div>
             <div class="form-field">
                 <span class="title">{:L('联系人')}</span>
-                <input type="text" name="contact_name" value="{$user.contact_name}"/>
+                <input type="text" name="contact_name" value="{$event.contact_name}"/>
             </div>
             <div class="form-field">
                 <span class="title">{:L('联系电话')}</span>
-                <input type="text" name="phone" value="{$user.phone}"/>
+                <input type="text" name="contact_phone" value="{$event.contact_phone}"/>
             </div>
             <div class="form-field">
                 <span class="title">{:L('电子邮箱')}</span>
-                <input type="text" class="" name="public_email" value="{$user.public_email}"/>
+                <input type="text" class="" name="contact_email" value="{$event.contact_email}"/>
+            </div>
+            <div class="form-field">
+                <span class="title">{:L('联系QQ')}</span>
+                <input type="text" class="" name="contact_qq" value="{$event.contact_qq}"/>
+            </div>
+            <div class="form-field">
+                <span class="title">{:L('项目标签')}</span>
+                <input type="text" class="" name="tags" value="{$tags}"/>
+            </div>
+            <div class="form-field">
+                <span class="title">{:L('相关网址')}</span>
+                <input type="text" class="" name="url" value="{$event.url}"/>
             </div>
         </div>
+        <?php endif; ?>
         <div class="submit-buttons">
-            <input id="submit-button" type="submit" disabled="true" value="{:L('完成')}"/>
-            <input id="submit-button" type="reset" value="{:L('重置')}"/>
+            <input id="submit-button" type="submit" value="{:L('发表项目')}"/>
+            <input id="submit-button" type="reset" value="{:L('保存草稿')}"/>
         </div>
     </div> <!-- form-section -->
     </form>
@@ -112,6 +186,7 @@
 </div>
 
 <css href="__APP__/Public/Css/EventEdit.css"/>
+<css href="__APP__/Public/Css/pikaday.css"/>
 <link rel="stylesheet" href="__APP__/Public/Css/validationEngine.jquery.css" type="text/css"/>
 <script type="text/javascript" src="__APP__/Public/Js/PCASClass.js">
 </script>
@@ -122,116 +197,53 @@
 <script src="__APP__/Public/Js/jquery.validationEngine.js" type="text/javascript" charset="utf-8"></script>
 <script src="__APP__/Public/Js/jquery.rte.js" type="text/javascript" charset="utf-8"></script>
 <script src="__APP__/Public/Js/jquery.validationEngine-zh_CN.js" type="text/javascript" charset="utf-8"></script>
-
+<script type="text/javascript" src="__APP__/Public/Js/moment.min.js"></script>
+<script type="text/javascript" src="__APP__/Public/Js/pikaday.min.js"></script>
+<script type="text/javascript" src="__APP__/Public/Js/user-event-edit.js"></script>
 
 <script langage="text/javascript">
-function protocol1(){
-    var sub = document.getElementById("submit-button");
-    var check = document.getElementById("protocol");
-    if(check.checked)
-    {
-        sub.disabled = undefined;
-    }
-    else
-        {
-            sub.disabled = true;
-        }
-}
-function newwindow(){
-    $("#contract").dialog({
-        autoOpen: false,
-        height: 400,
-        width: 700,
-        zIndex: 3999,
-        modal: true,
-        buttons: {
-            "{:L('关闭')}" : function(){
-                $( this ).dialog( "close" );
-            }
-        }
-   });
-   $("#contract").dialog("open");
-}
 
-
-$('.check-group label').click(function(e){
-    var selected_status = $('#'+$(e.target).attr('for')).attr('checked');
-    if(!selected_status){
-        $(e.target).addClass('selected');
-    }
-    else{
-        $(e.target).removeClass('selected');
-    }
-});
-
-$('#type-selector label').click(function(e){
-    $('#type-selector label').removeClass("selected");
-    $(e.currentTarget).addClass("selected");
-    $('#main-content').show();
-    $('.only').hide();
-    $('.except').show();
-    var type=$('#'+$(e.currentTarget).attr('for')).val();
-    $('.'+type+'-only').show();
-    $('.except-'+type).hide();
-});
-
-new PCAS("province","city","county");
-
-var map = new BMap.Map("map-locate-container");
-var point = new BMap.Point(116.404, 39.915);
-var gc = new BMap.Geocoder();
-map.centerAndZoom(point, 5);
-map.addControl(new BMap.NavigationControl({anchor: BMAP_ANCHOR_BOTTOM_RIGHT, type: BMAP_NAVIGATION_CONTROL_ZOOM}));  
-$("#newform").validationEngine('attach');
-
-function relocate_map(){
-    var place = '';
-    if($('#province').val() != '')place+=$('#province').val();
-    if($('#city').val() != '')place+=$('#city').val();
-    if($('#county').val() != '')place+=$('#county').val();
-    place+=$('#place').val();
-
-    gc.getPoint(place, function(point){
-      if (point) {
-        map.centerAndZoom(point, 16);
-        addPointMarker(point);
-      }
-    });
-}
-
-function addPointMarker(p){
-    map.clearOverlays();
-    var marker = new BMap.Marker(p);
-    map.addOverlay(marker);
-    $('#latitude').val(p.lat);
-    $('#longitude').val(p.lng);
-}
-
-map.addEventListener("click",function(e){
-    addPointMarker(e.point);
-});
-
-$('#province, #city, #county, #place').change(relocate_map);
 $('#editor').rte();
-$('iframe#editor-rte').contents().find('body').css('font-size','12px');
-$('iframe#editor-rte').contents().find('body').css('color','#b5b5b5');
+$(function(){
+    var iframe = document.getElementById('editor-rte');
+    fixIframeCaret(iframe);
+    $('iframe#editor-rte').contents().find('body').css('font-size','12px');
+    $('iframe#editor-rte').contents().find('body').css('color','#b5b5b5');
+    $('iframe#editor-rte').contents().find('body').focus(function(){
+        if(!touched_editor_content){
+            var docbody = $('iframe#editor-rte').contents().find('body');
+            docbody.css('color','#000');
+            touched_editor_content = docbody.html();
+            docbody.html('');
+        }
+    });
+
+    $('iframe#editor-rte').contents().find('body').blur(function(){
+        var docbody = $('iframe#editor-rte').contents().find('body');
+        if(docbody.html() == ''){
+            docbody.html(touched_editor_content);
+            docbody.css('color','#b5b5b5');
+            touched_editor_content = false;
+        }
+    });
+});
+
 var touched_editor_title = false;
 var touched_editor_content = false;
 $('#editor-title').focus(function(){
     if(!touched_editor_title){
+        touched_editor_title = $('#editor-title').val();
         $('#editor-title').val('');
-        touched_editor_title = true;
     }
 });
-$('iframe#editor-rte').contents().find('body').focus(function(){
-    if(!touched_editor_content){
-        touched_editor_content = true;
-        var doc = $('iframe#editor-rte').contents()[0];
-        $('iframe#editor-rte').contents().find('body').css('color','#000');
-        doc.execCommand('SelectAll');
-        doc.execCommand('Delete');
+
+$('#editor-title').blur(function(){
+    if($('#editor-title').val() == ''){
+        $('#editor-title').val(touched_editor_title);
+        touched_editor_title = false;
     }
 });
+
 
 $('#insert-video-button').click(function(){
     var youku_url = /youku\.com.+id_(.+)\.html/;
@@ -253,19 +265,16 @@ $('#insert-video-button').click(function(){
     if(result != ''){
         var html = '<embed src="'+result+'" quality="high" width="480" height="400" align="middle" allowScriptAccess="sameDomain" allowFullscreen="true" type="application/x-shockwave-flash"></embed>';
         insertIt('editor-rte',html);
+        $('#insert-link-dialog').trigger('close');
     }
     else{
         $('#video-error-message').text('无法解析视频地址');
     }
-
-    //var doc = $('iframe#editor-rte').contents()[0];
-    //doc.execCommand('CreateLink', false, $('#insert-link-text').val());
-    //$('#insert-link-dialog').trigger('close');
 });
 
 $('#insert-link-button').click(function(){
-    var doc = $('iframe#editor-rte').contents()[0];
-    doc.execCommand('CreateLink', false, $('#insert-link-text').val());
+    var link = $('#insert-link-text').val();
+    insertIt('editor-rte','<a href="'+link+'">'+link+'</a>');
     $('#insert-link-dialog').trigger('close');
 });
 
@@ -277,8 +286,10 @@ $('#insert-image').click(function(){
         onComplete: function(file, response) {
             console.log(response);
             $('#upload-dialog').trigger('close');
-            var doc = $('iframe#editor-rte').contents()[0];
-            doc.execCommand('InsertImage', false, app_path+'/Public/Uploadedthumb/thumbl_'+response);
+            insertIt('editor-rte','<img src="'+app_path+'/Public/Uploadedthumb/thumbl_'+response+'"/>');
+            //var doc = $('iframe#editor-rte').contents()[0];
+            //document.getElementById('editor-rte').contentWindow.focus();
+            //doc.execCommand('InsertImage', false, app_path+'/Public/Uploadedthumb/thumbl_'+response);
         }
     });
 });
@@ -301,6 +312,23 @@ $('#insert-link-dialog .close-button').click(function(){
 $('#insert-video-dialog .close-button').click(function(){
     $('#insert-video-dialog').trigger('close');
 });
+
+pikaday_i18n = {
+    months        : ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','二月'],
+    weekdays      : ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
+    weekdaysShort : ['日','一','二','三','四','五','六']
+};
+
+var begin_picker = new Pikaday({
+        field: document.getElementById('begin_time'),
+        format: 'YYYY-MM-DD',
+        i18n: pikaday_i18n
+    });
+var end_picker = new Pikaday({
+        field: document.getElementById('end_time'),
+        format: 'YYYY-MM-DD',
+        i18n: pikaday_i18n
+    });
 
 function insertIt(editor,html) {
     var win = document.getElementById(editor).contentWindow, doc = win.document;
@@ -333,10 +361,44 @@ function insertIt(editor,html) {
         }
     } else if (doc.selection && doc.selection.type != "Control") {
         // IE < 9
-        doc.selection.createRange().pasteHTML(html);
+        win.focus();
+        IEselectedRange.pasteHTML(html);
+    }
+}
+
+var IEselectedRange = null;
+
+function fixIframeCaret(iframe) {
+    if (iframe.attachEvent) {
+        iframe.attachEvent("onbeforedeactivate", function() {
+            var sel = iframe.contentWindow.document.selection;
+            IEselectedRange = sel.createRange();
+        });
     }
 }
 
 </script>
+
+<?php if($target_url == 'save'): ?>
+<script type="text/javascript">
+//disable default status for rte
+touched_editor_title = true;
+touched_editor_content = true;
+$('iframe#editor-rte').contents().find('body').css('color','#000');
+
+//handle province selector
+$('#province option[value="{$event.province}"]').attr('selected', true);
+$('#province').change();
+$('#city option[value="{$event.city}"]').attr('selected', true);
+$('#city').change();
+$('#county option[value="{$event.county}"]').attr('selected', true);
+
+//handle custum checkbox initial status
+$('.res-tag input[checked="checked"]').next().addClass('selected');
+
+//place a mark on the map and set lng/lat as well
+addPointMarker(new BMap.Point({$event.longitude},{$event.latitude}));
+</script>
+<?php endif; ?>
 
 {:W('Footer')}

@@ -1,0 +1,98 @@
+{:W('Header',array('title'=>L('项目管理')))}
+<div class="form-container">
+	<div id="left-filters" class="thin">
+		<h3>{:L('项目管理')}</h3>
+		<a href="{:U('Event/add')}" id="new-event-link">{:L('发布公益项目')}</a>
+		<h4>{:L('项目分类')}</h4>
+		<ul>
+			<li <?php if($display_mode == 'all'): ?>class="current"<?php endif; ?>><a href="{:U('Manage/events')}/show/all">· {:L('全部')}</a></li>
+			<li <?php if($display_mode == 'published'): ?>class="current"<?php endif; ?>><a href="{:U('Manage/events')}/show/published">· {:L('已发布')}</a></li>
+			<li <?php if($display_mode == 'draft'): ?>class="current"<?php endif; ?>><a href="{:U('Manage/events')}/show/draft">· {:L('草稿')}</a></li>
+			<li <?php if($display_mode == 'deleted'): ?>class="current"<?php endif; ?>><a href="{:U('Manage/events')}/show/deleted">· {:L('已删除')}</a></li>
+		</ul>
+		<h4>{:L('归档')}</h4>
+		<ul>
+			<?php foreach($archive_list as $archive_item): ?>
+			<li <?php if($display_mode == $archive_item['yr']): ?>class="current"<?php endif; ?>><a href="{:U('Manage/events')}/show/{$archive_item.yr}">· {$archive_item.yr}</a></li>
+			<?php endforeach; ?>
+		</ul>
+	</div>
+	<div id="search-result" class="block thin">
+		<div id="result-count">
+			<?php if($display_mode == 'draft'): ?>
+				{:L('草稿')} ({$result_count})
+			<?php elseif($display_mode == 'deleted'): ?>
+				{:L('已删除')} ({$result_count})
+			<?php elseif(is_numeric($display_mode)): ?>
+				{$display_mode} 年发布的项目 ({$result_count})
+			<?php else: ?>
+				{:L('您已发布了')}<span id="result-count">{$result_count}</span>{:L('条项目')}
+			<?php endif; ?>
+		</div>
+		
+		<div class="pager section">
+			<a href="javascript:void(0);" class="pager-button delete-button">{:L('删除')}</a>
+			<a href="javascript:void(0);" class="pager-button destroy-button">{:L('彻底删除')}</a>
+			<a href="javascript:void(0);" class="pager-button move-to-button">{:L('转移到')}</a>
+			<div class="pagers">{$pager_content}</div>
+		</div>
+		<form action="{:U('Manage/move_events')}" method="POST" id="move-form">
+		<input type="hidden" name="action" value="delete" id="move-action">
+		<ul id="result-items">
+			<?php foreach($user_events as $result): ?>
+			<li>
+				<div class="checkbox"><input type="checkbox" name="ids[]" value="{$result.id}"></div>
+				<div class="li">
+					
+					<div class="image">
+						<?php if($result['event_image']): ?>
+						<img src="__APP__/Public/Uploadedthumb/thumbm_{$result.event_image}" alt="" width="163"/>
+						<?php else: ?>
+						<img src="__APP__/Public/Img/no-image-mid.gif" alt="" width="163"/>
+						<?php endif; ?>	
+					</div>
+					
+					<div class="editing-link">
+						<a href="{:U('Event/edit')}/id/{$result.id}" target="_blank">{:L('修改')}</a> | 
+						<a href="{:U('Manage/move_events')}/action/delete/id/{$result.id}">{:L('删除')}</a>
+					</div>
+					<div class="type-label">{:etype($result['type'])}</div>
+					<h3>
+						<a href="{:U('Event/view')}/id/{$result.id}">
+							{$result.name}
+						</a>
+					</h3>
+					<p class="content">
+						{$result.description|mb_substr=0,90}
+						<?php if(mb_strlen($result['description']) > 90): ?> ... <?php endif; ?>
+					</p>
+				</div>
+			</li>
+			<?php endforeach; ?>
+		</ul>
+		</form>
+		<div class="pager">
+			<a href="javascript:void(0);" class="pager-button delete-button">{:L('删除')}</a>
+			<a href="javascript:void(0);" class="pager-button destroy-button">{:L('彻底删除')}</a>
+			<a href="javascript:void(0);" class="pager-button move-to-button">{:L('转移到')}</a>
+			<div class="pagers">{$pager_content}</div>
+		</div>
+	</div>
+	<div class="clearfix"></div>
+</div> <!-- form-container -->
+<link rel="stylesheet" type="text/css" href="__APP__/Public/Css/SearchResult.css" />
+<link rel="stylesheet" type="text/css" href="__APP__/Public/Css/manage-events.css" />
+<script type="text/javascript">
+$(function(){
+	$('.delete-button').click(function(){
+		$('#move-action').val('delete');
+		$('#move-form').submit();
+	});
+	$('.destroy-button').click(function(){
+		$('#move-action').val('destroy');
+		$('#move-form').submit();
+	});
+});
+
+</script>
+{:W('Footer')}

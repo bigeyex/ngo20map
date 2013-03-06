@@ -14,7 +14,9 @@
 		<?php if($event_data['type'] != 'ind'): ?>
 		<div class="event-fields">
 			<label for="">{:L('联系方式')}: </label>
-			<p>{$event_data.contact_name}({:L('电话')}):{$event_data.contact_phone} <br/>
+			<?php if(!empty($user_data['contact_phone'])): ?>
+			<p>{$event_data.contact_name}({:L('电话')}):<a href="javascript:void(0);" class="review-phone-number" event-id="{$user_data.id}">查看</a> <br/>
+				<?php endif; ?>
 		       ({:L('QQ号码')}){$event_data.contact_qq}<br/>
 		       <a href="mailto:{$user_data.public_email}">{$event_data.contact_email} </a>
 		   </p>
@@ -48,8 +50,8 @@
 		<a href="javascript:void(0);" class="more-fields" onclick="$('#more-fields').toggle();$('.more-fields').toggleClass('expanded');">{:L('更多信息')}</a>
 	</div>
 	<div id="action-link">
-		<a href="">{:L('关注')}</a>
-		<a href="" class="second-link">{:L('交换名片')}</a>
+		<a id="namecard-follow-link" href="javascript:void(0);" onclick="follow({$event_data.id})">{:L('收藏')}</a>
+		<a href="" class="second-link"><!-- {:L('交换名片')} --></a>
 	</div>
 
 </div>
@@ -59,7 +61,7 @@
 	<a class="more-activities" href="{:U('User/home')}/id/{$puser.id}">{:L('更多活动信息')}</a>
 	<div class="event-description">
 		<h3>{$event_data.name}</h3>
-		
+		{$event_data.description}
 	</div>
 	<?php if($event_data['type'] != 'ind' && $event_data['type'] != 'case'): ?>
 		<div class="org-description">
@@ -133,6 +135,23 @@
 	var point = new BMap.Point(longitude, latitude);
 	var marker = new BMap.Marker(point, {icon: myIcon}); 
 	map.addOverlay(marker);  
+
+	$('.review-phone-number').click(function(e){
+		$(e.currentTarget).replaceWith('<img src="{:U('Service/get_event_phone')}/id/'+$(e.currentTarget).attr('event-id')+'" />');
+	});
+
+	function follow(id){
+		$.post('__APP__/Event/follow', {'id': id}, function(result){
+			var follow_link = $('#namecard-follow-link');
+			if(result == 0){
+				follow_link.removeClass('followed');
+				follow_link.text("{:L('收藏')}");
+			}else{
+				follow_link.addClass('followed');
+				follow_link.text("{:L('取消收藏')}");
+			}
+		});
+	}
 </script>
 
 {:W('Footer')}

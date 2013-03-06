@@ -56,6 +56,10 @@ div.long-search-box input {
     color: #505050;
 }
 
+#left-filters li.current a {
+    color: #85b552;
+}
+
 #left-filters h3 {
     font-size: 12px;
     margin: 0;
@@ -66,6 +70,22 @@ div.long-search-box input {
     color: #85b552;
     background: url(../Img/icons/search-bullets.gif) no-repeat 190px 2px;
     padding: 0 10px 10px 0;
+}
+
+#left-filters div.section:hover{
+    background: #f3f3f3;
+}
+
+#left-filters div.expanded:hover{
+    background: white;
+}
+
+#left-filters div.section:hover h3 {
+    background: url(../Img/icons/search-bullets.gif) no-repeat 190px -46px;
+}
+
+#left-filters div.expanded:hover h3 {
+    background: url(../Img/icons/search-bullets.gif) no-repeat 190px 2px;
 }
 
 div#result-count {
@@ -88,7 +108,7 @@ div#result-count {
     margin: 0;
 }
 
-#result-items li {
+#result-items li, #result-items .li {
     padding: 10px;
     list-style: none;
     border-bottom: 1px solid #e3e3e3;
@@ -114,6 +134,7 @@ div#result-count {
 
 #result-items p {
     margin: 0;
+    margin-right: 170px;
 }
 
 .type-label {
@@ -148,4 +169,20 @@ div#result-count {
 
 span.keyword{
     color: #85b552;
+}
+
+#left-filters li.selected a{
+    color: #85B552;
+}
+
+#result-count a{
+    color: #85B552;
+}
+
+#result-count a:hover{
+    text-decoration: line-through;
+}
+
+a.cancel-link{
+    background: url(../Img/icons/cross-sign-grey.gif) no-repeat 2px;
 }

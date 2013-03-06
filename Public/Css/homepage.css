@@ -331,6 +331,11 @@ div.float-control {
     height: 166px;
 }
 
+#showcase #showcase-csr:hover img, #showcase #showcase-ngo:hover img{
+    margin-top: -2px;
+    margin-left: -2px;
+}
+
 #showcase #showcase-ngo:hover{
     border-color: #81b460;
 }

@@ -25,7 +25,7 @@ return array(
     'LANGUAGES'=> array('zh-cn'=>'中文', 'en-us'=>'English'),
     'ORG_FIELDS' => array('健康扶助','妇女儿童','教育助学','环境保护','社区发展','灾害管理',
             '劳工福利','社会企业','HIV&AIDS','文化保护','性权利保护','政策倡导','信息网络','支持型NGO'),
-    'VOLUNTEER_SKILLS' => array('外语', 'IT基础设施维护', '网络编程', '美工', '营销', '法律'),
+    'VOLUNTEER_SKILLS' => array('外语', 'IT基础设施维护', '网络编程', '美工', '营销', '法律','摄影摄像','文字创作','口语表达'),
     'USER_TYPE' => array(
     		'ngo' => '公益组织',
     		'csr' => '企业',
@@ -34,7 +34,7 @@ return array(
     ),
     'EVENT_TYPES' => array(
     		'ngo' => '公益项目',
-    		'csr' => '企业项目',
+    		'csr' => '企业资源',
     		'fund' => '基金会项目',
     		'ind' => '公益报道',
     		'case' => '对接案例'

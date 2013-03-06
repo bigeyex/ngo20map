@@ -26,6 +26,11 @@ function gif($path){
     }
 }
 
+function etype($type_str){
+    $event_types = C('EVENT_TYPES');
+    return $event_types[$type_str];
+}
+
 function check_p($words){
     foreach(C('_profanity_.profanity_words') as $p_word){
         if(strpos($words, $p_word))

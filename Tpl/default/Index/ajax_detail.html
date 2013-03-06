@@ -23,7 +23,10 @@
         <div class="prev-event float-control">上一张</div>
     <?php else: ?>
     <p class="position"><span class="label">{:L('位置')}: </span>{$user.place}</p>
-    <p class="aim">{$user.aim}</p>
+    <p class="aim">
+        {$user.aim|mb_substr=0,80}
+        <?php if(mb_strlen($user['aim'])>80):?>... <?php endif; ?>
+    </p>
     <?php endif; ?>
     </div>
 

@@ -23,28 +23,28 @@
 			<img height="170" src="__APP__/Public/Uploadedthumb/thumbm_{$recommend_ngo.url}" alt="{$recommend_ngo.name}">
 		</div>
 		
-		<h3 class="tile-title"><a>{$recommend_ngo.name}</a></h3>
-		<p class="tile-more"><a>{:L('更多公益组织')} >></a></p>
+		<h3 class="tile-title"><a href="{:U('User/home')}/id/{$recommend_ngo.id}">{$recommend_ngo.name}</a></h3>
+		<p class="tile-more"><a href="{:U('Index/map')}/type/exngo">{:L('更多公益组织')} >></a></p>
 	</div>
 	<div id="showcase-csr" class="tile">
 		<div class="showcase-img">
 			<img height="170" src="__APP__/Public/Uploadedthumb/thumbm_{$recommend_csr.url}" alt="{$recommend_csr.name}">
 		</div>
 		
-		<h3 class="tile-title"><a>{$recommend_csr.name}</a></h3>
-		<p class="tile-more"><a>{:L('更多社会责任企业')} >></a></p>
+		<h3 class="tile-title"><a href="{:U('User/home')}/id/{$recommend_csr.id}">{$recommend_csr.name}</a></h3>
+		<p class="tile-more"><a href="{:U('Index/map')}/type/excsr">{:L('更多社会责任企业')} >></a></p>
 	</div>
 	<div id="showcase-weibo" class="tile">
 		<h3 class="tile-title"><a>{:L('新浪微博')}</a></h3>
 		<div id="weibo-region">
-			<iframe width="100%" height="206" style="margin-top:-30px;zoom:1;position:relative;" frameborder="0" scrolling="no" src="http://widget.weibo.com/livestream/listlive.php?language=zh_cn&width=0&height=206&uid=1998038407&skin=1&refer=1&pic=1&titlebar=0&border=0&publish=0&atalk=1&recomm=0&at=0&atopic=NGO20%E5%BE%AE%E5%8D%9A%E6%96%87%E6%91%98&ptopic=NGO20%E5%BE%AE%E5%8D%9A%E6%96%87%E6%91%98&colordiy=0&dpc=1"></iframe>
+			<iframe width="100%" height="206" class="share_self" style="margin-top:-30px;zoom:1;position:relative;border:0;" frameborder="0" scrolling="auto" src="http://widget.weibo.com/weiboshow/index.php?width=0&height=500&fansRow=2&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=1&isFans=1&uid=1821771485&verifier=d5a9b3c2&dpc=1"></iframe>
 		</div>
 	</div>
 	<div class="clearfix"></div>
 </div>
 
 <div id="register-stub">
-	<a href="" id="register-button">{:L('立即注册')}</a>
+	<a href="{:U('User/newUser')}" id="register-button">{:L('立即注册')}</a>
 	<div id="slogan-region">
 		<p>
 			{:L('一旦成功注册，你就可以：')}
@@ -63,7 +63,7 @@
 				<div>{$event.name}</div>
 			<?php endforeach; ?>
 		</div>
-		<a href="" class="more">{:L('查看更多')}>></a>
+		<a href="{:U('Search/result')}/model/events/sq/公益项目" class="more">{:L('查看更多')}>></a>
 		<div class="slider-control">
 			<a class="prev" onclick="recent_event_slider.goToPreviousSlide();">&lt</a>
 			<a class="next" onclick="recent_event_slider.goToNextSlide();">&gt</a>
@@ -85,7 +85,7 @@
 			<?php if($i % 12 == 0): ?>
 			</div><div>
 			<?php endif; ?>
-			<a href="">{$tag}</a>
+			<a href="{:U('Search/result')}/q/{$tag}">{$tag}</a>
 			<?php 
 			$i++;
 			endforeach; ?>

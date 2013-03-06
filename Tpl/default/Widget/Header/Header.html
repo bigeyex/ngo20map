@@ -19,8 +19,8 @@ is_ie6 = 1;
 <title>{$title} - {:L('公益地图')}</title>
 </head>
 <body>
-
 	<js href="__APP__/Public/Js/jquery.lightbox_me.js"/>
+	<?php if (!isset($_SESSION['login_user'])): ?>
 	<div id="login-box" style="display:none;">
 		<a href="javascript:void(0);" id="login-close-button"><img src="__APP__/Public/Img/close-button.gif" alt="关闭"/></a>
 		<div id="login-box-left">
@@ -59,7 +59,7 @@ is_ie6 = 1;
 	</div>
 	<script type="text/javascript">
 	$(function(){
-		$('#login-link').click(function(){
+		$('#login-link').click(function(e){
 			$('#login-box').lightbox_me({
 		        centered: true, 
 		        onLoad: function() { 
@@ -73,6 +73,7 @@ is_ie6 = 1;
 		});
 	});
 	</script>
+	<?php endif; ?>
 
 	<div id="masthead">
 		<div id="header">
@@ -80,17 +81,53 @@ is_ie6 = 1;
 				<div class="search-box">
 					<form action="{:U('Search/result')}" method="GET" id="search-miniform">
 						<input type="text" value="搜索" defaultValue="搜索" name="q"/>
-						<a href="javascript:void(0);" onclick="$('search-miniform').submit();">{:L('搜索')}</a>
+						<a href="javascript:void(0);" onclick="$('#search-miniform').submit();">{:L('搜索')}</a>
 					</form>
 				</div>
 				<div id="language-switch">
-					<a href="" class="active">中文</a> /
-					<a href="">ENG</a>
+					<a href="__SELF__/?l=zh-cn" class="active">中文</a> /
+					<a href="__SELF__/?l=en-us">ENG</a>
 				</div>
+				<?php if (!isset($_SESSION['login_user'])): ?>
 				<div id="login-tab">
 					<a id="login-link" href="javascript:void(0);" class="active">{:L('登录')}</a> |
 					<a href="{:U('User/newUser')}">{:L('注册')}</a>
 				</div>
+				<?php else: ?>
+				<div id="login-tab" class="after-login">
+					<a id="my-page-link" href="{:U('User/home')}" class="active after-login">{:L('我的页面')}</a> | 
+				</div>
+				<div class="dropdown" style="display:none;">
+					<?php if($_SESSION['login_user']['is_admin']): ?>
+					<a href="{:U('Admin/events')}" class="spacing-line">{:L('管理')}</a>
+					<?php endif; ?>
+					<a href="{:U('User/edit')}" class="spacing-line">{:L('账号设置')}</a>
+					<a href="{:U('Manage/events')}">{:L('项目管理')}</a>
+					<a href="{:U('Index/logout')}">{:L('退出')}</a>
+				</div>
+				<script type="text/javascript">
+					var mouse_out_timer = null;
+					$('#login-tab').mouseover(function(e){
+						$('#header-control .dropdown').show();
+						clearTimeout(mouse_out_timer);
+						e.stopPropagation();
+					});
+					$('#login-tab').mouseout(function(){
+						mouse_out_timer = setTimeout(function(){
+							$('#header-control .dropdown').hide();
+						}, 300);
+					});
+					$('#header-control .dropdown').mouseover(function(e){
+						clearTimeout(mouse_out_timer);
+						e.stopPropagation();
+					});
+					$('#header-control .dropdown').mouseout(function(){
+						mouse_out_timer = setTimeout(function(){
+							$('#header-control .dropdown').hide();
+						}, 300);
+					});
+				</script>
+				<?php endif ?>
 			</div>
 			<a href="{:U('Index/index')}"><h1 id="ngo20-logo">NGO20</h1></a>
 			<ul id="main-menu">

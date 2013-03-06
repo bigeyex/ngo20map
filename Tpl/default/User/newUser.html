@@ -46,11 +46,11 @@
         </ul>
     </div>
     <div class="form-section" id="main-content" style="display:none;">
-        <h3 style="padding-left:15px;"> 请在下列选项中选出您的注册用户类型  <span class="ordinary">(<span class="required">*</span>  必須填写项)</span></h3>
+        <h3 style="padding-left:15px;"> 请填写以下资料完成注册  <span class="ordinary">(<span class="required">*</span>  必須填写项)</span></h3>
         <p class="after-title">{:L('以下信息将显示在机构资料页，方便大家了解你，完成度越高，你就可以执行更多的任务操作。')}</p>
         <div class="form-field">
             <span class="title"><span class="required">*</span> {:L('电子邮箱')}</span>
-            <input type="text" id="email" name="email" class="validate[required,custom[email]]" value="{$user.email}"/>
+            <input type="text" id="email" name="email" class="validate[required,custom[email],ajax[ajaxUniqueEmail]]" value="{$user.email}"/>
             <!-- TODO: 资料完成度 -->
         </div>
         <?php if(!isset($_SESSION['api'])): ?>   
@@ -68,7 +68,7 @@
         <div class="form-field">
             <span class="title except except-ind"><span class="required">*</span> {:L('机构全称')}</span>
             <span class="title only ind-only"><span class="required">*</span> {:L('用户名')}</span>
-            <input type="text" name="name" value="{$user.name}" class="validate[required]"/>
+            <input type="text" id="name" name="name" value="{$user.name}" class="validate[required,ajax[ajaxUniqueName]]"/>
             <span>({:L('不能与系统中已有的名字相同，可以使用中英文')})</span>
         </div>
         <div class="form-field">
@@ -136,39 +136,47 @@
         </div>
         <div class="form-field check-group">
             <span class="title">{:L('关注领域')}</span><!-- 工作领域 -->
-            <div id="work-field-region">
-            <?php
-                $i = 0;
-                foreach(C('ORG_FIELDS') as $org){
-                $i++;
-                ?>
-            <span class="res-tag" id="focus-area">
-                <input style="display:none" id="event-field-{$i}" type="checkbox" name="work_field[]" value="{$org}" <?php if (stripos($user['work_field'], $org) !== FALSE): ?> checked="checked" <?php endif; ?>/>
-                <label for="event-field-{$i}">{$org}</label>
-            </span>
-            <?php } ?>
-            <div class="clearfix"></div>
+            <div class="multi-select-box">
+                <input type="text" id="item-field-select" readonly="readonly" disabled="disabled" onselectstart="return false"/>
+                <div id="work-field-region" class="multi-select-dropdown">
+                <?php
+                    $i = 0;
+                    foreach(C('ORG_FIELDS') as $org){
+                    $i++;
+                    ?>
+                <span class="res-tag" id="focus-area">
+                    <input style="display:none" id="event-field-{$i}-checkbox" type="checkbox" name="work_field[]" value="{$org}" <?php if (stripos($user['work_field'], $org) !== FALSE): ?> checked="checked" <?php endif; ?>/>
+                    <label id="event-field-{$i}">{$org}</label>
+                </span>
+                <?php } ?>
+                <div class="clearfix"></div>
+                </div>
             </div>
         </div> <!-- end of 工作领域 -->
         <div class="form-field check-group only ind-only">
             <span class="title">{:L('专长')}</span><!-- 志愿者技能 -->
-            <?php if(isset($user['work_field'])){
-                    $work_field = explode(' ', $user['work_field']);
-                  }else{
-                    $work_field = array();
-                  }
-            ?>
-            <?php
-                $i = 0;
-                foreach(C('VOLUNTEER_SKILLS') as $org){
-                $i++;
-                ?>
-            <span class="res-tag" id="focus-area">
-                <input style="display:none" id="skill-field-{$i}" type="checkbox" name="work_field[]" value="{$org}" <?php if (in_array($org, $work_field)): ?> checked="checked" <?php endif; ?>/>
-                <label for="skill-field-{$i}" class="check-group">{$org}</label>
-            </span>
-            <?php } ?>
-            <div class="clearfix"></div>
+            <div class="multi-select-box">
+                <input type="text" readonly="readonly" disabled="disabled" onselectstart="return false"/>
+                <div class="multi-select-dropdown">
+                    <?php if(isset($user['work_field'])){
+                            $work_field = explode(' ', $user['work_field']);
+                          }else{
+                            $work_field = array();
+                          }
+                    ?>
+                    <?php
+                        $i = 0;
+                        foreach(C('VOLUNTEER_SKILLS') as $org){
+                        $i++;
+                        ?>
+                    <span class="res-tag" id="focus-area">
+                        <input style="display:none" id="skill-field-{$i}-checkbox" type="checkbox" name="work_field[]" value="{$org}" <?php if (in_array($org, $work_field)): ?> checked="checked" <?php endif; ?>/>
+                        <label id="skill-field-{$i}" class="check-group">{$org}</label>
+                    </span>
+                    <?php } ?>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
         </div> <!-- end of volunteer skills -->
         <div class="only ngo-only">
             <div class="form-field">
@@ -201,7 +209,7 @@
         	<div class="verify-block">
                 <span id="verify-img"><img src="{:U('User/captcha')}" onclick="javascript:this.src='{:U('User/captcha')}?tm='+Math.random();" /></span><br/>
                 <a id="change-img-button" href="javascript:void(0);">{:L('看不清')}</a><br/>
-            	<input type="text" name="verify" value=""/>
+            	<input type="text" name="verify" id="verify" class="validate[required,ajax[ajaxVerify]]" value=""/>
             </div>
         </div>
         <div class="form-field">
@@ -232,7 +240,7 @@
 </script>
 <script src="__APP__/Public/Js/jquery.validationEngine.js" type="text/javascript" charset="utf-8"></script>
 <script src="__APP__/Public/Js/jquery.validationEngine-zh_CN.js" type="text/javascript" charset="utf-8"></script>
-
+<script type="text/javascript" src="__APP__/Public/Js/user-event-edit.js"></script>
 
 <script langage="text/javascript">
 function protocol1(){
@@ -264,16 +272,6 @@ function newwindow(){
 }
 
 
-$('.check-group label').click(function(e){
-    var selected_status = $('#'+$(e.target).attr('for')).attr('checked');
-    if(!selected_status){
-        $(e.target).addClass('selected');
-    }
-    else{
-        $(e.target).removeClass('selected');
-    }
-});
-
 $('#type-selector label').click(function(e){
     $('#type-selector label').removeClass("selected");
     $(e.currentTarget).addClass("selected");
@@ -284,44 +282,6 @@ $('#type-selector label').click(function(e){
     $('.'+type+'-only').show();
     $('.except-'+type).hide();
 });
-
-new PCAS("province","city","county");
-
-var map = new BMap.Map("map-locate-container");
-var point = new BMap.Point(116.404, 39.915);
-var gc = new BMap.Geocoder();
-map.centerAndZoom(point, 5);
-map.addControl(new BMap.NavigationControl({anchor: BMAP_ANCHOR_BOTTOM_RIGHT, type: BMAP_NAVIGATION_CONTROL_ZOOM}));  
-$("#newform").validationEngine('attach');
-
-function relocate_map(){
-    var place = '';
-    if($('#province').val() != '')place+=$('#province').val();
-    if($('#city').val() != '')place+=$('#city').val();
-    if($('#county').val() != '')place+=$('#county').val();
-    place+=$('#place').val();
-
-    gc.getPoint(place, function(point){
-      if (point) {
-        map.centerAndZoom(point, 16);
-        addPointMarker(point);
-      }
-    });
-}
-
-function addPointMarker(p){
-    map.clearOverlays();
-    var marker = new BMap.Marker(p);
-    map.addOverlay(marker);
-    $('#latitude').val(p.lat);
-    $('#longitude').val(p.lng);
-}
-
-map.addEventListener("click",function(e){
-    addPointMarker(e.point);
-});
-
-$('#province, #city, #county, #place').change(relocate_map);
 
 </script>
 

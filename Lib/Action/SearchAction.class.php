@@ -3,11 +3,6 @@
 class SearchAction extends Action{
 
 	public function result(){
-		
-		if(!isset($_GET['q']) && !isset($_GET['preserve'])){	//第一次进入搜索界面
-			$this->display();
-			return;
-		}
 	
 		//如果继续上次搜索，从session中读取搜索条件
 		if(!empty($_GET['preserve']) && isset($_SESSION['saved_search_condition'])){
@@ -55,16 +50,7 @@ class SearchAction extends Action{
 			}
 			$user_part_sql_head .= " score";
 		}
-		$user_part_sql_body = " from users where is_checked=1";
-		if(count($keys) >= 1){
-			$user_part_sql_body .= " and (0";
-			foreach($keys as $key){
-				$user_part_sql_body .= " or name like '%$key%' or introduction like '%$key%'";
-			}
-			$user_part_sql_body .= ")";
-		}
-		if(isset($work_field) && !empty($work_field)) $user_part_sql_body .= " and work_field like '%$work_field%'";
-		
+
 		$event_part_sql_head = "select users.id user_id, users.name user_name, events.type type, description content, events.id event_id, events.name event_name, item_field field, res_tags, events.create_time create_time ";
 		if(count($keys) >= 2){	//需要计算搜索分数
 			$event_part_sql_head .= ", 0";
@@ -77,7 +63,38 @@ class SearchAction extends Action{
 			}
 			$event_part_sql_head .= " score";
 		}
-		$event_part_sql_body = " from `events` left join users on (users.id=events.user_id) where events.is_checked=1";
+
+		if(!empty($rec_id)){
+			$geo_weight = 20;
+			$category_weight = 200;
+			//if($rec_id == 0) $rec_id = $_SESSION['login_user']['id'];
+			$user_model = M('Users');
+			$rec_user = $user_model->find($rec_id);
+			$my_longitude = $rec_user['longitude'];
+	    	$my_latitude = $rec_user['latitude'];
+	    	$my_categories = explode(' ',$rec_user['work_field']);
+	    	
+	    	$user_part_sql_head .= ", $geo_weight*(abs(users.longitude-$my_longitude)+abs(users.latitude-$my_latitude))";
+			$event_part_sql_head .= ", $geo_weight*(abs(events.longitude-$my_longitude)+abs(events.latitude-$my_latitude))";
+			foreach($my_categories as $category){
+				$user_part_sql_head .= "-$category_weight*if(work_field like '%$category%',1,0)";
+				$event_part_sql_head .= "-$category_weight*if(item_field like '%$category%',1,0)";
+			}
+			$user_part_sql_head .= " rec_score";
+			$event_part_sql_head .= " rec_score";
+		}
+
+		$user_part_sql_body = " from users where enabled=1 and is_checked=1";
+		if(count($keys) >= 1){
+			$user_part_sql_body .= " and (0";
+			foreach($keys as $key){
+				$user_part_sql_body .= " or name like '%$key%' or introduction like '%$key%'";
+			}
+			$user_part_sql_body .= ")";
+		}
+		if(isset($work_field) && !empty($work_field)) $user_part_sql_body .= " and work_field like '%$work_field%'";
+		
+		$event_part_sql_body = " from `events` left join users on (users.id=events.user_id) where events.is_checked=1 and events.enabled=1";
 		if(count($keys) >= 1){
 			$event_part_sql_body .= " and (0";
 			foreach($keys as $key){
@@ -133,10 +150,12 @@ class SearchAction extends Action{
 		if(count($keys) >= 2){
 			$final_sql .= " order by score desc, create_time desc";
 		}
+		else if(!empty($rec_id)){
+			$final_sql .= " order by rec_score, create_time desc";
+		}
 		else{
 			$final_sql .= " order by create_time desc";
 		}
-
 		
 		//处理分页器
 		import("ORG.Util.Page");
@@ -156,6 +175,8 @@ class SearchAction extends Action{
 		
 		$results = $db_model->query($final_sql);
 		foreach($results as $key=>$result){
+			$results[$key]['content'] = strip_tags($results[$key]['content']);
+			$results[$key]['content'] = mb_substr($results[$key]['content'], 0, 130);
 			foreach($keys as $k){
 				$results[$key]['user_name'] = preg_replace('/('.$k.')/', '<span class="keyword">\1</span>', $results[$key]['user_name']);
 				$results[$key]['event_name'] = preg_replace('/('.$k.')/', '<span class="keyword">\1</span>', $results[$key]['event_name']);
@@ -193,16 +214,21 @@ class SearchAction extends Action{
 				$results[$key]['event_image'] = $image[0]['url'];
 			}
 		}
+
+		$progress_types = array('planning'=>'筹划中', 'running'=>'进行中', 'finished'=>'已完成', 0=>0);
+		$progress_text = $progress_types[$progress];
 		
 		$this->assign('result_count',$result_count);
 		$this->assign('ngo_count',$ngo_count);
 		$this->assign('csr_count',$csr_count);
 		$this->assign('case_count',$case_count);
 		$this->assign('q', $search_condition['q']);
+		$this->assign('sq',$sq);
 		$this->assign('type', $type);
 		$this->assign('model', $model);
 		$this->assign('work_field', $work_field);
 		$this->assign('progress', $progress);
+		$this->assign('progress_text',$progress_text);
 		$this->assign('req', $req);
 		$this->assign('res', $res);
 		

@@ -238,7 +238,7 @@ class IndexAction extends Action{
             'progress' => $_GET['progress'],
             'res_tags' => $_GET['res_tags'],
             'where' => $cond,
-            'order' => 'create_time asc',
+            'order' => "type='case',type='ngo',  create_time asc",
             ));
         
         $data = $model->query($sql);

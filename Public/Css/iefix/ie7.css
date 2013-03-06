@@ -1,3 +1,26 @@
 .close-button{
 	float: none;
 }
+
+ul{
+	margin: 0;
+}
+
+#record-set li{
+	margin-top: -4px;
+}
+
+#record-set li p {
+    position: absolute;
+    top: 50%;
+}
+
+#record-set li a {
+    position: relative;
+    top: -50%;
+    width: 200px;
+}
+
+#map-filters div.dropdown{
+	top: 28px;
+}

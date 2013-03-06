@@ -1,5 +1,6 @@
 .clearfix{
     clear: both;
+    zoom: 1;
 }
 body{
     font-family: "Microsoft YaHei","微软雅黑","华文细黑", "黑体", sans-serif;
@@ -16,8 +17,6 @@ a:hover{
     box-shadow: 0 3px 4px #e9e9e9;
     -moz-box-shadow: 0 3px 4px #e9e9e9;
     -webkit-box-shadow: 0 3px 4px #e9e9e9;
-    filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=90, Color='#e9e9e9');
-    -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=90, Color='#e9e9e9')";
     position: relative;
     z-index: 2;
 }
@@ -244,3 +243,34 @@ div.action-region {
     top: 8px;
     z-index: 1000;
 }
+
+/* top-right menu for logged user */
+
+#header-control .dropdown {
+    position: absolute;
+    right: 0;
+    top: 37px;
+    background: white;
+    border: 1px solid #c7c7c7;
+    width: 98px;
+    z-index: 1000;
+}
+
+#header-control .dropdown a {
+    display: block;
+    padding: 6px;
+    color: #85b552;
+    font-family: "宋体" sans-serif;
+}
+
+#header-control .dropdown a.spacing-line {
+    border-bottom: 1px solid #c7c7c7;
+}
+
+#login-tab.after-login {
+    padding: 10px 25px 10px 8px;
+    background-image: url(../Img/icons/white-arrow-down.gif);
+    background-repeat: no-repeat;
+    background-position: 82px 17px;
+}
+

@@ -118,43 +118,20 @@
                     "regex": /^[0-9a-zA-Z]+$/,
                     "alertText": "* 不接受特殊字符"
                 },
-                // --- CUSTOM RULES -- Those are specific to the demos, they can be removed or changed to your likings
-                "ajaxUserCall": {
-                    "url": "ajaxValidateFieldUser",
-                    // you may want to pass extra data on the ajax call
-                    "extraData": "name=eric",
+                "ajaxUniqueEmail": {
+                    "url": app_path+"/User/check_unique_email",
+                    "alertText": "* 此电子邮件已被其他人使用",
+                    "alertTextLoad": "* 正在确认电子邮件是否有其他人使用，请稍等。"
+                },
+                "ajaxUniqueName": {
+                    "url": app_path+"/User/check_unique_name",
                     "alertText": "* 此名称已被其他人使用",
                     "alertTextLoad": "* 正在确认名称是否有其他人使用，请稍等。"
                 },
-				"ajaxUserCallPhp": {
-                    "url": "phpajax/ajaxValidateFieldUser.php",
-                    // you may want to pass extra data on the ajax call
-                    "extraData": "name=eric",
-                    // if you provide an "alertTextOk", it will show as a green prompt when the field validates
-                    "alertTextOk": "* 此帐号名称可以使用",
-                    "alertText": "* 此名称已被其他人使用",
-                    "alertTextLoad": "* 正在确认帐号名称是否有其他人使用，请稍等。"
-                },
-                "ajaxNameCall": {
-                    // remote json service location
-                    "url": "ajaxValidateFieldName",
-                    // error
-                    "alertText": "* 此名称可以使用",
-                    // if you provide an "alertTextOk", it will show as a green prompt when the field validates
-                    "alertTextOk": "* 此名称已被其他人使用",
-                    // speaks by itself
-                    "alertTextLoad": "* 正在确认名称是否有其他人使用，请稍等。"
-                },
-				 "ajaxNameCallPhp": {
-	                    // remote json service location
-	                    "url": "phpajax/ajaxValidateFieldName.php",
-	                    // error
-	                    "alertText": "* 此名称已被其他人使用",
-	                    // speaks by itself
-	                    "alertTextLoad": "* 正在确认名称是否有其他人使用，请稍等。"
-	                },
-                "validate2fields": {
-                    "alertText": "* 请输入 HELLO"
+				"ajaxVerify": {
+                    "url": app_path+"/User/check_verify",
+                    "alertText": "* 验证码不一致",
+                    "alertTextLoad": "* 正在确认验证码是否一致，请稍等。"
                 },
 	            //tls warning:homegrown not fielded 
                 "dateFormat":{

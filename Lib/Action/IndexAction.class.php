@@ -317,7 +317,7 @@ class IndexAction extends Action{
 
     function ajax_hotspots(){
         $model = new Model();
-        $sql = "(select id, name, longitude, latitude, type, 'users' model, create_time from users where type != 'ind' and is_checked=1) union (select id, name, longitude, latitude, type, 'events' model, create_time from events where is_checked=1) order by create_time asc";
+        $sql = "(select id, name, longitude, latitude, type, 'users' model, create_time from users where type != 'ind' and is_checked=1) union (select id, name, longitude, latitude, type, 'events' model, create_time from events where is_checked=1) order by type!='case',type!='ngo',create_time desc";
         $this->ajaxReturn($model->query($sql),1,1);
 
     }

@@ -204,6 +204,9 @@
     margin-top: 5px;
     line-height: 16px;
 }
+#recent-event-list a{
+    color: #ce4545;
+}
 #media-and-help{
     padding: 11px;
     border: 1px solid #e0dfdf;

@@ -2,13 +2,18 @@
 return array(
     '公益地图' => 'NGO MAP',
     '登录' => 'Login',
-    '注册' => 'Register',
+    '注册' => 'Sign-up',
     
     //main tabs
     '首页' => 'Home',
     '搜索' => 'Search',
+    '公益组织' => 'NGO',
+    '企业' => 'Corporations',
+    '对接案例' => 'Best Practices',
     
     //map tab names
+    'NGO类别' => 'Nonprofits',
+    '企业类别' => 'Corperations',
     '全部信息' => 'All',
     '找公益组织' => 'Find NGO',
     '找企业社会责任' => 'Find CSR',
@@ -23,32 +28,34 @@ return array(
     '更多' => 'More',
     
     //project fields
+    '领域' => 'Working Domains',
     '全部领域' => 'All',
-    '健康扶助' => 'Health',
+    '健康扶助' => 'Healthcare',
     '妇女儿童' => 'Women & Children',
-    '教育助学' => 'Educational Support',
-    '环境保护' => 'Environment',
+    '教育助学' => 'Education Aid',
+    '环境保护' => 'Environmental Protection',
     '社区发展' => 'Community Development',
-    '灾害管理' => 'Disaster Relief',
-    '劳工福利' => 'Labor Welfare',
+    '灾害管理' => 'Disaster Management ',
+    '劳工福利' => 'Workers Rights',
     '社会企业' => 'Social Enterprise',
-    '文化保护' => 'Cultural Preservation',
-    '性权利保护' => 'Gay & Lesbian Rights',
+    '文化保护' => 'Cultural Protection',
+    '性权利保护' => 'Sexual Rights',
     '政策倡导' => 'Policy Advocacy',
-    '信息网络' => 'Information Networked NGOs',
-    '支持型NGO' => 'Support-type NGOs',
+    '信息网络' => 'Information Technology',
+    '支持型NGO' => 'NGO Services',
     
     //items within find ngo
     '全部' => 'All',
-    '公益组织名单' => 'List of NGOs',
-    '公益组织项目' => 'Projects of NGOs',
-    '基金会名单' => 'List of Foundations',
+    'NGO名单' => 'NGO',
+    'NGO项目' => 'Projects',
+    '基金会名单' => 'Foundations',
     
     //items within find CSR
     '全部' => 'All',
     '企业新闻' => 'CSR News',
-    '企业名单' => 'List of Corporations',
+    '企业名单' => 'Directory',
     '企业项目' => 'CSR Projects',
+    '企业资源' => 'Resources',
     
     //Nonprofit Keywords
     '留守儿童' => 'Children left behind',
@@ -107,22 +114,23 @@ return array(
     
     //status
     '全部' => 'All',
+    '项目进度' => 'Project Status',
     '筹划中' => 'In Preparation',
-    '进行中' => 'In Progress',
-    '已完成' => 'Completed',
+    '进行中' => 'Ongoing',
+    '已完成' => 'Concluded',
     
     //Needs
-    '全部' => 'All',
-    '需要合作方' => 'Need Partnership',
-    '媒体需求' => 'Need Media',
-    '物资需求' => 'Need Supplies',
-    '资金需求' => 'Need Funding',
-    '志愿者需求' => 'Need Volunteers',
+    '需求' => 'NGO Needs',
+    '需要合作方' => 'Partnership',
+    '媒体需求' => 'Media',
+    '物资需求' => 'Goods',
+    '资金需求' => 'Funding',
+    '志愿者需求' => 'Volunteers',
     
     //resources
-    '全部' => 'All',
-    '捐赠物资' => 'Donate Supplies',
-    '捐赠款项' => 'Provide Funding',
+    '资源' => 'Resources',
+    '捐赠物资' => 'Goods',
+    '捐赠款项' => 'Funding',
     '志愿者' => 'Volunteers',
 );
 ?>

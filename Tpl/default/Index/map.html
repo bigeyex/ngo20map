@@ -4,13 +4,19 @@
 		<li class="first">-</li>
 		<?php if($_GET['type'] != 'case'): ?>
 		<li>
+			<?php if(LANG_SET == 'en-us' && $_GET['type'] == 'exngo'): ?>
+			{:L('NGO类别')}
+			<?php elseif(LANG_SET == 'en-us' && $_GET['type'] == 'excsr'): ?>
+			{:L('企业类别')}
+			<?php else: ?>
 			{:L('类别')}
+			<?php endif; ?>
 			<div class="dropdown">
 				<?php if($_GET['type'] == 'exngo'): ?>
 				<span model="" type="exngo" all="1">{:L('全部')}</span>
-				<span model="users" type="ngo">{:L('NGO名称')}</span>
+				<span model="users" type="ngo">{:L('NGO名单')}</span>
 				<span model="events" type="ngo">{:L('NGO项目')}</span>
-				<span model="users" type="fund">{:L('基金会名称')}</span>
+				<span model="users" type="fund">{:L('基金会名单')}</span>
 				<?php elseif ($_GET['type'] == 'excsr'): ?>
 				<span model="" type="csr" all="1">{:L('全部')}</span>
 				<span model="events" type="csr">{:L('企业资源')}</span>
@@ -19,7 +25,7 @@
 			</div>
 		</li>
 		<?php endif; ?>
-		<li>
+		<li id="work-field-dropdown">
 			{:L('领域')}
 			<div class="dropdown field-dropdown">
 				<?php foreach (C('ORG_FIELDS') as $field): ?>
@@ -72,7 +78,7 @@
 			<ul data-bind="foreach: records">
 				<li>
 					<div data-bind='attr: {"class": class_id, "className": class_id}'>
-						<p class="sugar"><a href="" data-bind="text: name, attr:{href: url}"></a></p>
+						<p class="sugar"><a href="" target="_blank" data-bind="text: name, attr:{href: url}"></a></p>
 					</div>
 				</li>
 			</ul>

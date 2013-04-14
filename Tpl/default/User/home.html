@@ -37,11 +37,11 @@
 		<?php if($user_data['type'] != 'ind'): ?>
 		<div class="event-fields">
 			<label for="">{:L('联系方式')}: </label>
-				<?php if(!empty($user_data['contact_phone'])): ?>
+				<?php if(!empty($user_data['phone'])): ?>
 			<p>{$user_data.contact_name}({:L('电话')}):
 				<a href="javascript:void(0);" class="reveal-phone-number" user-id="{$user_data.id}">查看</a> <br/>
 				<?php endif; ?>
-		       ({:L('QQ号码')}){$event_data.contact_qq}<br/>
+		       ({:L('QQ号码')}){$user_data.contact_qq}<br/>
 		   </p>
 		</div>
 		<?php endif; ?>

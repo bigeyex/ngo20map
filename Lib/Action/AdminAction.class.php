@@ -260,6 +260,9 @@ class AdminAction extends Action{
 			$where_clause['is_checked'] = 1;
 			$where_clause['enabled'] = 1;
 		}
+        else{
+            $where_clause['enabled'] = 1;
+        }
 		if(!empty($q)){
 			$where_clause['name'] = array('like', "%$q%");
 		}

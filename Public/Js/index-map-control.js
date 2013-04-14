@@ -201,7 +201,7 @@
 
 	
 
-	map.addEventListener('hotspotover', function(e){
+	map.addEventListener('hotspotclick', function(e){
 		var user_data = e.spots[0].getUserData();
 		var id = user_data.id;
 		var type = user_data.model;

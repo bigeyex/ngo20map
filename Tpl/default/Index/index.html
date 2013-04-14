@@ -60,7 +60,7 @@
 		<h3>{:L('最新发布项目')}</h3>
 		<div id="recent-event-list">
 			<?php foreach ($recent_events as $event): ?>
-				<div>{$event.name}</div>
+				<div><a href="{:U('Event/view')}/id/{$event.id}">{$event.name}</a></div>
 			<?php endforeach; ?>
 		</div>
 		<a href="{:U('Search/result')}/model/events/sq/公益项目" class="more">{:L('查看更多')}>></a>
@@ -76,7 +76,7 @@
 		<p>{:L('快速寻找你可能感兴趣的关键词')}</p>
 	</div>
 	<div id="hot-tags" class="info-desk-block">
-		<h3>{:L('热门标签')}</h3>
+		<h3>{:L('关键词')}</h3>
 		<div id="hot-tag-pages">
 			<div>
 			<?php 

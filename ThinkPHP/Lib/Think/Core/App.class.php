@@ -261,8 +261,8 @@ class App
             if(isset($_GET[C('VAR_LANGUAGE')])){// 检测浏览器支持语言
                 $langSet = $_GET[C('VAR_LANGUAGE')];// url中设置了语言变量
                 cookie('think_language',$langSet,3600);
-            }elseif(cookie('think_language'))// 获取上次用户的选择
-                $langSet = cookie('think_language');
+            }elseif($_SESSION['think_language'])// 获取上次用户的选择
+                $langSet = $_SESSION['think_language'];
             elseif(isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])){// 自动侦测浏览器语言
                 preg_match('/^([a-z\-]+)/i', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $matches);
                 $langSet = $matches[1];

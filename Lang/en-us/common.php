@@ -12,7 +12,7 @@ return array(
     '对接案例' => 'Best Practices',
     
     //map tab names
-    'NGO类别' => 'Nonprofits',
+    'NGO类别' => 'NGO',
     '企业类别' => 'Corperations',
     '全部信息' => 'All',
     '找公益组织' => 'Find NGO',
@@ -28,7 +28,7 @@ return array(
     '更多' => 'More',
     
     //project fields
-    '领域' => 'Working Domains',
+    '领域' => 'Issue Areas',
     '全部领域' => 'All',
     '健康扶助' => 'Healthcare',
     '妇女儿童' => 'Women & Children',
@@ -117,7 +117,7 @@ return array(
     '项目进度' => 'Project Status',
     '筹划中' => 'In Preparation',
     '进行中' => 'Ongoing',
-    '已完成' => 'Concluded',
+    '已完成' => 'Completed',
     
     //Needs
     '需求' => 'NGO Needs',

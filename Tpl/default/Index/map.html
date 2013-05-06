@@ -4,9 +4,9 @@
 		<li class="first">-</li>
 		<?php if($_GET['type'] != 'case'): ?>
 		<li>
-			<?php if(LANG_SET == 'en-us' && $_GET['type'] == 'exngo'): ?>
+			<?php if($_GET['type'] == 'exngo'): ?>
 			{:L('NGO类别')}
-			<?php elseif(LANG_SET == 'en-us' && $_GET['type'] == 'excsr'): ?>
+			<?php elseif($_GET['type'] == 'excsr'): ?>
 			{:L('企业类别')}
 			<?php else: ?>
 			{:L('类别')}
